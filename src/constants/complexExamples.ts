@@ -275,8 +275,8 @@ export const QUIZ_WIZARD_CODE = `<template>
     </v-card-title>
 
     <v-card-text>
-      <v-progress-linear 
-        :model-value="(currentStep / totalSteps) * 100" 
+      <v-progress-linear
+        :model-value="(currentStep / totalSteps) * 100"
         :color="getProgressColor()"
         height="8"
         rounded
@@ -286,10 +286,10 @@ export const QUIZ_WIZARD_CODE = `<template>
       <!-- Question Display -->
       <div v-if="!quizCompleted">
         <div class="text-h6 mb-4">{{ currentQuestion.question }}</div>
-        
+
         <v-radio-group v-model="selectedAnswer" class="mb-4">
-          <v-radio 
-            v-for="(option, index) in currentQuestion.options" 
+          <v-radio
+            v-for="(option, index) in currentQuestion.options"
             :key="index"
             :label="option"
             :value="index"
@@ -297,8 +297,8 @@ export const QUIZ_WIZARD_CODE = `<template>
           ></v-radio>
         </v-radio-group>
 
-        <v-alert 
-          v-if="answerSubmitted" 
+        <v-alert
+          v-if="answerSubmitted"
           :type="isCorrectAnswer ? 'success' : 'error'"
           class="mb-4"
         >
@@ -311,9 +311,9 @@ export const QUIZ_WIZARD_CODE = `<template>
 
       <!-- Results Display -->
       <div v-else class="text-center">
-        <v-icon 
-          :icon="getResultIcon()" 
-          :color="getResultColor()" 
+        <v-icon
+          :icon="getResultIcon()"
+          :color="getResultColor()"
           size="64"
           class="mb-4"
         ></v-icon>
@@ -326,7 +326,7 @@ export const QUIZ_WIZARD_CODE = `<template>
     </v-card-text>
 
     <v-card-actions class="px-6 pb-6">
-      <v-btn 
+      <v-btn
         v-if="!quizCompleted"
         :disabled="selectedAnswer === null || (answerSubmitted && currentStep === totalSteps)"
         :color="answerSubmitted ? 'primary' : 'success'"
@@ -334,10 +334,10 @@ export const QUIZ_WIZARD_CODE = `<template>
       >
         {{ answerSubmitted ? 'Next Question' : 'Submit Answer' }}
       </v-btn>
-      
+
       <v-spacer v-if="!quizCompleted"></v-spacer>
-      
-      <v-btn 
+
+      <v-btn
         v-if="quizCompleted"
         color="primary"
         prepend-icon="mdi-restart"
@@ -345,8 +345,8 @@ export const QUIZ_WIZARD_CODE = `<template>
       >
         Try Again
       </v-btn>
-      
-      <v-btn 
+
+      <v-btn
         v-if="!quizCompleted && currentStep > 1"
         variant="outlined"
         @click="previousQuestion"
@@ -429,24 +429,24 @@ const totalSteps = questions.length
 
 const currentQuestion = computed(() => questions[currentStep.value - 1])
 
-const isCorrectAnswer = computed(() => 
+const isCorrectAnswer = computed(() =>
   selectedAnswer.value === currentQuestion.value.correct
 )
 
-const score = computed(() => 
+const score = computed(() =>
   userAnswers.value.filter(answer => answer.correct).length
 )
 
 const submitAnswer = () => {
   if (selectedAnswer.value === null) return
-  
+
   const isCorrect = selectedAnswer.value === currentQuestion.value.correct
   userAnswers.value.push({
     question: currentStep.value,
     answer: selectedAnswer.value,
     correct: isCorrect
   })
-  
+
   answerSubmitted.value = true
 }
 
@@ -550,9 +550,9 @@ export const ORDER_SUMMARY_CODE = `<template>
       Order Summary
       <v-chip color="primary" size="small" class="ms-2">#12345</v-chip>
     </v-card-title>
-    
+
     <v-divider></v-divider>
-    
+
     <v-card-text class="pa-0">
       <!-- Order Items -->
       <v-list density="compact">
@@ -567,7 +567,7 @@ export const ORDER_SUMMARY_CODE = `<template>
           <v-list-item-subtitle class="text-caption">
             Qty: $\{item.quantity} × $$\{item.price}
           </v-list-item-subtitle>
-          
+
           <template v-slot:append>
             <div class="text-body-2 font-weight-bold">
               $$\{(item.quantity * item.price).toFixed(2)}
@@ -575,9 +575,9 @@ export const ORDER_SUMMARY_CODE = `<template>
           </template>
         </v-list-item>
       </v-list>
-      
+
       <v-divider></v-divider>
-      
+
       <!-- Order Totals -->
       <div class="pa-4">
         <div class="d-flex justify-space-between mb-2">
@@ -600,7 +600,7 @@ export const ORDER_SUMMARY_CODE = `<template>
           </span>
         </div>
       </div>
-      
+
       <!-- Promo Code -->
       <v-divider></v-divider>
       <div class="pa-4">
@@ -613,9 +613,9 @@ export const ORDER_SUMMARY_CODE = `<template>
           @click:append-inner="applyPromo"
         >
           <template v-slot:append>
-            <v-btn 
-              color="primary" 
-              variant="text" 
+            <v-btn
+              color="primary"
+              variant="text"
               size="small"
               @click="applyPromo"
             >
@@ -625,11 +625,11 @@ export const ORDER_SUMMARY_CODE = `<template>
         </v-text-field>
       </div>
     </v-card-text>
-    
+
     <v-card-actions class="pa-4">
-      <v-btn 
-        color="primary" 
-        variant="elevated" 
+      <v-btn
+        color="primary"
+        variant="elevated"
         prepend-icon="mdi-credit-card"
         block
         size="large"
@@ -690,9 +690,9 @@ export const NOTIFICATION_LIST_CODE = `<template>
       <v-spacer></v-spacer>
       <v-chip color="error" size="small">{{ unreadCount }}</v-chip>
     </v-card-title>
-    
+
     <v-divider></v-divider>
-    
+
     <v-card-text class="pa-0" style="max-height: 400px; overflow-y: auto;">
       <v-list density="compact">
         <template v-for="(notification, index) in notifications" :key="notification.id">
@@ -705,37 +705,37 @@ export const NOTIFICATION_LIST_CODE = `<template>
                 <v-icon :icon="getNotificationIcon(notification.type)" color="white"></v-icon>
               </v-avatar>
             </template>
-            
+
             <v-list-item-title class="text-body-2 font-weight-medium">
               {{ notification.title }}
             </v-list-item-title>
             <v-list-item-subtitle class="text-caption text-wrap">
               {{ notification.message }}
             </v-list-item-subtitle>
-            
+
             <template v-slot:append>
               <div class="d-flex flex-column align-end">
                 <span class="text-caption text-grey">
                   {{ formatTime(notification.timestamp) }}
                 </span>
-                <v-icon 
-                  v-if="!notification.read" 
-                  icon="mdi-circle" 
-                  color="primary" 
+                <v-icon
+                  v-if="!notification.read"
+                  icon="mdi-circle"
+                  color="primary"
                   size="8"
                   class="mt-1"
                 ></v-icon>
               </div>
             </template>
           </v-list-item>
-          
+
           <v-divider v-if="index < notifications.length - 1"></v-divider>
         </template>
       </v-list>
     </v-card-text>
-    
+
     <v-divider></v-divider>
-    
+
     <v-card-actions class="pa-3">
       <v-btn variant="text" size="small" @click="markAllAsRead">
         Mark all as read
@@ -837,7 +837,7 @@ const formatTime = (timestamp) => {
   const minutes = Math.floor(diff / (1000 * 60))
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-  
+
   if (minutes < 60) return \`\${minutes}m ago\`
   if (hours < 24) return \`\${hours}h ago\`
   return \`\${days}d ago\`
@@ -862,12 +862,12 @@ export const CHAT_PAGE_CODE = `<template>
         <v-btn icon="mdi-dots-vertical" variant="text" color="white"></v-btn>
       </div>
     </v-card-title>
-    
+
     <!-- Chat Messages -->
     <v-card-text class="flex-grow-1 pa-0 overflow-y-auto" ref="chatContainer">
       <div class="pa-3">
-        <div 
-          v-for="message in messages" 
+        <div
+          v-for="message in messages"
           :key="message.id"
           class="mb-3"
           :class="{ 'd-flex justify-end': message.sender === 'me' }"
@@ -876,14 +876,14 @@ export const CHAT_PAGE_CODE = `<template>
             <v-avatar size="32" class="me-2" :class="{ 'ms-2 me-0': message.sender === 'me' }">
               <v-img :src="message.sender === 'me' ? 'https://picsum.photos/32/32?random=6' : 'https://picsum.photos/32/32?random=5'"></v-img>
             </v-avatar>
-            
+
             <div class="message-bubble" :class="message.sender === 'me' ? 'message-sent' : 'message-received'">
               <div class="text-body-2">{{ message.text }}</div>
               <div class="text-caption text-grey mt-1">{{ formatMessageTime(message.timestamp) }}</div>
             </div>
           </div>
         </div>
-        
+
         <!-- Typing indicator -->
         <div v-if="isTyping" class="d-flex align-center mb-3">
           <v-avatar size="32" class="me-2">
@@ -897,7 +897,7 @@ export const CHAT_PAGE_CODE = `<template>
         </div>
       </div>
     </v-card-text>
-    
+
     <!-- Message Input -->
     <v-divider></v-divider>
     <div class="pa-3">
@@ -914,9 +914,9 @@ export const CHAT_PAGE_CODE = `<template>
           <v-btn icon="mdi-attachment" variant="text" size="small"></v-btn>
         </template>
         <template v-slot:append-inner>
-          <v-btn 
-            icon="mdi-send" 
-            variant="text" 
+          <v-btn
+            icon="mdi-send"
+            variant="text"
             color="primary"
             @click="sendMessage"
             :disabled="!newMessage.trim()"
@@ -969,20 +969,20 @@ const messages = ref([
 
 const sendMessage = async () => {
   if (!newMessage.value.trim()) return
-  
+
   const message = {
     id: messages.value.length + 1,
     sender: 'me',
     text: newMessage.value,
     timestamp: new Date()
   }
-  
+
   messages.value.push(message)
   newMessage.value = ''
-  
+
   await nextTick()
   scrollToBottom()
-  
+
   // Simulate typing and response
   setTimeout(() => {
     isTyping.value = true
@@ -1078,14 +1078,14 @@ export const FORM_GROUP_CODE = `<template>
       <v-icon icon="mdi-account-plus" class="me-2"></v-icon>
       User Registration Form
     </v-card-title>
-    
+
     <v-card-text class="pa-6">
       <v-form ref="form" v-model="valid">
         <v-row>
           <!-- Left Column -->
           <v-col cols="12" md="6">
             <h3 class="text-h6 mb-4">Personal Information</h3>
-            
+
             <v-text-field
               v-model="formData.firstName"
               :rules="nameRules"
@@ -1094,7 +1094,7 @@ export const FORM_GROUP_CODE = `<template>
               variant="outlined"
               class="mb-3"
             ></v-text-field>
-            
+
             <v-text-field
               v-model="formData.lastName"
               :rules="nameRules"
@@ -1103,7 +1103,7 @@ export const FORM_GROUP_CODE = `<template>
               variant="outlined"
               class="mb-3"
             ></v-text-field>
-            
+
             <v-text-field
               v-model="formData.email"
               :rules="emailRules"
@@ -1112,7 +1112,7 @@ export const FORM_GROUP_CODE = `<template>
               variant="outlined"
               class="mb-3"
             ></v-text-field>
-            
+
             <v-text-field
               v-model="formData.phone"
               :rules="phoneRules"
@@ -1121,7 +1121,7 @@ export const FORM_GROUP_CODE = `<template>
               variant="outlined"
               class="mb-3"
             ></v-text-field>
-            
+
             <v-menu v-model="dateMenu">
               <template v-slot:activator="{ props }">
                 <v-text-field
@@ -1140,7 +1140,7 @@ export const FORM_GROUP_CODE = `<template>
                 @update:model-value="onDateSelected"
               ></v-date-picker>
             </v-menu>
-            
+
             <v-select
               v-model="formData.gender"
               :rules="genderRules"
@@ -1151,11 +1151,11 @@ export const FORM_GROUP_CODE = `<template>
               class="mb-3"
             ></v-select>
           </v-col>
-          
+
           <!-- Right Column -->
           <v-col cols="12" md="6">
             <h3 class="text-h6 mb-4">Account & Preferences</h3>
-            
+
             <v-text-field
               v-model="formData.username"
               :rules="usernameRules"
@@ -1164,7 +1164,7 @@ export const FORM_GROUP_CODE = `<template>
               variant="outlined"
               class="mb-3"
             ></v-text-field>
-            
+
             <v-text-field
               v-model="formData.password"
               :rules="passwordRules"
@@ -1176,7 +1176,7 @@ export const FORM_GROUP_CODE = `<template>
               variant="outlined"
               class="mb-3"
             ></v-text-field>
-            
+
             <v-text-field
               v-model="formData.confirmPassword"
               :rules="confirmPasswordRules"
@@ -1188,7 +1188,7 @@ export const FORM_GROUP_CODE = `<template>
               variant="outlined"
               class="mb-3"
             ></v-text-field>
-            
+
             <v-select
               v-model="formData.country"
               :rules="countryRules"
@@ -1198,7 +1198,7 @@ export const FORM_GROUP_CODE = `<template>
               variant="outlined"
               class="mb-3"
             ></v-select>
-            
+
             <v-autocomplete
               v-model="formData.interests"
               :items="interestOptions"
@@ -1210,7 +1210,7 @@ export const FORM_GROUP_CODE = `<template>
               closable-chips
               class="mb-3"
             ></v-autocomplete>
-            
+
             <v-textarea
               v-model="formData.bio"
               label="Bio (Optional)"
@@ -1221,7 +1221,7 @@ export const FORM_GROUP_CODE = `<template>
             ></v-textarea>
           </v-col>
         </v-row>
-        
+
         <!-- Agreement Section -->
         <v-row>
           <v-col cols="12">
@@ -1233,14 +1233,14 @@ export const FORM_GROUP_CODE = `<template>
             >
               <template v-slot:label>
                 <div>
-                  I agree to the 
+                  I agree to the
                   <a href="#" @click.prevent class="text-primary">Terms of Service</a>
-                  and 
+                  and
                   <a href="#" @click.prevent class="text-primary">Privacy Policy</a>
                 </div>
               </template>
             </v-checkbox>
-            
+
             <v-checkbox
               v-model="formData.newsletter"
               label="Subscribe to our newsletter for updates and promotions"
@@ -1250,14 +1250,14 @@ export const FORM_GROUP_CODE = `<template>
         </v-row>
       </v-form>
     </v-card-text>
-    
+
     <v-card-actions class="pa-6 pt-0">
       <v-btn variant="outlined" @click="resetForm">
         Reset
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn 
-        color="primary" 
+      <v-btn
+        color="primary"
         variant="elevated"
         :disabled="!valid"
         :loading="loading"
@@ -1377,13 +1377,13 @@ const resetForm = () => {
 
 const submitForm = async () => {
   loading.value = true
-  
+
   // Simulate API call
   await new Promise(resolve => setTimeout(resolve, 2000))
-  
+
   console.log('Form submitted:', formData.value)
   loading.value = false
-  
+
   // Show success message or redirect
   alert('Account created successfully!')
 }

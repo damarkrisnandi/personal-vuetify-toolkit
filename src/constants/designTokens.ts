@@ -23,9 +23,9 @@ export const COLOR_SYSTEM_CODE = `<template>
             <h4 class="text-subtitle-1 mb-2 text-capitalize">{{ name }}</h4>
             <v-row no-gutters>
               <v-col v-for="(shade, index) in colorGroup" :key="index" cols="3">
-                <v-card 
-                  :color="shade.value" 
-                  class="text-center pa-2" 
+                <v-card
+                  :color="shade.value"
+                  class="text-center pa-2"
                   style="min-height: 60px; border-radius: 0;"
                 >
                   <div class="text-white text-caption font-weight-bold">{{ shade.name }}</div>
@@ -51,7 +51,7 @@ export const COLOR_SYSTEM_CODE = `<template>
             <v-btn color="error">Error</v-btn>
             <v-btn color="info">Info</v-btn>
           </div>
-          
+
           <h4 class="text-subtitle-1 mb-3">Chips</h4>
           <div class="d-flex flex-wrap ga-2 mb-4">
             <v-chip color="red">Red</v-chip>
@@ -64,14 +64,14 @@ export const COLOR_SYSTEM_CODE = `<template>
             <v-chip color="green">Green</v-chip>
           </div>
         </v-col>
-        
+
         <v-col cols="12" md="6">
           <h4 class="text-subtitle-1 mb-3">Alerts</h4>
           <v-alert type="success" class="mb-2">Success alert</v-alert>
           <v-alert type="info" class="mb-2">Info alert</v-alert>
           <v-alert type="warning" class="mb-2">Warning alert</v-alert>
           <v-alert type="error" class="mb-2">Error alert</v-alert>
-          
+
           <h4 class="text-subtitle-1 mb-3">Progress</h4>
           <v-progress-linear color="primary" :model-value="75" class="mb-2"></v-progress-linear>
           <v-progress-linear color="success" :model-value="60" class="mb-2"></v-progress-linear>
@@ -170,8 +170,8 @@ export const MDI_ICONS_CODE = `<template>
           <v-card class="pa-4">
             <h4 class="text-subtitle-1 mb-3 text-capitalize">{{ name }}</h4>
             <div class="d-flex flex-wrap ga-3">
-              <div 
-                v-for="icon in category" 
+              <div
+                v-for="icon in category"
                 :key="icon.name"
                 class="text-center"
                 style="min-width: 60px;"
@@ -271,7 +271,7 @@ export const MDI_ICONS_CODE = `<template>
             <v-btn icon="mdi-heart" color="error"></v-btn>
             <v-btn prepend-icon="mdi-download" variant="outlined">Download</v-btn>
           </div>
-          
+
           <h4 class="text-subtitle-1 mb-3">List Items with Icons</h4>
           <v-list density="compact">
             <v-list-item prepend-icon="mdi-home" title="Home"></v-list-item>
@@ -280,7 +280,7 @@ export const MDI_ICONS_CODE = `<template>
             <v-list-item prepend-icon="mdi-help-circle" title="Help"></v-list-item>
           </v-list>
         </v-col>
-        
+
         <v-col cols="12" md="6">
           <h4 class="text-subtitle-1 mb-3">Text Fields with Icons</h4>
           <v-text-field
@@ -303,7 +303,7 @@ export const MDI_ICONS_CODE = `<template>
             variant="outlined"
             class="mb-4"
           ></v-text-field>
-          
+
           <h4 class="text-subtitle-1 mb-3">Chips with Icons</h4>
           <div class="d-flex flex-wrap ga-2">
             <v-chip prepend-icon="mdi-check" color="success">Completed</v-chip>
@@ -319,8 +319,8 @@ export const MDI_ICONS_CODE = `<template>
       <h3 class="text-h6 mb-4">Popular MDI Icons</h3>
       <v-card class="pa-4">
         <v-row>
-          <v-col 
-            v-for="icon in popularIcons" 
+          <v-col
+            v-for="icon in popularIcons"
             :key="icon.icon"
             cols="6" sm="4" md="3" lg="2"
           >
@@ -440,7 +440,7 @@ export const THEME_SYSTEM_CODE = `<template>
             color="primary"
           ></v-switch>
         </div>
-        
+
         <v-alert type="info" variant="tonal">
           Theme changes are automatically applied to all components and respect user preferences.
         </v-alert>
@@ -474,9 +474,9 @@ export const THEME_SYSTEM_CODE = `<template>
         <div class="text-body-2 mb-2">Body 2 - Body Medium</div>
         <div class="text-caption mb-2">Caption - Body Small</div>
         <div class="text-overline">Overline - Label Small</div>
-        
+
         <v-divider class="my-4"></v-divider>
-        
+
         <div class="text-high-emphasis mb-2">High Emphasis Text (87% opacity)</div>
         <div class="text-medium-emphasis mb-2">Medium Emphasis Text (60% opacity)</div>
         <div class="text-disabled">Disabled Text (38% opacity)</div>
@@ -493,18 +493,18 @@ export const THEME_SYSTEM_CODE = `<template>
             <v-card-title>Default Card</v-card-title>
             <v-card-text>This card adapts to the current theme automatically.</v-card-text>
           </v-card>
-          
+
           <v-card variant="elevated" class="mb-3">
             <v-card-title>Elevated Card</v-card-title>
             <v-card-text>Higher elevation for important content.</v-card-text>
           </v-card>
-          
+
           <v-card variant="outlined">
             <v-card-title>Outlined Card</v-card-title>
             <v-card-text>Subtle border for content separation.</v-card-text>
           </v-card>
         </v-col>
-        
+
         <v-col cols="12" md="6">
           <h4 class="text-subtitle-1 mb-3">Interactive Elements</h4>
           <div class="mb-4">
@@ -513,20 +513,20 @@ export const THEME_SYSTEM_CODE = `<template>
             <v-btn variant="outlined" class="me-2 mb-2">Outlined</v-btn>
             <v-btn variant="text" class="mb-2">Text</v-btn>
           </div>
-          
+
           <v-text-field
             label="Theme-aware Input"
             variant="outlined"
             class="mb-3"
           ></v-text-field>
-          
+
           <v-select
             :items="['Option 1', 'Option 2', 'Option 3']"
             label="Theme-aware Select"
             variant="outlined"
             class="mb-3"
           ></v-select>
-          
+
           <v-textarea
             label="Theme-aware Textarea"
             variant="outlined"

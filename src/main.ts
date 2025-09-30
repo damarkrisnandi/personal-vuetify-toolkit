@@ -6,12 +6,12 @@ import vuetify from './plugins/vuetify';
 
 // Import core Highlight.js and specific languages
 import hljs from 'highlight.js/lib/core';
+import css from 'highlight.js/lib/languages/css';
 import javascript from 'highlight.js/lib/languages/javascript';
+import json from 'highlight.js/lib/languages/json';
+import scss from 'highlight.js/lib/languages/scss';
 import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml'; // for HTML/Vue templates
-import css from 'highlight.js/lib/languages/css';
-import scss from 'highlight.js/lib/languages/scss';
-import json from 'highlight.js/lib/languages/json';
 
 // Import a highlight.js theme
 import 'highlight.js/styles/github.css';
@@ -28,10 +28,10 @@ hljs.registerLanguage('json', json);
 
 // Create a global plugin for highlight.js
 const highlightPlugin = {
-  install(app: any) {
-    app.config.globalProperties.$hljs = hljs;
-    app.provide('hljs', hljs);
-  }
+    install(app: any) {
+        app.config.globalProperties.$hljs = hljs;
+        app.provide('hljs', hljs);
+    }
 };
 
 createApp(App)

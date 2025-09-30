@@ -269,8 +269,8 @@
 
         <!-- Order Summary -->
         <CodeShowcase title="Order Summary Card"
-            description="E-commerce order summary with items, totals, and promo code functionality"
-            icon="mdi-receipt" difficulty="Medium" :code="orderSummaryCode">
+            description="E-commerce order summary with items, totals, and promo code functionality" icon="mdi-receipt"
+            difficulty="Medium" :code="orderSummaryCode">
             <template #preview>
                 <div class="d-flex justify-center">
                     <v-card width="400" elevation="4">
@@ -278,9 +278,9 @@
                             Order Summary
                             <v-chip color="primary" size="small" class="ms-2">#12345</v-chip>
                         </v-card-title>
-                        
+
                         <v-divider></v-divider>
-                        
+
                         <v-card-text class="pa-0">
                             <v-list density="compact">
                                 <v-list-item prepend-avatar="https://picsum.photos/40/40?random=1">
@@ -306,9 +306,9 @@
                                     </template>
                                 </v-list-item>
                             </v-list>
-                            
+
                             <v-divider></v-divider>
-                            
+
                             <div class="pa-4">
                                 <div class="d-flex justify-space-between mb-2">
                                     <span class="text-body-2">Subtotal:</span>
@@ -329,7 +329,7 @@
                                 </div>
                             </div>
                         </v-card-text>
-                        
+
                         <v-card-actions class="pa-4">
                             <v-btn color="primary" variant="elevated" prepend-icon="mdi-credit-card" block size="large">
                                 Proceed to Checkout
@@ -342,8 +342,8 @@
 
         <!-- Notification List -->
         <CodeShowcase title="Notification List"
-            description="Interactive notification center with different types and read/unread states"
-            icon="mdi-bell" difficulty="Medium" :code="notificationListCode">
+            description="Interactive notification center with different types and read/unread states" icon="mdi-bell"
+            difficulty="Medium" :code="notificationListCode">
             <template #preview>
                 <div class="d-flex justify-center">
                     <v-card width="380" elevation="4">
@@ -353,9 +353,9 @@
                             <v-spacer></v-spacer>
                             <v-chip color="error" size="small">3</v-chip>
                         </v-card-title>
-                        
+
                         <v-divider></v-divider>
-                        
+
                         <v-card-text class="pa-0" style="max-height: 400px; overflow-y: auto;">
                             <v-list density="compact">
                                 <v-list-item class="bg-blue-lighten-5">
@@ -377,9 +377,9 @@
                                         </div>
                                     </template>
                                 </v-list-item>
-                                
+
                                 <v-divider></v-divider>
-                                
+
                                 <v-list-item class="bg-blue-lighten-5">
                                     <template v-slot:prepend>
                                         <v-avatar color="green" size="40">
@@ -399,9 +399,9 @@
                                         </div>
                                     </template>
                                 </v-list-item>
-                                
+
                                 <v-divider></v-divider>
-                                
+
                                 <v-list-item>
                                     <template v-slot:prepend>
                                         <v-avatar color="grey" size="40">
@@ -420,9 +420,9 @@
                                 </v-list-item>
                             </v-list>
                         </v-card-text>
-                        
+
                         <v-divider></v-divider>
-                        
+
                         <v-card-actions class="pa-3">
                             <v-btn variant="text" size="small">Mark all as read</v-btn>
                             <v-spacer></v-spacer>
@@ -435,8 +435,8 @@
 
         <!-- Chat Page -->
         <CodeShowcase title="Chat Interface"
-            description="Complete chat interface with messages, typing indicators, and modern design"
-            icon="mdi-chat" difficulty="Hard" :code="chatPageCode">
+            description="Complete chat interface with messages, typing indicators, and modern design" icon="mdi-chat"
+            difficulty="Hard" :code="chatPageCode">
             <template #preview>
                 <div class="d-flex justify-center">
                     <v-card width="400" height="600" class="d-flex flex-column">
@@ -454,49 +454,48 @@
                                 <v-btn icon="mdi-video" variant="text" color="white"></v-btn>
                             </div>
                         </v-card-title>
-                        
+
                         <v-card-text class="flex-grow-1 pa-3 overflow-y-auto">
                             <div class="d-flex align-start mb-3">
                                 <v-avatar size="32" class="me-2">
                                     <v-img src="https://picsum.photos/32/32?random=5"></v-img>
                                 </v-avatar>
-                                <div class="message-bubble" style="background-color: #f5f5f5; color: #333; padding: 8px 12px; border-radius: 18px; max-width: 250px;">
+                                <div class="message-bubble"
+                                    style="background-color: #f5f5f5; color: #333; padding: 8px 12px; border-radius: 18px; max-width: 250px;">
                                     <div class="text-body-2">Hey! How are you doing?</div>
                                     <div class="text-caption text-grey mt-1">10:30 AM</div>
                                 </div>
                             </div>
-                            
+
                             <div class="d-flex justify-end mb-3">
                                 <div class="d-flex align-start flex-row-reverse">
                                     <v-avatar size="32" class="ms-2">
                                         <v-img src="https://picsum.photos/32/32?random=6"></v-img>
                                     </v-avatar>
-                                    <div class="message-bubble" style="background-color: #1976d2; color: white; padding: 8px 12px; border-radius: 18px; max-width: 250px;">
+                                    <div class="message-bubble"
+                                        style="background-color: #1976d2; color: white; padding: 8px 12px; border-radius: 18px; max-width: 250px;">
                                         <div class="text-body-2">I'm doing great! Just working on a new project.</div>
                                         <div class="text-caption mt-1" style="opacity: 0.8;">10:32 AM</div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="d-flex align-start mb-3">
                                 <v-avatar size="32" class="me-2">
                                     <v-img src="https://picsum.photos/32/32?random=5"></v-img>
                                 </v-avatar>
-                                <div class="message-bubble" style="background-color: #f5f5f5; color: #333; padding: 8px 12px; border-radius: 18px; max-width: 250px;">
+                                <div class="message-bubble"
+                                    style="background-color: #f5f5f5; color: #333; padding: 8px 12px; border-radius: 18px; max-width: 250px;">
                                     <div class="text-body-2">That sounds exciting! What kind of project?</div>
                                     <div class="text-caption text-grey mt-1">10:33 AM</div>
                                 </div>
                             </div>
                         </v-card-text>
-                        
+
                         <v-divider></v-divider>
                         <div class="pa-3">
-                            <v-text-field
-                                placeholder="Type a message..."
-                                variant="outlined"
-                                density="compact"
-                                hide-details
-                            >
+                            <v-text-field placeholder="Type a message..." variant="outlined" density="compact"
+                                hide-details>
                                 <template v-slot:prepend-inner>
                                     <v-btn icon="mdi-emoticon" variant="text" size="small"></v-btn>
                                 </template>
@@ -521,85 +520,48 @@
                             <v-icon icon="mdi-account-plus" class="me-2"></v-icon>
                             User Registration Form
                         </v-card-title>
-                        
+
                         <v-card-text class="pa-6">
                             <v-form>
                                 <v-row>
                                     <v-col cols="12" md="6">
                                         <h3 class="text-h6 mb-4">Personal Information</h3>
-                                        <v-text-field
-                                            label="First Name"
-                                            prepend-inner-icon="mdi-account"
-                                            variant="outlined"
-                                            class="mb-3"
-                                        ></v-text-field>
-                                        <v-text-field
-                                            label="Last Name"
-                                            prepend-inner-icon="mdi-account"
-                                            variant="outlined"
-                                            class="mb-3"
-                                        ></v-text-field>
-                                        <v-text-field
-                                            label="Email Address"
-                                            prepend-inner-icon="mdi-email"
-                                            variant="outlined"
-                                            class="mb-3"
-                                        ></v-text-field>
-                                        <v-text-field
-                                            label="Phone Number"
-                                            prepend-inner-icon="mdi-phone"
-                                            variant="outlined"
-                                            class="mb-3"
-                                        ></v-text-field>
+                                        <v-text-field label="First Name" prepend-inner-icon="mdi-account"
+                                            variant="outlined" class="mb-3"></v-text-field>
+                                        <v-text-field label="Last Name" prepend-inner-icon="mdi-account"
+                                            variant="outlined" class="mb-3"></v-text-field>
+                                        <v-text-field label="Email Address" prepend-inner-icon="mdi-email"
+                                            variant="outlined" class="mb-3"></v-text-field>
+                                        <v-text-field label="Phone Number" prepend-inner-icon="mdi-phone"
+                                            variant="outlined" class="mb-3"></v-text-field>
                                     </v-col>
-                                    
+
                                     <v-col cols="12" md="6">
                                         <h3 class="text-h6 mb-4">Account & Preferences</h3>
-                                        <v-text-field
-                                            label="Username"
-                                            prepend-inner-icon="mdi-at"
-                                            variant="outlined"
-                                            class="mb-3"
-                                        ></v-text-field>
-                                        <v-text-field
-                                            label="Password"
-                                            type="password"
-                                            prepend-inner-icon="mdi-lock"
-                                            variant="outlined"
-                                            class="mb-3"
-                                        ></v-text-field>
-                                        <v-select
-                                            :items="['United States', 'Canada', 'United Kingdom', 'Australia']"
-                                            label="Country"
-                                            prepend-inner-icon="mdi-earth"
-                                            variant="outlined"
-                                            class="mb-3"
-                                        ></v-select>
-                                        <v-textarea
-                                            label="Bio (Optional)"
-                                            prepend-inner-icon="mdi-text"
-                                            variant="outlined"
-                                            rows="3"
-                                        ></v-textarea>
+                                        <v-text-field label="Username" prepend-inner-icon="mdi-at" variant="outlined"
+                                            class="mb-3"></v-text-field>
+                                        <v-text-field label="Password" type="password" prepend-inner-icon="mdi-lock"
+                                            variant="outlined" class="mb-3"></v-text-field>
+                                        <v-select :items="['United States', 'Canada', 'United Kingdom', 'Australia']"
+                                            label="Country" prepend-inner-icon="mdi-earth" variant="outlined"
+                                            class="mb-3"></v-select>
+                                        <v-textarea label="Bio (Optional)" prepend-inner-icon="mdi-text"
+                                            variant="outlined" rows="3"></v-textarea>
                                     </v-col>
                                 </v-row>
-                                
+
                                 <v-row>
                                     <v-col cols="12">
                                         <v-divider class="my-4"></v-divider>
-                                        <v-checkbox
-                                            label="I agree to the Terms of Service and Privacy Policy"
-                                            color="primary"
-                                        ></v-checkbox>
-                                        <v-checkbox
-                                            label="Subscribe to newsletter for updates"
-                                            color="primary"
-                                        ></v-checkbox>
+                                        <v-checkbox label="I agree to the Terms of Service and Privacy Policy"
+                                            color="primary"></v-checkbox>
+                                        <v-checkbox label="Subscribe to newsletter for updates"
+                                            color="primary"></v-checkbox>
                                     </v-col>
                                 </v-row>
                             </v-form>
                         </v-card-text>
-                        
+
                         <v-card-actions class="pa-6 pt-0">
                             <v-btn variant="outlined">Reset</v-btn>
                             <v-spacer></v-spacer>
@@ -624,33 +586,20 @@
                         </v-card-title>
 
                         <v-card-text>
-                            <v-progress-linear 
-                                :model-value="(currentStep / totalSteps) * 100" 
-                                :color="getProgressColor()"
-                                height="8"
-                                rounded
-                                class="mb-6"
-                            ></v-progress-linear>
+                            <v-progress-linear :model-value="(currentStep / totalSteps) * 100"
+                                :color="getProgressColor()" height="8" rounded class="mb-6"></v-progress-linear>
 
                             <!-- Question Display -->
                             <div v-if="!quizCompleted">
                                 <div class="text-h6 mb-4">{{ currentQuestion.question }}</div>
-                                
+
                                 <v-radio-group v-model="selectedAnswer" class="mb-4">
-                                    <v-radio 
-                                        v-for="(option, index) in currentQuestion.options" 
-                                        :key="index"
-                                        :label="option"
-                                        :value="index"
-                                        :disabled="answerSubmitted"
-                                    ></v-radio>
+                                    <v-radio v-for="(option, index) in currentQuestion.options" :key="index"
+                                        :label="option" :value="index" :disabled="answerSubmitted"></v-radio>
                                 </v-radio-group>
 
-                                <v-alert 
-                                    v-if="answerSubmitted" 
-                                    :type="isCorrectAnswer ? 'success' : 'error'"
-                                    class="mb-4"
-                                >
+                                <v-alert v-if="answerSubmitted" :type="isCorrectAnswer ? 'success' : 'error'"
+                                    class="mb-4">
                                     <div class="font-weight-bold">
                                         {{ isCorrectAnswer ? 'Correct!' : 'Incorrect!' }}
                                     </div>
@@ -660,12 +609,8 @@
 
                             <!-- Results Display -->
                             <div v-else class="text-center">
-                                <v-icon 
-                                    :icon="getResultIcon()" 
-                                    :color="getResultColor()" 
-                                    size="64"
-                                    class="mb-4"
-                                ></v-icon>
+                                <v-icon :icon="getResultIcon()" :color="getResultColor()" size="64"
+                                    class="mb-4"></v-icon>
                                 <div class="text-h4 mb-2">Quiz Complete!</div>
                                 <div class="text-h6 mb-4">
                                     You scored {{ score }} out of {{ totalSteps }}
@@ -675,32 +620,21 @@
                         </v-card-text>
 
                         <v-card-actions class="px-6 pb-6">
-                            <v-btn 
-                                v-if="!quizCompleted"
+                            <v-btn v-if="!quizCompleted"
                                 :disabled="selectedAnswer === null || (answerSubmitted && currentStep === totalSteps)"
                                 :color="answerSubmitted ? 'primary' : 'success'"
-                                @click="answerSubmitted ? nextQuestion() : submitAnswer()"
-                            >
+                                @click="answerSubmitted ? nextQuestion() : submitAnswer()">
                                 {{ answerSubmitted ? 'Next Question' : 'Submit Answer' }}
                             </v-btn>
-                            
+
                             <v-spacer v-if="!quizCompleted"></v-spacer>
-                            
-                            <v-btn 
-                                v-if="quizCompleted"
-                                color="primary"
-                                prepend-icon="mdi-restart"
-                                @click="restartQuiz"
-                            >
+
+                            <v-btn v-if="quizCompleted" color="primary" prepend-icon="mdi-restart" @click="restartQuiz">
                                 Try Again
                             </v-btn>
-                            
-                            <v-btn 
-                                v-if="!quizCompleted && currentStep > 1"
-                                variant="outlined"
-                                @click="previousQuestion"
-                                :disabled="answerSubmitted"
-                            >
+
+                            <v-btn v-if="!quizCompleted && currentStep > 1" variant="outlined" @click="previousQuestion"
+                                :disabled="answerSubmitted">
                                 Previous
                             </v-btn>
                         </v-card-actions>
@@ -714,18 +648,18 @@
 <script setup lang="ts">
 import CodeShowcase from '@/components/CodeShowcase.vue'
 import {
+    CHAT_PAGE_CODE,
     DASHBOARD_CODE,
+    FORM_GROUP_CODE,
     LOGIN_CARD_CODE,
+    NOTIFICATION_LIST_CODE,
+    ORDER_SUMMARY_CODE,
     PRODUCT_CARD_CODE,
     QUIZ_WIZARD_CODE,
     SOCIAL_CARD_CODE,
-    WEATHER_CARD_CODE,
-    ORDER_SUMMARY_CODE,
-    NOTIFICATION_LIST_CODE,
-    CHAT_PAGE_CODE,
-    FORM_GROUP_CODE
+    WEATHER_CARD_CODE
 } from '@/constants/complexExamples'
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 
 // Login form data
 const loginValid = ref(false)
@@ -822,24 +756,24 @@ const totalSteps = questions.length
 
 const currentQuestion = computed(() => questions[currentStep.value - 1])
 
-const isCorrectAnswer = computed(() => 
+const isCorrectAnswer = computed(() =>
     selectedAnswer.value === currentQuestion.value.correct
 )
 
-const score = computed(() => 
+const score = computed(() =>
     userAnswers.value.filter(answer => answer.correct).length
 )
 
 const submitAnswer = () => {
     if (selectedAnswer.value === null) return
-    
+
     const isCorrect = selectedAnswer.value === currentQuestion.value.correct
     userAnswers.value.push({
         question: currentStep.value,
         answer: selectedAnswer.value,
         correct: isCorrect
     })
-    
+
     answerSubmitted.value = true
 }
 

@@ -52,8 +52,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, inject } from 'vue'
 import type { HLJSApi } from 'highlight.js'
+import { computed, inject, onMounted, ref } from 'vue'
 
 interface Props {
     title: string

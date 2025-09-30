@@ -3,7 +3,7 @@ export const MODAL_CODE = `<template>
   <div>
     <!-- Basic Modal -->
     <v-btn color="primary" @click="basicModal = true">Open Basic Modal</v-btn>
-    
+
     <v-dialog v-model="basicModal" width="500">
       <v-card>
         <v-card-title>
@@ -26,7 +26,7 @@ export const MODAL_CODE = `<template>
 
     <!-- Confirmation Modal -->
     <v-btn color="error" class="ml-4" @click="confirmModal = true">Delete Item</v-btn>
-    
+
     <v-dialog v-model="confirmModal" width="400">
       <v-card>
         <v-card-title class="text-h6">
@@ -61,7 +61,7 @@ export const DRAWER_CODE = `<template>
   <div>
     <!-- Temporary Drawer -->
     <v-btn color="primary" @click="temporaryDrawer = true">Open Temporary Drawer</v-btn>
-    
+
     <v-navigation-drawer v-model="temporaryDrawer" temporary location="right" width="300">
       <v-card flat>
         <v-card-title>Temporary Drawer</v-card-title>
@@ -84,7 +84,7 @@ export const DRAWER_CODE = `<template>
     <v-btn color="secondary" class="ml-4" @click="miniDrawer = !miniDrawer">
       Toggle Mini Drawer
     </v-btn>
-    
+
     <v-navigation-drawer v-model="miniDrawer" :rail="rail" permanent location="left" width="250">
       <v-list density="compact" nav>
         <v-list-item
@@ -103,7 +103,7 @@ export const DRAWER_CODE = `<template>
           value="admin"
         ></v-list-item>
       </v-list>
-      
+
       <template v-slot:append>
         <div class="pa-2">
           <v-btn
@@ -308,7 +308,7 @@ export const TOOLTIP_CODE = `<template>
 export const OVERLAY_CODE = `<template>
   <div>
     <v-btn color="primary" @click="showOverlay = true">Show Overlay</v-btn>
-    
+
     <v-overlay
       v-model="showOverlay"
       class="align-center justify-center"
@@ -325,7 +325,7 @@ export const OVERLAY_CODE = `<template>
     <v-btn color="secondary" class="ml-4" @click="showLoading">
       Simulate Loading
     </v-btn>
-    
+
     <v-overlay
       v-model="loadingOverlay"
       class="align-center justify-center"
@@ -451,7 +451,7 @@ const showContextMenu = (e) => {
 export const BOTTOM_SHEET_CODE = `<template>
   <div>
     <v-btn color="primary" @click="bottomSheet = true">Open Bottom Sheet</v-btn>
-    
+
     <v-bottom-sheet v-model="bottomSheet">
       <v-card>
         <v-card-title>
@@ -459,7 +459,7 @@ export const BOTTOM_SHEET_CODE = `<template>
           <v-spacer></v-spacer>
           <v-btn icon="mdi-close" variant="text" @click="bottomSheet = false"></v-btn>
         </v-card-title>
-        
+
         <v-card-text>
           <v-container>
             <v-row>
@@ -468,7 +468,7 @@ export const BOTTOM_SHEET_CODE = `<template>
                 <p>Choose how you'd like to share this content with others.</p>
               </v-col>
             </v-row>
-            
+
             <v-row>
               <v-col
                 v-for="option in shareOptions"
@@ -488,7 +488,7 @@ export const BOTTOM_SHEET_CODE = `<template>
             </v-row>
           </v-container>
         </v-card-text>
-        
+
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" @click="bottomSheet = false">
@@ -502,7 +502,7 @@ export const BOTTOM_SHEET_CODE = `<template>
     <v-btn color="secondary" class="ml-4" @click="persistentSheet = !persistentSheet">
       Toggle Persistent Sheet
     </v-btn>
-    
+
     <v-bottom-sheet v-model="persistentSheet" persistent>
       <v-card>
         <v-card-title>Persistent Bottom Sheet</v-card-title>
