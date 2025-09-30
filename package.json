@@ -1,0 +1,37 @@
+{
+  "name": "personal-vuetify-toolkit",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "preview": "vite preview",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build"
+  },
+  "dependencies": {
+    "@highlightjs/vue-plugin": "^2.1.0",
+    "@mdi/font": "^7.4.47",
+    "@types/highlight.js": "^9.12.4",
+    "highlight.js": "^11.11.1",
+    "sass": "^1.93.2",
+    "vite-plugin-vuetify": "^2.1.2",
+    "vue": "^3.5.22",
+    "vuetify": "^3.10.3"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.2",
+    "@types/node": "^22.18.6",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/tsconfig": "^0.8.1",
+    "npm-run-all2": "^8.0.4",
+    "typescript": "~5.9.0",
+    "vite": "^7.1.7",
+    "vite-plugin-vue-devtools": "^8.0.2",
+    "vue-tsc": "^3.1.0"
+  }
+}
