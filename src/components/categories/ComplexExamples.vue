@@ -591,10 +591,10 @@
 
                             <!-- Question Display -->
                             <div v-if="!quizCompleted">
-                                <div class="text-h6 mb-4">{{ currentQuestion.question }}</div>
+                                <div class="text-h6 mb-4">{{ currentQuestion?.question ?? '' }}</div>
 
                                 <v-radio-group v-model="selectedAnswer" class="mb-4">
-                                    <v-radio v-for="(option, index) in currentQuestion.options" :key="index"
+                                    <v-radio v-for="(option, index) in currentQuestion?.options ?? []" :key="index"
                                         :label="option" :value="index" :disabled="answerSubmitted"></v-radio>
                                 </v-radio-group>
 
@@ -603,7 +603,7 @@
                                     <div class="font-weight-bold">
                                         {{ isCorrectAnswer ? 'Correct!' : 'Incorrect!' }}
                                     </div>
-                                    <div>{{ currentQuestion.explanation }}</div>
+                                    <div>{{ currentQuestion?.explanation ?? '' }}</div>
                                 </v-alert>
                             </div>
 
@@ -852,7 +852,7 @@ const totalSteps = questions.length
 const currentQuestion = computed(() => questions[currentStep.value - 1])
 
 const isCorrectAnswer = computed(() =>
-    selectedAnswer.value === currentQuestion.value.correct
+    selectedAnswer.value === currentQuestion?.value?.correct
 )
 
 const score = computed(() =>
@@ -862,7 +862,7 @@ const score = computed(() =>
 const submitAnswer = () => {
     if (selectedAnswer.value === null) return
 
-    const isCorrect = selectedAnswer.value === currentQuestion.value.correct
+    const isCorrect = selectedAnswer.value === currentQuestion?.value?.correct
     userAnswers.value.push({
         question: currentStep.value,
         answer: selectedAnswer.value,

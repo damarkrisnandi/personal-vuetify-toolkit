@@ -33,7 +33,7 @@
                                 @click="copyCode">
                             </v-btn>
                             <div class="code-container">
-                                <pre><code ref="codeRef" class="language-vue">{{ code }}</code></pre>
+                                <pre><code ref="codeRef" class="language-vue">{{ processedCode }}</code></pre>
                             </div>
                             <v-snackbar v-model="copied" timeout="2000" color="success">
                                 Code copied to clipboard!
@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import type { HLJSApi } from 'highlight.js'
-import { computed, inject, onMounted, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 
 interface Props {
     title: string
@@ -73,6 +73,11 @@ const copied = ref(false)
 const codeRef = ref<HTMLElement>()
 const hljs = inject<HLJSApi>('hljs')
 
+// Process the code to handle escaped newlines
+const processedCode = computed(() => {
+    return props.code.replace(/\\n/g, '\n')
+})
+
 const chipColor = computed(() => {
     switch (props.difficulty) {
         case 'Easy': return 'success'
@@ -82,15 +87,11 @@ const chipColor = computed(() => {
     }
 })
 
-onMounted(() => {
-    if (codeRef.value && hljs) {
-        hljs.highlightElement(codeRef.value)
-    }
-})
+// No need for manual highlighting - using v-highlight directive
 
 async function copyCode() {
     try {
-        await navigator.clipboard.writeText(props.code)
+        await navigator.clipboard.writeText(processedCode.value)
         copied.value = true
     } catch (err) {
         console.error('Failed to copy code:', err)
@@ -136,6 +137,12 @@ async function copyCode() {
     line-height: 1.5;
     display: block;
     white-space: pre;
+}
+
+/* Fix for highlight.js */
+.code-container .hljs {
+    padding: 0;
+    background-color: transparent !important;
 }
 
 /* Ensure the copy button container has relative positioning */

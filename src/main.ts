@@ -1,3 +1,4 @@
+import './assets/highlight.css';
 import './assets/main.css';
 
 import { createApp } from 'vue';
@@ -17,6 +18,9 @@ import xml from 'highlight.js/lib/languages/xml'; // for HTML/Vue templates
 // Import a highlight.js theme
 import 'highlight.js/styles/night-owl.css';
 
+// Add a custom language definition for Vue files
+hljs.registerAliases('vue', { languageName: 'xml' });
+
 // Register the languages
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('typescript', typescript);
@@ -27,11 +31,18 @@ hljs.registerLanguage('css', css);
 hljs.registerLanguage('scss', scss);
 hljs.registerLanguage('json', json);
 
+// Import the custom highlight directive
+// import { highlightDirective } from './directives/highlight';
+
 // Create a global plugin for highlight.js
 const highlightPlugin = {
     install(app: any) {
+        // Register the global hljs instance
         app.config.globalProperties.$hljs = hljs;
         app.provide('hljs', hljs);
+
+        // Register the custom directive
+        // app.directive('highlight', highlightDirective);
     }
 };
 

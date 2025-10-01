@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import BasicComponents from '../views/BasicComponents.vue'
 import CardsComponents from '../views/CardsComponents.vue'
+import ChartComponents from '../views/ChartComponents.vue'
 import ComplexExamples from '../views/ComplexExamples.vue'
 import DataComponents from '../views/DataComponents.vue'
 import DesignTokens from '../views/DesignTokens.vue'
@@ -101,6 +102,15 @@ const router = createRouter({
             meta: {
                 title: 'Complex Examples',
                 icon: 'mdi-rocket'
+            }
+        },
+        {
+            path: '/charts',
+            name: 'charts',
+            component: ChartComponents,
+            meta: {
+                title: 'Charts & Graphs',
+                icon: 'mdi-chart-line'
             }
         }
     ]

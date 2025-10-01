@@ -63,6 +63,7 @@ const menuItems = [
   { title: 'Design Tokens', icon: 'mdi-palette', value: 'design', route: '/design', keywords: ['color', 'icon', 'mdi', 'theme', 'dark', 'light', 'typography', 'elevation', 'surface', 'palette'] },
   { title: 'Navigation', icon: 'mdi-navigation', value: 'navigation', route: '/navigation', keywords: ['tabs', 'pagination', 'breadcrumb', 'bottom', 'nav', 'menu'] },
   { title: 'Complex Examples', icon: 'mdi-rocket', value: 'complex', route: '/complex', keywords: ['login', 'weather', 'dashboard', 'social', 'product', 'quiz', 'wizard', 'order', 'summary', 'notification', 'list', 'chat', 'form', 'registration', 'two', 'column', 'ai'] },
+  { title: 'Charts & Graphs', icon: 'mdi-chart-bar', value: 'charts', route: '/charts', keywords: ['chart', 'graph', 'bar', 'line', 'pie', 'visualization', 'data', 'analytics'] },
 ]
 
 // Debounced search implementation
