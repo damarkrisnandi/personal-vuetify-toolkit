@@ -201,6 +201,37 @@ const showToast = ref(false)
 const toastMessage = ref('')
 const toastColor = ref('success')
 
+
+const getIconForCategory = (category: string): string => {
+    const icons: Record<string, string> = {
+        basic: 'mdi-widgets',
+        forms: 'mdi-form-select',
+        layout: 'mdi-view-dashboard',
+        cards: 'mdi-card',
+        data: 'mdi-table',
+        overlay: 'mdi-layers',
+        design: 'mdi-palette',
+        navigation: 'mdi-navigation',
+        complex: 'mdi-rocket'
+    }
+    return icons[category] || 'mdi-widgets'
+}
+
+const getColorForCategory = (category: string): string => {
+    const colors: Record<string, string> = {
+        basic: 'primary',
+        forms: 'secondary',
+        layout: 'success',
+        cards: 'info',
+        data: 'warning',
+        overlay: 'purple',
+        design: 'pink',
+        navigation: 'cyan',
+        complex: 'orange'
+    }
+    return colors[category] || 'primary'
+}
+
 const showToastNotification = (message: string, color: string = 'success') => {
     toastMessage.value = message
     toastColor.value = color
@@ -335,36 +366,6 @@ const confirmAdd = () => {
     addDialog.value = false
     selectedCategory.value = ''
     selectedComponent.value = ''
-}
-
-const getIconForCategory = (category: string): string => {
-    const icons: Record<string, string> = {
-        basic: 'mdi-widgets',
-        forms: 'mdi-form-select',
-        layout: 'mdi-view-dashboard',
-        cards: 'mdi-card',
-        data: 'mdi-table',
-        overlay: 'mdi-layers',
-        design: 'mdi-palette',
-        navigation: 'mdi-navigation',
-        complex: 'mdi-rocket'
-    }
-    return icons[category] || 'mdi-widgets'
-}
-
-const getColorForCategory = (category: string): string => {
-    const colors: Record<string, string> = {
-        basic: 'primary',
-        forms: 'secondary',
-        layout: 'success',
-        cards: 'info',
-        data: 'warning',
-        overlay: 'purple',
-        design: 'pink',
-        navigation: 'cyan',
-        complex: 'orange'
-    }
-    return colors[category] || 'primary'
 }
 
 const removePinned = (id: string) => {
