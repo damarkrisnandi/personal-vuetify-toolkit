@@ -13,7 +13,7 @@
             <p v-if="description" class="mb-4">{{ description }}</p>
 
             <!-- Live Preview -->
-            <v-card variant="outlined" class="mb-4">
+            <v-card variant="outlined" class="mb-4 p-4">
                 <v-card-subtitle>Preview</v-card-subtitle>
                 <v-card-text class="pa-4">
                     <slot name="preview"></slot>

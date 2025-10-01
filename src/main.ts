@@ -3,6 +3,7 @@ import './assets/main.css';
 import { createApp } from 'vue';
 import App from './App.vue';
 import vuetify from './plugins/vuetify';
+import router from './router';
 
 // Import core Highlight.js and specific languages
 import hljs from 'highlight.js/lib/core';
@@ -14,7 +15,7 @@ import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml'; // for HTML/Vue templates
 
 // Import a highlight.js theme
-import 'highlight.js/styles/github.css';
+import 'highlight.js/styles/night-owl.css';
 
 // Register the languages
 hljs.registerLanguage('javascript', javascript);
@@ -35,6 +36,7 @@ const highlightPlugin = {
 };
 
 createApp(App)
+    .use(router)
     .use(vuetify)
     .use(highlightPlugin)
     .mount('#app')
