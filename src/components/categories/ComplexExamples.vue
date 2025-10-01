@@ -642,12 +642,100 @@
                 </div>
             </template>
         </CodeShowcase>
+
+        <!-- AI Chat Component -->
+        <CodeShowcase title="AI Chat Component"
+            description="Interactive AI assistant chat interface with typing indicators and quick actions"
+            icon="mdi-robot" difficulty="Hard" :code="aiChatCode">
+            <template #preview>
+                <div class="d-flex justify-center">
+                    <v-card width="700" height="600" elevation="8">
+                        <v-card-title class="d-flex align-center pa-4 bg-primary text-white">
+                            <v-icon class="me-2">mdi-robot</v-icon>
+                            <span>AI Assistant</span>
+                            <v-spacer></v-spacer>
+                            <v-btn icon="mdi-dots-vertical" variant="text" size="small"></v-btn>
+                        </v-card-title>
+
+                        <v-card-text class="pa-0" style="height: 480px; display: flex; flex-direction: column;">
+                            <!-- Chat Messages -->
+                            <div ref="aiMessagesContainer" class="flex-grow-1 overflow-y-auto pa-4"
+                                style="max-height: 400px;">
+                                <div v-for="message in aiMessages" :key="message.id" class="mb-4">
+                                    <div class="d-flex" :class="message.isUser ? 'justify-end' : 'justify-start'">
+                                        <div class="d-flex align-start"
+                                            :class="message.isUser ? 'flex-row-reverse' : 'flex-row'">
+                                            <v-avatar :color="message.isUser ? 'primary' : 'grey-lighten-7'" size="32"
+                                                class="mx-2">
+                                                <v-icon :icon="message.isUser ? 'mdi-account' : 'mdi-robot'"></v-icon>
+                                            </v-avatar>
+                                            <div :class="message.isUser ? 'text-right' : 'text-left'"
+                                                style="max-width: 280px;">
+                                                <v-card :color="message.isUser ? 'primary' : 'secondary'"
+                                                    :text-color="message.isUser ? 'white' : 'black'" class="pa-3"
+                                                    style="height: auto; white-space: normal;max-width: 250px;">
+                                                    {{ message.text }}
+                                                </v-card>
+                                                <div class="text-caption text-grey mt-1">
+                                                    {{ message.timestamp }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Typing indicator -->
+                                <div v-if="aiIsTyping" class="d-flex justify-start mb-4">
+                                    <div class="d-flex align-start">
+                                        <v-avatar color="grey-lighten-1" size="32" class="mx-2">
+                                            <v-icon icon="mdi-robot"></v-icon>
+                                        </v-avatar>
+                                        <v-chip color="grey-lighten-4" class="pa-3">
+                                            <div class="d-flex align-center">
+                                                <div class="typing-dots">
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                        </v-chip>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Actions -->
+                            <div class="pa-3 border-t">
+                                <div class="text-caption text-grey mb-2">Quick Actions</div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <v-chip v-for="action in aiQuickActions" :key="action" size="small" class="mr-1"
+                                        variant="outlined" @click="sendAiQuickMessage(action)">
+                                        {{ action }}
+                                    </v-chip>
+                                </div>
+                            </div>
+
+                            <!-- Message Input -->
+                            <div class="pa-3 border-t">
+                                <v-text-field v-model="aiNewMessage" placeholder="Type your message..."
+                                    variant="outlined" density="compact" hide-details @keyup.enter="sendAiMessage">
+                                    <template #append-inner>
+                                        <v-btn icon="mdi-send" size="small" :disabled="!aiNewMessage.trim()"
+                                            @click="sendAiMessage"></v-btn>
+                                    </template>
+                                </v-text-field>
+                            </div>
+                        </v-card-text>
+                    </v-card>
+                </div>
+            </template>
+        </CodeShowcase>
     </div>
 </template>
 
 <script setup lang="ts">
 import CodeShowcase from '@/components/CodeShowcase.vue'
 import {
+    AI_CHAT_CODE,
     CHAT_PAGE_CODE,
     DASHBOARD_CODE,
     FORM_GROUP_CODE,
@@ -659,7 +747,14 @@ import {
     SOCIAL_CARD_CODE,
     WEATHER_CARD_CODE
 } from '@/constants/complexExamples'
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
+
+interface AiMessage {
+    id: number
+    text: string
+    isUser: boolean
+    timestamp: string
+}
 
 // Login form data
 const loginValid = ref(false)
@@ -908,4 +1003,137 @@ const orderSummaryCode = ORDER_SUMMARY_CODE
 const notificationListCode = NOTIFICATION_LIST_CODE
 const chatPageCode = CHAT_PAGE_CODE
 const formGroupCode = FORM_GROUP_CODE
+const aiChatCode = AI_CHAT_CODE
+
+// AI Chat Component Data
+const aiMessages = ref<AiMessage[]>([
+    {
+        id: 1,
+        text: "Hello! I'm your AI assistant. How can I help you today?",
+        isUser: false,
+        timestamp: '10:30 AM'
+    },
+    {
+        id: 2,
+        text: "Hi! Can you help me with Vue.js questions?",
+        isUser: true,
+        timestamp: '10:31 AM'
+    },
+    {
+        id: 3,
+        text: "Absolutely! I'd be happy to help you with Vue.js. What specific topic would you like to learn about?",
+        isUser: false,
+        timestamp: '10:31 AM'
+    }
+])
+
+const aiNewMessage = ref('')
+const aiIsTyping = ref(false)
+const aiMessagesContainer = ref<HTMLDivElement | null>(null)
+
+const aiQuickActions = [
+    'Explain Vue.js',
+    'Help with code',
+    'Best practices',
+    'Common errors'
+]
+
+const sendAiMessage = async () => {
+    if (!aiNewMessage.value.trim()) return
+
+    // Add user message
+    const userMessage: AiMessage = {
+        id: Date.now(),
+        text: aiNewMessage.value,
+        isUser: true,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }
+    aiMessages.value.push(userMessage)
+    aiNewMessage.value = ''
+
+    // Scroll to bottom
+    await nextTick()
+    scrollAiToBottom()
+
+    // Show typing indicator
+    aiIsTyping.value = true
+
+    // Simulate AI response
+    setTimeout(async () => {
+        aiIsTyping.value = false
+
+        const responses = [
+            "That's a great question! Let me help you with that.",
+            "I understand what you're looking for. Here's what I can tell you...",
+            "Thanks for asking! Based on your question, I'd recommend...",
+            "Good point! Here's how you can approach this problem...",
+            "I see what you mean. The best way to handle this is..."
+        ]
+
+        const aiMessage: AiMessage = {
+            id: Date.now() + 1,
+            text: responses[Math.floor(Math.random() * responses.length)] || "I'm here to help!",
+            isUser: false,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+        aiMessages.value.push(aiMessage)
+
+        await nextTick()
+        scrollAiToBottom()
+    }, 1500)
+}
+
+const sendAiQuickMessage = (message: string) => {
+    aiNewMessage.value = message
+    sendAiMessage()
+}
+
+const scrollAiToBottom = () => {
+    if (aiMessagesContainer.value) {
+        aiMessagesContainer.value.scrollTop = aiMessagesContainer.value.scrollHeight
+    }
+}
 </script>
+
+<style scoped>
+.typing-dots {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.typing-dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #666;
+    animation: typing 1.4s infinite;
+}
+
+.typing-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+
+    30% {
+        transform: translateY(-10px);
+        opacity: 1;
+    }
+}
+
+.border-t {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+</style>
