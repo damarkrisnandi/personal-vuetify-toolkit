@@ -106,8 +106,7 @@
                         item-value="value" prepend-icon="mdi-folder" class="mb-4"></v-select>
 
                     <v-select v-model="selectedComponent" :items="availableComponents" label="Component"
-                        item-title="title" item-value="id" prepend-icon="mdi-widgets"
-                        :disabled="!selectedCategory">
+                        item-title="title" item-value="id" prepend-icon="mdi-widgets" :disabled="!selectedCategory">
                         <template v-slot:item="{ props, item }">
                             <v-list-item v-bind="props" :prepend-icon="item.raw.icon">
                                 <v-list-item-title>{{ item.raw.title }}</v-list-item-title>
