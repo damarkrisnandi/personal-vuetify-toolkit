@@ -1622,13 +1622,13 @@ export const COMMENT_THREAD_CODE = `<template>
       <v-card-title class="text-h6">
         Discussion ({{ totalComments }})
       </v-card-title>
-      
+
       <v-card-text>
         <div class="d-flex comment-input-container">
           <v-avatar color="primary" size="40" class="me-3">
             <span class="text-white">{{ getInitials(currentUser.name) }}</span>
           </v-avatar>
-          
+
           <div class="flex-grow-1">
             <v-textarea
               v-model="newComment"
@@ -1642,14 +1642,14 @@ export const COMMENT_THREAD_CODE = `<template>
               placeholder="Share your thoughts..."
               class="mb-2"
             ></v-textarea>
-            
+
             <div class="d-flex align-center">
               <v-btn-group variant="outlined" density="comfortable" class="me-auto">
                 <v-btn prepend-icon="mdi-format-bold" @click="formatText('bold')"></v-btn>
                 <v-btn prepend-icon="mdi-format-italic" @click="formatText('italic')"></v-btn>
                 <v-btn prepend-icon="mdi-link" @click="addLink"></v-btn>
               </v-btn-group>
-              
+
               <v-btn
                 variant="text"
                 @click="clearComment"
@@ -1658,7 +1658,7 @@ export const COMMENT_THREAD_CODE = `<template>
               >
                 Cancel
               </v-btn>
-              
+
               <v-btn
                 color="primary"
                 :disabled="!newComment.trim()"
@@ -1671,7 +1671,7 @@ export const COMMENT_THREAD_CODE = `<template>
         </div>
       </v-card-text>
     </v-card>
-    
+
     <!-- Comment List -->
     <div v-if="comments.length" class="comments-list">
       <!-- Comment Sorting -->
@@ -1683,7 +1683,7 @@ export const COMMENT_THREAD_CODE = `<template>
           <v-chip value="popular">Most Popular</v-chip>
         </v-chip-group>
       </div>
-      
+
       <!-- List of Comments -->
       <v-expand-transition group>
         <comment-item
@@ -1698,7 +1698,7 @@ export const COMMENT_THREAD_CODE = `<template>
           @like="toggleLike"
         ></comment-item>
       </v-expand-transition>
-      
+
       <!-- Load More -->
       <div v-if="hasMoreComments" class="text-center mt-4">
         <v-btn
@@ -1710,21 +1710,21 @@ export const COMMENT_THREAD_CODE = `<template>
         </v-btn>
       </div>
     </div>
-    
+
     <!-- Empty State -->
     <div v-else class="empty-comments text-center py-8">
       <v-icon icon="mdi-comment-outline" size="64" color="grey-lighten-1" class="mb-4"></v-icon>
       <div class="text-h6 text-grey">No comments yet</div>
       <div class="text-body-2 text-grey">Be the first to share your thoughts!</div>
     </div>
-    
+
     <!-- Reply Dialog -->
     <v-dialog v-model="replyDialog" max-width="600">
       <v-card>
         <v-card-title class="text-h6">
           {{ editingComment ? 'Edit Comment' : \`Reply to \${replyingTo?.author.name}\` }}
         </v-card-title>
-        
+
         <v-card-text>
           <v-textarea
             v-model="replyContent"
@@ -1738,7 +1738,7 @@ export const COMMENT_THREAD_CODE = `<template>
             class="mb-2"
           ></v-textarea>
         </v-card-text>
-        
+
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn variant="text" @click="cancelReply">Cancel</v-btn>
@@ -1791,7 +1791,7 @@ const commentRules = [
 // Computed properties
 const sortedComments = computed(() => {
   let sorted = [...comments.value]
-  
+
   switch (sortOption.value) {
     case 'newest':
       sorted.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
@@ -1803,7 +1803,7 @@ const sortedComments = computed(() => {
       sorted.sort((a, b) => b.likes.length - a.likes.length)
       break
   }
-  
+
   return sorted
 })
 
@@ -1860,7 +1860,7 @@ function submitComment(parentId) {
     replies: [],
     edited: false
   }
-  
+
   comments.value.unshift(comment)
   newComment.value = ''
 }
@@ -1906,14 +1906,14 @@ function submitReply() {
       edited: false,
       parentId: replyingTo.value.id
     }
-    
+
     const parent = comments.value.find(c => c.id === replyingTo.value.id)
     if (parent) {
       if (!parent.replies) parent.replies = []
       parent.replies.push(reply)
     }
   }
-  
+
   cancelReply()
 }
 
@@ -1933,7 +1933,7 @@ function deleteComment(comment) {
 function toggleLike(comment) {
   const userId = currentUser.id
   const index = comment.likes.findIndex(id => id === userId)
-  
+
   if (index === -1) {
     comment.likes.push(userId)
   } else {
@@ -1943,7 +1943,7 @@ function toggleLike(comment) {
 
 function loadMoreComments() {
   isLoadingMore.value = true
-  
+
   // Simulate loading delay
   setTimeout(() => {
     // In a real app, you would fetch more comments from the server
@@ -1996,7 +1996,7 @@ export const COMMENT_ITEM_CODE = `<template>
           <v-img v-if="comment.author.avatar" :src="comment.author.avatar" alt="Avatar"></v-img>
           <span v-else class="text-white">{{ getInitials(comment.author.name) }}</span>
         </v-avatar>
-        
+
         <div class="flex-grow-1 d-flex flex-column justify-center">
           <div class="d-flex align-center">
             <span class="font-weight-medium me-2">{{ comment.author.name }}</span>
@@ -2005,7 +2005,7 @@ export const COMMENT_ITEM_CODE = `<template>
             <span v-if="comment.edited" class="text-caption text-grey ms-2">(edited)</span>
           </div>
         </div>
-        
+
         <v-menu v-if="canModify">
           <template v-slot:activator="{ props }">
             <v-btn
@@ -2015,7 +2015,7 @@ export const COMMENT_ITEM_CODE = `<template>
               v-bind="props"
             ></v-btn>
           </template>
-          
+
           <v-list density="compact">
             <v-list-item @click="$emit('edit', comment)">
               <template v-slot:prepend>
@@ -2023,7 +2023,7 @@ export const COMMENT_ITEM_CODE = `<template>
               </template>
               <v-list-item-title>Edit</v-list-item-title>
             </v-list-item>
-            
+
             <v-list-item @click="confirmDelete">
               <template v-slot:prepend>
                 <v-icon icon="mdi-delete" size="small"></v-icon>
@@ -2033,10 +2033,10 @@ export const COMMENT_ITEM_CODE = `<template>
           </v-list>
         </v-menu>
       </div>
-      
+
       <!-- Comment Content -->
       <div class="comment-content my-3" v-html="formattedContent"></div>
-      
+
       <!-- Comment Actions -->
       <div class="d-flex comment-actions align-center mt-2">
         <v-btn
@@ -2050,7 +2050,7 @@ export const COMMENT_ITEM_CODE = `<template>
           {{ comment.likes.length > 0 ? comment.likes.length : '' }}
           {{ isLiked ? 'Liked' : 'Like' }}
         </v-btn>
-        
+
         <v-btn
           v-if="!isReply"
           prepend-icon="mdi-reply"
@@ -2060,7 +2060,7 @@ export const COMMENT_ITEM_CODE = `<template>
         >
           Reply
         </v-btn>
-        
+
         <v-btn
           v-if="isAuthor && comment.edited"
           prepend-icon="mdi-history"
@@ -2069,9 +2069,9 @@ export const COMMENT_ITEM_CODE = `<template>
         >
           History
         </v-btn>
-        
+
         <v-spacer></v-spacer>
-        
+
         <v-btn
           v-if="!isReply && hasReplies"
           :icon="showReplies ? 'mdi-chevron-up' : 'mdi-chevron-down'"
@@ -2083,7 +2083,7 @@ export const COMMENT_ITEM_CODE = `<template>
         </v-btn>
       </div>
     </v-card-text>
-    
+
     <!-- Nested Replies -->
     <v-expand-transition>
       <div v-if="showReplies && hasReplies" class="replies-container ms-6">
@@ -2101,16 +2101,16 @@ export const COMMENT_ITEM_CODE = `<template>
         </div>
       </div>
     </v-expand-transition>
-    
+
     <!-- Delete Confirmation Dialog -->
     <v-dialog v-model="deleteDialog" max-width="400">
       <v-card>
         <v-card-title class="text-h6">Delete {{ isReply ? 'Reply' : 'Comment' }}</v-card-title>
-        
+
         <v-card-text>
           Are you sure you want to delete this {{ isReply ? 'reply' : 'comment' }}? This action cannot be undone.
         </v-card-text>
-        
+
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn variant="text" @click="deleteDialog = false">Cancel</v-btn>
@@ -2158,7 +2158,7 @@ function formatTimestamp(timestamp) {
   const diffMin = Math.floor(diffSec / 60)
   const diffHour = Math.floor(diffMin / 60)
   const diffDay = Math.floor(diffHour / 24)
-  
+
   if (diffSec < 60) {
     return 'just now'
   } else if (diffMin < 60) {
@@ -3348,10 +3348,10 @@ function formatDate(dateString) {
 export const FILE_UPLOAD_CODE = `<template>
   <div class="file-uploader-container">
     <!-- Drop zone -->
-    <div 
-      class="dropzone" 
-      :class="{ 
-        'dropzone-active': isDragActive, 
+    <div
+      class="dropzone"
+      :class="{
+        'dropzone-active': isDragActive,
         'dropzone-error': hasError,
         'dropzone-disabled': disabled
       }"
@@ -3362,25 +3362,25 @@ export const FILE_UPLOAD_CODE = `<template>
       @click="triggerFileInput"
     >
       <!-- Hidden file input -->
-      <input 
-        type="file" 
-        ref="fileInputRef" 
-        :multiple="multiple" 
-        :accept="accept" 
+      <input
+        type="file"
+        ref="fileInputRef"
+        :multiple="multiple"
+        :accept="accept"
         class="file-input"
         @change="onFileInputChange"
         :disabled="disabled"
       />
-      
+
       <div class="dropzone-content">
         <slot name="icon">
-          <v-icon 
-            :icon="hasError ? 'mdi-alert-circle' : (isDragActive ? 'mdi-file-upload-outline' : 'mdi-cloud-upload')" 
-            :color="hasError ? 'error' : 'primary'" 
+          <v-icon
+            :icon="hasError ? 'mdi-alert-circle' : (isDragActive ? 'mdi-file-upload-outline' : 'mdi-cloud-upload')"
+            :color="hasError ? 'error' : 'primary'"
             size="64"
           ></v-icon>
         </slot>
-        
+
         <div class="text-body-1 mt-4">
           <slot name="title">
             <span v-if="hasError">{{ errorMessage || 'Error uploading files' }}</span>
@@ -3391,7 +3391,7 @@ export const FILE_UPLOAD_CODE = `<template>
             </span>
           </slot>
         </div>
-        
+
         <div class="text-body-2 text-grey mt-2">
           <slot name="subtitle">
             <div v-if="!hasError">
@@ -3402,34 +3402,34 @@ export const FILE_UPLOAD_CODE = `<template>
         </div>
       </div>
     </div>
-    
+
     <!-- Preview area for uploaded files -->
     <div v-if="files.length > 0" class="preview-area">
       <transition-group name="file-list" tag="div" class="file-list">
-        <div 
-          v-for="(file, index) in files" 
-          :key="file.id" 
+        <div
+          v-for="(file, index) in files"
+          :key="file.id"
           class="file-item"
           :class="{'has-preview': file.previewUrl}"
         >
           <!-- File preview -->
           <div class="file-preview">
             <div v-if="file.previewUrl" class="preview-image-container">
-              <img 
-                :src="file.previewUrl" 
-                class="preview-image" 
+              <img
+                :src="file.previewUrl"
+                class="preview-image"
                 alt="File preview"
                 @error="onPreviewError(file)"
               />
             </div>
-            <v-icon 
-              v-else 
+            <v-icon
+              v-else
               :icon="getFileIcon(file)"
-              :color="getFileColor(file)" 
+              :color="getFileColor(file)"
               size="36"
             ></v-icon>
           </div>
-          
+
           <!-- File details -->
           <div class="file-details">
             <div class="file-name text-truncate">{{ file.file.name }}</div>
@@ -3439,32 +3439,32 @@ export const FILE_UPLOAD_CODE = `<template>
                 • {{ file.uploadProgress === 100 ? 'Uploaded' : \`\${file.uploadProgress}%\` }}
               </span>
             </div>
-            
+
             <!-- Progress bar -->
-            <v-progress-linear 
+            <v-progress-linear
               v-if="file.uploadProgress !== null && file.uploadProgress < 100"
               :model-value="file.uploadProgress"
               color="primary"
               height="4"
               class="mt-1"
             ></v-progress-linear>
-            
+
             <!-- Status -->
-            <div 
-              v-if="file.error" 
+            <div
+              v-if="file.error"
               class="file-error text-caption text-error mt-1"
             >
               {{ file.error }}
             </div>
           </div>
-          
+
           <!-- Actions -->
           <div class="file-actions">
-            <v-btn 
-              v-if="!isUploading || file.uploadProgress === 100 || file.error" 
-              icon="mdi-close" 
-              size="small" 
-              variant="text" 
+            <v-btn
+              v-if="!isUploading || file.uploadProgress === 100 || file.error"
+              icon="mdi-close"
+              size="small"
+              variant="text"
               color="default"
               @click="removeFile(index)"
             ></v-btn>
@@ -3478,7 +3478,7 @@ export const FILE_UPLOAD_CODE = `<template>
           </div>
         </div>
       </transition-group>
-      
+
       <!-- Action buttons -->
       <div class="file-actions-container mt-4">
         <v-btn
@@ -3491,7 +3491,7 @@ export const FILE_UPLOAD_CODE = `<template>
         >
           Upload {{ files.length }} {{ files.length === 1 ? 'file' : 'files' }}
         </v-btn>
-        
+
         <v-btn
           v-if="files.length > 0"
           variant="text"
@@ -3541,13 +3541,13 @@ const props = defineProps({
     type: Number,
     default: 5
   },
-  
+
   // Validation options
   validateFiles: {
     type: Function,
     default: null
   },
-  
+
   // Upload options
   uploadUrl: {
     type: String,
@@ -3577,7 +3577,7 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  
+
   // UI states
   disabled: {
     type: Boolean,
@@ -3587,7 +3587,7 @@ const props = defineProps({
 
 // Emits
 const emit = defineEmits([
-  'files-selected', 
+  'files-selected',
   'files-removed',
   'upload-start',
   'upload-progress',
@@ -3639,12 +3639,12 @@ const onDragOver = (event: DragEvent) => {
 
 const onDragLeave = (event: DragEvent) => {
   if (props.disabled) return
-  
+
   // Only set to false if leaving the dropzone (not when entering a child element)
   // Check if the related target is not a child of the dropzone
   const target = event.target as HTMLElement
   const relatedTarget = event.relatedTarget as HTMLElement
-  
+
   if (!target.contains(relatedTarget)) {
     isDragActive.value = false
   }
@@ -3653,7 +3653,7 @@ const onDragLeave = (event: DragEvent) => {
 const onDrop = (event: DragEvent) => {
   if (props.disabled) return
   isDragActive.value = false
-  
+
   if (event.dataTransfer?.files) {
     processFiles(event.dataTransfer.files)
   }
@@ -3671,26 +3671,26 @@ const onFileInputChange = (event: Event) => {
 const processFiles = (fileList: FileList) => {
   hasError.value = false
   errorMessage.value = ''
-  
+
   // Convert FileList to array
   const newFiles = Array.from(fileList)
-  
+
   // Check max files
   if (!props.multiple && files.value.length + newFiles.length > 1) {
     hasError.value = true
     errorMessage.value = 'Only one file can be uploaded'
     return
   }
-  
+
   if (props.multiple && props.maxFiles > 0 && files.value.length + newFiles.length > props.maxFiles) {
     hasError.value = true
     errorMessage.value = \`Maximum \${props.maxFiles} files allowed\`
     return
   }
-  
+
   // Process each file
   const filesToAdd: UploadedFile[] = []
-  
+
   for (const file of newFiles) {
     // Check file size
     if (props.maxFileSizeMB > 0 && file.size > props.maxFileSizeMB * 1024 * 1024) {
@@ -3705,16 +3705,16 @@ const processFiles = (fileList: FileList) => {
       filesToAdd.push(rejectedFile)
       continue
     }
-    
+
     // Check if the file is already added (by name and size)
     const isDuplicate = files.value.some(
       f => f.file.name === file.name && f.file.size === file.size
     )
-    
+
     if (isDuplicate) {
       continue
     }
-    
+
     // Create new file record
     const newFile: UploadedFile = {
       id: generateId(),
@@ -3724,26 +3724,26 @@ const processFiles = (fileList: FileList) => {
       uploaded: false,
       error: null
     }
-    
+
     // Create preview URL for images
     if (file.type.startsWith('image/')) {
       newFile.previewUrl = URL.createObjectURL(file)
     }
-    
+
     filesToAdd.push(newFile)
   }
-  
+
   // Custom validation if provided
   if (props.validateFiles && filesToAdd.length > 0) {
     try {
       const filesToValidate = filesToAdd.map(f => f.file)
       const validationResult = props.validateFiles(filesToValidate)
-      
+
       // If validation returns false or a string error message
       if (typeof validationResult === 'string') {
         hasError.value = true
         errorMessage.value = validationResult
-        
+
         // Mark all files as error
         filesToAdd.forEach(file => {
           file.error = validationResult
@@ -3751,7 +3751,7 @@ const processFiles = (fileList: FileList) => {
       } else if (validationResult === false) {
         hasError.value = true
         errorMessage.value = 'Files validation failed'
-        
+
         // Mark all files as error
         filesToAdd.forEach(file => {
           file.error = 'Invalid file'
@@ -3761,21 +3761,21 @@ const processFiles = (fileList: FileList) => {
       hasError.value = true
       errorMessage.value = 'Error validating files'
       console.error('File validation error:', err)
-      
+
       // Mark all files as error
       filesToAdd.forEach(file => {
         file.error = 'Validation error'
       })
     }
   }
-  
+
   // Add valid files to the list
   if (filesToAdd.length > 0) {
     files.value.push(...filesToAdd)
-    
+
     // Emit event
     emit('files-selected', filesToAdd.map(f => f.file))
-    
+
     // If auto upload is enabled, start upload
     if (props.autoUpload && !hasError.value) {
       uploadFiles()
@@ -3785,18 +3785,18 @@ const processFiles = (fileList: FileList) => {
 
 const removeFile = (index: number) => {
   const file = files.value[index]
-  
+
   // Revoke object URL to prevent memory leaks
   if (file.previewUrl) {
     URL.revokeObjectURL(file.previewUrl)
   }
-  
+
   // Abort upload if in progress
   if (isUploading.value && file.uploadProgress !== null && file.uploadProgress < 100) {
     abortControllers.value.get(file.id)?.abort()
     abortControllers.value.delete(file.id)
   }
-  
+
   // Remove file from list
   const removedFile = files.value.splice(index, 1)[0]
   emit('files-removed', [removedFile.file])
@@ -3811,50 +3811,50 @@ const clearFiles = () => {
     abortControllers.value.clear()
     isUploading.value = false
   }
-  
+
   // Revoke object URLs
   files.value.forEach(file => {
     if (file.previewUrl) {
       URL.revokeObjectURL(file.previewUrl)
     }
   })
-  
+
   // Clear files
   const removedFiles = files.value.map(f => f.file)
   files.value = []
-  
+
   emit('files-removed', removedFiles)
 }
 
 const uploadFiles = async () => {
   if (isUploading.value || files.value.length === 0 || hasAnyError.value) return
-  
+
   isUploading.value = true
   emit('upload-start', files.value.map(f => f.file))
-  
+
   // Get files that need to be uploaded
   const filesToUpload = files.value.filter(
     file => !file.uploaded && !file.error
   )
-  
+
   if (filesToUpload.length === 0) {
     isUploading.value = false
     return
   }
-  
+
   // If no upload URL provided, simulate upload
   const simulateMode = props.simulateUpload || !props.uploadUrl
-  
+
   if (simulateMode) {
     // Simulate upload with delays
     await Promise.all(
       filesToUpload.map(async (file) => {
         file.uploadProgress = 0
-        
+
         // Create abort controller
         const controller = new AbortController()
         abortControllers.value.set(file.id, controller)
-        
+
         try {
           // Simulate upload progress
           for (let i = 0; i <= 10; i++) {
@@ -3863,7 +3863,7 @@ const uploadFiles = async () => {
               file.error = 'Upload cancelled'
               throw new Error('Upload cancelled')
             }
-            
+
             await new Promise(resolve => setTimeout(resolve, 300))
             file.uploadProgress = i * 10
             emit('upload-progress', {
@@ -3871,7 +3871,7 @@ const uploadFiles = async () => {
               progress: file.uploadProgress
             })
           }
-          
+
           file.uploaded = true
           emit('upload-success', {
             file: file.file,
@@ -3890,31 +3890,31 @@ const uploadFiles = async () => {
         }
       })
     )
-    
+
     isUploading.value = false
     emit('upload-complete', files.value.map(f => f.file))
     return
   }
-  
+
   // Real upload to server
   await Promise.all(
     filesToUpload.map(async (file) => {
       file.uploadProgress = 0
-      
+
       // Create FormData
       const formData = new FormData()
-      
+
       // Single or multiple file field name
       if (props.multiple) {
         formData.append(props.uploadFieldName, file.file)
       } else {
         formData.append(props.uploadFieldName, file.file)
       }
-      
+
       // Create abort controller
       const controller = new AbortController()
       abortControllers.value.set(file.id, controller)
-      
+
       try {
         const response = await fetch(props.uploadUrl, {
           method: props.uploadMethod,
@@ -3923,15 +3923,15 @@ const uploadFiles = async () => {
           credentials: props.uploadWithCredentials ? 'include' : 'same-origin',
           signal: controller.signal
         })
-        
+
         if (!response.ok) {
           throw new Error(\`Server responded with \${response.status}: \${response.statusText}\`)
         }
-        
+
         const result = await response.json()
         file.uploadProgress = 100
         file.uploaded = true
-        
+
         emit('upload-success', {
           file: file.file,
           response: result
@@ -3943,7 +3943,7 @@ const uploadFiles = async () => {
         } else {
           file.uploadProgress = null
           file.error = err instanceof Error ? err.message : 'Upload failed'
-          
+
           emit('upload-error', {
             file: file.file,
             error: file.error
@@ -3954,7 +3954,7 @@ const uploadFiles = async () => {
       }
     })
   )
-  
+
   isUploading.value = false
   emit('upload-complete', files.value.map(f => f.file))
 }
@@ -3969,17 +3969,17 @@ const onPreviewError = (file: UploadedFile) => {
 
 const formatFileSize = (bytes: number): string => {
   if (bytes === 0) return '0 Bytes'
-  
+
   const k = 1024
   const sizes = ['Bytes', 'KB', 'MB', 'GB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
-  
+
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
 const getFileIcon = (file: UploadedFile): string => {
   const type = file.file.type
-  
+
   if (type.startsWith('image/')) {
     return 'mdi-file-image'
   } else if (type.startsWith('video/')) {
@@ -4001,13 +4001,13 @@ const getFileIcon = (file: UploadedFile): string => {
   } else if (type.includes('code') || file.file.name.match(/\\.(html|css|js|ts|jsx|tsx|vue|php|py|java|rb|go)$/i)) {
     return 'mdi-file-code'
   }
-  
+
   return 'mdi-file'
 }
 
 const getFileColor = (file: UploadedFile): string => {
   const type = file.file.type
-  
+
   if (type.startsWith('image/')) {
     return 'blue'
   } else if (type.startsWith('video/')) {
@@ -4029,7 +4029,7 @@ const getFileColor = (file: UploadedFile): string => {
   } else if (type.includes('code') || file.file.name.match(/\\.(html|css|js|ts|jsx|tsx|vue|php|py|java|rb|go)$/i)) {
     return 'cyan-darken-2'
   }
-  
+
   return 'grey'
 }
 
@@ -4039,7 +4039,7 @@ onBeforeUnmount(() => {
   abortControllers.value.forEach(controller => {
     controller.abort()
   })
-  
+
   // Clean up preview URLs
   files.value.forEach(file => {
     if (file.previewUrl) {
@@ -4200,7 +4200,7 @@ export const VIDEO_PLAYER_CODE = `<template>
   <v-card class="video-player-card" :elevation="4">
     <!-- Video Container -->
     <div class="video-container">
-      <video 
+      <video
         ref="videoRef"
         class="video-element"
         @timeupdate="updateProgress"
@@ -4211,7 +4211,7 @@ export const VIDEO_PLAYER_CODE = `<template>
         <source :src="source" :type="videoType">
         Your browser does not support the video tag.
       </video>
-      
+
       <!-- Overlay controls (shown on hover) -->
       <div class="video-overlay" :class="{ 'hide-overlay': hideControls && isPlaying }">
         <div class="video-top-controls">
@@ -4224,13 +4224,13 @@ export const VIDEO_PLAYER_CODE = `<template>
             @click="toggleFullscreen"
           ></v-btn>
         </div>
-        
+
         <div class="video-center-controls" @click="togglePlay">
-          <v-btn 
+          <v-btn
             v-if="!isPlaying || (!hideControls || isHovering)"
-            :icon="isPlaying ? 'mdi-pause' : 'mdi-play'" 
-            size="x-large" 
-            color="white" 
+            :icon="isPlaying ? 'mdi-pause' : 'mdi-play'"
+            size="x-large"
+            color="white"
             variant="text"
           ></v-btn>
         </div>
@@ -4238,55 +4238,55 @@ export const VIDEO_PLAYER_CODE = `<template>
         <div class="video-bottom-controls">
           <!-- Progress bar -->
           <div class="progress-container">
-            <input 
-              type="range" 
-              class="progress-slider" 
-              min="0" 
-              max="100" 
-              step="0.1" 
-              :value="progress" 
+            <input
+              type="range"
+              class="progress-slider"
+              min="0"
+              max="100"
+              step="0.1"
+              :value="progress"
               @input="seek"
             >
             <div class="progress-bar" :style="{ width: \`\${progress}%\` }"></div>
           </div>
-          
+
           <!-- Controls -->
           <div class="controls-container">
-            <v-btn 
-              :icon="isPlaying ? 'mdi-pause' : 'mdi-play'" 
-              size="small" 
-              color="white" 
+            <v-btn
+              :icon="isPlaying ? 'mdi-pause' : 'mdi-play'"
+              size="small"
+              color="white"
               variant="text"
               @click.stop="togglePlay"
             ></v-btn>
-            
+
             <div class="time-display">
               {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
             </div>
-            
+
             <div class="volume-control">
-              <v-btn 
-                :icon="volume > 0 ? (volume > 0.5 ? 'mdi-volume-high' : 'mdi-volume-medium') : 'mdi-volume-off'" 
-                size="small" 
-                color="white" 
+              <v-btn
+                :icon="volume > 0 ? (volume > 0.5 ? 'mdi-volume-high' : 'mdi-volume-medium') : 'mdi-volume-off'"
+                size="small"
+                color="white"
                 variant="text"
                 @click.stop="toggleMute"
               ></v-btn>
-              <input 
-                type="range" 
-                class="volume-slider" 
-                min="0" 
-                max="1" 
-                step="0.05" 
-                :value="volume" 
+              <input
+                type="range"
+                class="volume-slider"
+                min="0"
+                max="1"
+                step="0.05"
+                :value="volume"
                 @input="adjustVolume"
               >
             </div>
-            
-            <v-btn 
-              :icon="playbackRate === 1 ? 'mdi-speedometer' : 'mdi-numeric-' + playbackRate + '-box'" 
-              size="small" 
-              color="white" 
+
+            <v-btn
+              :icon="playbackRate === 1 ? 'mdi-speedometer' : 'mdi-numeric-' + playbackRate + '-box'"
+              size="small"
+              color="white"
               variant="text"
               @click.stop="togglePlaybackRate"
             ></v-btn>
@@ -4303,8 +4303,8 @@ export const VIDEO_PLAYER_CODE = `<template>
 
     <!-- Playlist (Optional) -->
     <v-list v-if="playlist && playlist.length > 0" density="compact" bg-color="grey-darken-4">
-      <v-list-item 
-        v-for="(item, index) in playlist" 
+      <v-list-item
+        v-for="(item, index) in playlist"
         :key="index"
         :active="currentVideoIndex === index"
         @click="changeVideo(index)"
@@ -4372,7 +4372,7 @@ const playbackRate = ref(1)
 const isHovering = ref(false)
 const currentVideoIndex = ref(0)
 const fullscreenEnabled = ref(
-  document.fullscreenEnabled || 
+  document.fullscreenEnabled ||
   (document as any).webkitFullscreenEnabled ||
   (document as any).mozFullScreenEnabled ||
   (document as any).msFullscreenEnabled
@@ -4389,7 +4389,7 @@ const currentVideo = computed(() => {
 // Methods
 const togglePlay = () => {
   if (!videoRef.value) return
-  
+
   if (videoRef.value.paused || videoRef.value.ended) {
     videoRef.value.play()
     isPlaying.value = true
@@ -4401,7 +4401,7 @@ const togglePlay = () => {
 
 const updateProgress = () => {
   if (!videoRef.value) return
-  
+
   currentTime.value = videoRef.value.currentTime
   duration.value = videoRef.value.duration
   progress.value = (videoRef.value.currentTime / videoRef.value.duration) * 100
@@ -4409,7 +4409,7 @@ const updateProgress = () => {
 
 const seek = (event: Event) => {
   if (!videoRef.value) return
-  
+
   const target = event.target as HTMLInputElement
   const seekTime = (parseFloat(target.value) / 100) * videoRef.value.duration
   videoRef.value.currentTime = seekTime
@@ -4417,7 +4417,7 @@ const seek = (event: Event) => {
 
 const adjustVolume = (event: Event) => {
   if (!videoRef.value) return
-  
+
   const target = event.target as HTMLInputElement
   const newVolume = parseFloat(target.value)
   videoRef.value.volume = newVolume
@@ -4427,7 +4427,7 @@ const adjustVolume = (event: Event) => {
 
 const toggleMute = () => {
   if (!videoRef.value) return
-  
+
   if (volume.value > 0) {
     lastVolume.value = volume.value
     volume.value = 0
@@ -4442,7 +4442,7 @@ const togglePlaybackRate = () => {
   const currentIndex = rates.indexOf(playbackRate.value)
   const nextIndex = (currentIndex + 1) % rates.length
   playbackRate.value = rates[nextIndex]
-  
+
   if (videoRef.value) {
     videoRef.value.playbackRate = playbackRate.value
   }
@@ -4450,7 +4450,7 @@ const togglePlaybackRate = () => {
 
 const formatTime = (timeInSeconds: number) => {
   if (isNaN(timeInSeconds)) return '0:00'
-  
+
   const minutes = Math.floor(timeInSeconds / 60)
   const seconds = Math.floor(timeInSeconds % 60)
   return \`\${minutes}:\${seconds < 10 ? '0' : ''}\${seconds}\`
@@ -4458,7 +4458,7 @@ const formatTime = (timeInSeconds: number) => {
 
 const videoEnded = () => {
   isPlaying.value = false
-  
+
   // Auto-play next video if available
   if (props.playlist && props.playlist.length > 0 && currentVideoIndex.value < props.playlist.length - 1) {
     currentVideoIndex.value++
@@ -4467,12 +4467,12 @@ const videoEnded = () => {
 
 const changeVideo = (index: number) => {
   currentVideoIndex.value = index
-  
+
   // Reset video state
   if (videoRef.value) {
     videoRef.value.currentTime = 0
     progress.value = 0
-    
+
     // Start playing the new video
     setTimeout(() => {
       if (videoRef.value && isPlaying.value) {
@@ -4484,10 +4484,10 @@ const changeVideo = (index: number) => {
 
 const toggleFullscreen = () => {
   if (!videoRef.value) return
-  
+
   const videoContainer = videoRef.value.parentElement
   if (!videoContainer) return
-  
+
   if (!document.fullscreenElement) {
     if (videoContainer.requestFullscreen) {
       videoContainer.requestFullscreen()
@@ -4519,7 +4519,7 @@ const handleMouseLeave = () => {
 // Keyboard shortcuts
 const handleKeydown = (event: KeyboardEvent) => {
   if (!videoRef.value) return
-  
+
   switch(event.code) {
     case 'Space':
       event.preventDefault()
@@ -4550,7 +4550,7 @@ onMounted(() => {
   if (videoRef.value) {
     duration.value = videoRef.value.duration || 0
     videoRef.value.volume = volume.value
-    
+
     if (props.autoplay) {
       videoRef.value.play().then(() => {
         isPlaying.value = true
@@ -4558,14 +4558,14 @@ onMounted(() => {
         console.warn('Autoplay was prevented by the browser')
       })
     }
-    
+
     // Add event listeners
     const videoContainer = videoRef.value.parentElement
     if (videoContainer) {
       videoContainer.addEventListener('mouseenter', handleMouseEnter)
       videoContainer.addEventListener('mouseleave', handleMouseLeave)
     }
-    
+
     window.addEventListener('keydown', handleKeydown)
   }
 })
@@ -4578,7 +4578,7 @@ onUnmounted(() => {
       videoContainer.removeEventListener('mouseleave', handleMouseLeave)
     }
   }
-  
+
   window.removeEventListener('keydown', handleKeydown)
 })
 
@@ -4764,7 +4764,7 @@ export const AUDIO_PLAYER_CODE = `<template>
           class="artwork"
           :class="{ 'artwork-spinning': isPlaying && showDiscAnimation }"
         ></v-img>
-        
+
         <div class="artwork-overlay" v-if="!mini" @click="togglePlay">
           <v-icon :icon="isPlaying ? 'mdi-pause-circle' : 'mdi-play-circle'" size="64" color="white"></v-icon>
         </div>
@@ -4778,131 +4778,131 @@ export const AUDIO_PLAYER_CODE = `<template>
 
         <div class="playback-controls" v-if="!mini">
           <div class="progress-container">
-            <input 
-              type="range" 
-              class="progress-slider" 
-              min="0" 
-              max="100" 
-              step="0.1" 
-              :value="progress" 
+            <input
+              type="range"
+              class="progress-slider"
+              min="0"
+              max="100"
+              step="0.1"
+              :value="progress"
               @input="seek"
             >
             <div class="progress-bar" :style="{ width: \`\${progress}%\` }"></div>
           </div>
-          
+
           <div class="time-display">
             <span>{{ formatTime(currentTime) }}</span>
             <span>{{ formatTime(duration) }}</span>
           </div>
-          
+
           <div class="control-buttons">
-            <v-btn 
-              icon="mdi-shuffle-variant" 
-              size="small" 
-              :color="shuffle ? 'primary' : ''" 
+            <v-btn
+              icon="mdi-shuffle-variant"
+              size="small"
+              :color="shuffle ? 'primary' : ''"
               variant="text"
               @click="toggleShuffle"
             ></v-btn>
-            
-            <v-btn 
-              icon="mdi-skip-previous" 
-              size="small" 
-              @click="playPrevious" 
-              :disabled="!hasPrevious" 
+
+            <v-btn
+              icon="mdi-skip-previous"
+              size="small"
+              @click="playPrevious"
+              :disabled="!hasPrevious"
               variant="text"
             ></v-btn>
-            
-            <v-btn 
-              :icon="isPlaying ? 'mdi-pause-circle' : 'mdi-play-circle'" 
+
+            <v-btn
+              :icon="isPlaying ? 'mdi-pause-circle' : 'mdi-play-circle'"
               color="primary"
-              size="large" 
+              size="large"
               @click="togglePlay"
               variant="text"
             ></v-btn>
-            
-            <v-btn 
-              icon="mdi-skip-next" 
-              size="small" 
-              @click="playNext" 
-              :disabled="!hasNext" 
+
+            <v-btn
+              icon="mdi-skip-next"
+              size="small"
+              @click="playNext"
+              :disabled="!hasNext"
               variant="text"
             ></v-btn>
-            
-            <v-btn 
-              :icon="repeat ? (repeatOne ? 'mdi-repeat-once' : 'mdi-repeat') : 'mdi-repeat-off'" 
-              size="small" 
-              :color="repeat ? 'primary' : ''" 
+
+            <v-btn
+              :icon="repeat ? (repeatOne ? 'mdi-repeat-once' : 'mdi-repeat') : 'mdi-repeat-off'"
+              size="small"
+              :color="repeat ? 'primary' : ''"
               variant="text"
               @click="toggleRepeat"
             ></v-btn>
           </div>
         </div>
-        
+
         <!-- Mini player controls -->
         <div class="mini-controls" v-if="mini">
-          <v-btn 
-            :icon="isPlaying ? 'mdi-pause' : 'mdi-play'" 
-            size="small" 
-            color="primary" 
+          <v-btn
+            :icon="isPlaying ? 'mdi-pause' : 'mdi-play'"
+            size="small"
+            color="primary"
             variant="text"
             @click="togglePlay"
           ></v-btn>
-          
-          <v-btn 
-            icon="mdi-skip-next" 
-            size="small" 
-            @click="playNext" 
-            :disabled="!hasNext" 
+
+          <v-btn
+            icon="mdi-skip-next"
+            size="small"
+            @click="playNext"
+            :disabled="!hasNext"
             variant="text"
           ></v-btn>
         </div>
       </div>
-      
+
       <!-- Additional controls -->
       <div class="additional-controls" v-if="!mini">
         <div class="volume-control">
-          <v-btn 
-            :icon="volume > 0 ? (volume > 0.5 ? 'mdi-volume-high' : 'mdi-volume-medium') : 'mdi-volume-off'" 
-            size="small" 
+          <v-btn
+            :icon="volume > 0 ? (volume > 0.5 ? 'mdi-volume-high' : 'mdi-volume-medium') : 'mdi-volume-off'"
+            size="small"
             variant="text"
             @click="toggleMute"
           ></v-btn>
-          <input 
-            type="range" 
-            class="volume-slider" 
-            min="0" 
-            max="1" 
-            step="0.05" 
-            :value="volume" 
+          <input
+            type="range"
+            class="volume-slider"
+            min="0"
+            max="1"
+            step="0.05"
+            :value="volume"
             @input="adjustVolume"
           >
         </div>
-        
+
         <div class="right-controls">
-          <v-btn 
-            :icon="mini ? 'mdi-arrow-expand' : 'mdi-arrow-collapse'" 
-            size="small" 
+          <v-btn
+            :icon="mini ? 'mdi-arrow-expand' : 'mdi-arrow-collapse'"
+            size="small"
             variant="text"
             @click="toggleMiniPlayer"
           ></v-btn>
-          
-          <v-btn 
-            icon="mdi-playlist-music" 
-            size="small" 
+
+          <v-btn
+            icon="mdi-playlist-music"
+            size="small"
             variant="text"
             @click="togglePlaylist"
           ></v-btn>
         </div>
       </div>
-      
+
       <!-- Mini player progress bar -->
       <div class="mini-progress" v-if="mini">
         <div class="mini-progress-bar" :style="{ width: \`\${progress}%\` }"></div>
       </div>
     </div>
-    
+
     <!-- Audio element -->
-    <audio 
+    <audio
       ref="audioRef"
       @timeupdate="updateProgress"
       @loadedmetadata="loadedMetadata"
@@ -4919,17 +4919,17 @@ export const AUDIO_PLAYER_CODE = `<template>
         <div class="playlist-header">
           <div class="text-subtitle-1 font-weight-bold">Playlist</div>
           <v-spacer></v-spacer>
-          <v-btn 
-            icon="mdi-close" 
-            size="small" 
+          <v-btn
+            icon="mdi-close"
+            size="small"
             variant="text"
             @click="showPlaylist = false"
           ></v-btn>
         </div>
-        
+
         <v-list density="compact" class="playlist-list">
-          <v-list-item 
-            v-for="(track, index) in tracks" 
+          <v-list-item
+            v-for="(track, index) in tracks"
             :key="index"
             :active="currentTrackIndex === index"
             @click="playTrack(index)"
@@ -5043,7 +5043,7 @@ const hasPrevious = computed(() => {
 // Methods
 const togglePlay = () => {
   if (!audioRef.value || !currentTrack.value.source) return
-  
+
   if (audioRef.value.paused) {
     audioRef.value.play()
     isPlaying.value = true
@@ -5055,20 +5055,20 @@ const togglePlay = () => {
 
 const updateProgress = () => {
   if (!audioRef.value) return
-  
+
   currentTime.value = audioRef.value.currentTime
   progress.value = (audioRef.value.currentTime / audioRef.value.duration) * 100 || 0
 }
 
 const loadedMetadata = () => {
   if (!audioRef.value) return
-  
+
   duration.value = audioRef.value.duration
 }
 
 const seek = (event: Event) => {
   if (!audioRef.value) return
-  
+
   const target = event.target as HTMLInputElement
   const seekTime = (parseFloat(target.value) / 100) * audioRef.value.duration
   audioRef.value.currentTime = seekTime
@@ -5077,7 +5077,7 @@ const seek = (event: Event) => {
 
 const adjustVolume = (event: Event) => {
   if (!audioRef.value) return
-  
+
   const target = event.target as HTMLInputElement
   const newVolume = parseFloat(target.value)
   audioRef.value.volume = newVolume
@@ -5087,7 +5087,7 @@ const adjustVolume = (event: Event) => {
 
 const toggleMute = () => {
   if (!audioRef.value) return
-  
+
   if (volume.value > 0) {
     lastVolume.value = volume.value
     volume.value = 0
@@ -5099,7 +5099,7 @@ const toggleMute = () => {
 
 const formatTime = (timeInSeconds: number) => {
   if (isNaN(timeInSeconds)) return '0:00'
-  
+
   const minutes = Math.floor(timeInSeconds / 60)
   const seconds = Math.floor(timeInSeconds % 60)
   return \`\${minutes}:\${seconds < 10 ? '0' : ''}\${seconds}\`
@@ -5107,14 +5107,14 @@ const formatTime = (timeInSeconds: number) => {
 
 const playTrack = (index: number) => {
   if (index < 0 || index >= props.tracks.length) return
-  
+
   currentTrackIndex.value = index
-  
+
   // Reset audio state
   if (audioRef.value) {
     audioRef.value.currentTime = 0
     progress.value = 0
-    
+
     // Start playing the new track
     setTimeout(() => {
       if (audioRef.value) {
@@ -5133,14 +5133,14 @@ const playTrack = (index: number) => {
 
 const playNext = () => {
   if (props.tracks.length === 0) return
-  
+
   let nextIndex
-  
+
   if (shuffle.value) {
     // Get random track but not the same as current
     let possibleIndices = Array.from({ length: props.tracks.length }, (_, i) => i)
       .filter(i => i !== currentTrackIndex.value)
-    
+
     if (possibleIndices.length > 0) {
       const randomIndex = Math.floor(Math.random() * possibleIndices.length)
       nextIndex = possibleIndices[randomIndex]
@@ -5150,26 +5150,26 @@ const playNext = () => {
   } else {
     nextIndex = (currentTrackIndex.value + 1) % props.tracks.length
   }
-  
+
   playTrack(nextIndex)
 }
 
 const playPrevious = () => {
   if (props.tracks.length === 0) return
-  
+
   // If current time > 3 seconds, restart the current track
   if (audioRef.value && audioRef.value.currentTime > 3) {
     audioRef.value.currentTime = 0
     return
   }
-  
+
   let prevIndex
-  
+
   if (shuffle.value) {
     // Get random track but not the same as current
     let possibleIndices = Array.from({ length: props.tracks.length }, (_, i) => i)
       .filter(i => i !== currentTrackIndex.value)
-    
+
     if (possibleIndices.length > 0) {
       const randomIndex = Math.floor(Math.random() * possibleIndices.length)
       prevIndex = possibleIndices[randomIndex]
@@ -5180,7 +5180,7 @@ const playPrevious = () => {
     prevIndex = currentTrackIndex.value - 1
     if (prevIndex < 0) prevIndex = props.tracks.length - 1
   }
-  
+
   playTrack(prevIndex)
 }
 
@@ -5228,10 +5228,10 @@ const toggleMiniPlayer = () => {
 // Keyboard shortcuts
 const handleKeydown = (event: KeyboardEvent) => {
   if (!audioRef.value) return
-  
+
   switch(event.code) {
     case 'Space':
-      if (document.activeElement?.tagName !== 'BUTTON' && 
+      if (document.activeElement?.tagName !== 'BUTTON' &&
           document.activeElement?.tagName !== 'INPUT') {
         event.preventDefault()
         togglePlay()
@@ -5280,7 +5280,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 onMounted(() => {
   if (audioRef.value) {
     audioRef.value.volume = volume.value
-    
+
     if (props.autoplay && currentTrack.value.source) {
       audioRef.value.play().then(() => {
         isPlaying.value = true
@@ -5289,7 +5289,7 @@ onMounted(() => {
       })
     }
   }
-  
+
   window.addEventListener('keydown', handleKeydown)
 })
 
@@ -5571,5 +5571,543 @@ watch(
   100% {
     opacity: 0.5;
   }
+}
+</style>`
+
+export const QR_CODE_COMPONENT_CODE = `<template>
+  <v-card class="qr-code-component">
+    <v-tabs v-model="activeTab" grow>
+      <v-tab value="generate">Generate</v-tab>
+      <v-tab value="scan">Scan</v-tab>
+    </v-tabs>
+
+    <v-card-text class="pa-4">
+      <!-- Generate QR Code Tab -->
+      <v-window v-model="activeTab">
+        <v-window-item value="generate">
+          <v-form @submit.prevent="generateQR">
+            <v-text-field
+              v-model="qrContent"
+              label="Enter text or URL"
+              variant="outlined"
+              :rules="[v => !!v || 'This field is required']"
+              class="mb-3"
+            ></v-text-field>
+            
+            <div class="mb-4">
+              <div class="text-subtitle-2 mb-2">QR Code Options</div>
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <v-select
+                    v-model="errorCorrection"
+                    label="Error Correction"
+                    :items="errorCorrectionLevels"
+                    variant="outlined"
+                    density="compact"
+                  ></v-select>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-slider
+                    v-model="qrSize"
+                    label="Size"
+                    min="100"
+                    max="300"
+                    step="10"
+                    thumb-label
+                    class="mt-5"
+                  ></v-slider>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <v-color-picker
+                    v-model="foregroundColor"
+                    hide-inputs
+                    hide-canvas
+                    mode="hexa"
+                    flat
+                    :swatches="colorSwatches"
+                    show-swatches
+                  ></v-color-picker>
+                  <div class="text-caption text-center mt-1">Foreground Color</div>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-color-picker
+                    v-model="backgroundColor"
+                    hide-inputs
+                    hide-canvas
+                    mode="hexa"
+                    flat
+                    :swatches="colorSwatches"
+                    show-swatches
+                  ></v-color-picker>
+                  <div class="text-caption text-center mt-1">Background Color</div>
+                </v-col>
+              </v-row>
+            </div>
+            
+            <v-btn
+              type="submit"
+              color="primary"
+              block
+              :disabled="!qrContent"
+              class="mb-6"
+            >
+              Generate QR Code
+            </v-btn>
+          </v-form>
+          
+          <!-- QR Code Result -->
+          <div v-if="qrCodeUrl" class="qr-code-result text-center">
+            <img 
+              :src="qrCodeUrl" 
+              :width="qrSize" 
+              :height="qrSize" 
+              alt="Generated QR Code"
+              class="qr-image"
+            />
+            
+            <div class="mt-4 d-flex justify-center">
+              <v-btn
+                prepend-icon="mdi-download"
+                color="primary"
+                variant="outlined"
+                @click="downloadQrCode"
+                class="me-2"
+              >
+                Download
+              </v-btn>
+              
+              <v-btn
+                prepend-icon="mdi-content-copy"
+                variant="outlined"
+                @click="copyQrImage"
+              >
+                Copy
+              </v-btn>
+            </div>
+          </div>
+        </v-window-item>
+
+        <!-- Scan QR Code Tab -->
+        <v-window-item value="scan">
+          <div class="mb-4">
+            <div class="scanner-container">
+              <div v-if="!isScanning" class="scanner-placeholder d-flex flex-column align-center justify-center">
+                <v-icon icon="mdi-qrcode-scan" size="64" color="primary" class="mb-4"></v-icon>
+                <div class="text-body-1">Click the button below to scan a QR code</div>
+              </div>
+              
+              <video
+                v-show="isScanning"
+                ref="videoRef"
+                class="scanner-video"
+                autoplay
+                playsinline
+              ></video>
+              
+              <canvas ref="canvasRef" class="scanner-canvas"></canvas>
+              
+              <div v-if="isScanning" class="scanner-overlay">
+                <div class="scanner-frame"></div>
+              </div>
+            </div>
+            
+            <div class="mt-6 d-flex justify-center">
+              <v-btn
+                :color="isScanning ? 'error' : 'primary'"
+                :prepend-icon="isScanning ? 'mdi-stop' : 'mdi-play'"
+                @click="toggleScanner"
+                class="me-2"
+              >
+                {{ isScanning ? 'Stop' : 'Start' }} Scanner
+              </v-btn>
+              
+              <v-btn
+                prepend-icon="mdi-image"
+                variant="outlined"
+                @click="openImageDialog"
+              >
+                Upload Image
+              </v-btn>
+              
+              <input
+                type="file"
+                ref="fileInputRef"
+                accept="image/*"
+                class="d-none"
+                @change="processImageFile"
+              />
+            </div>
+          </div>
+          
+          <!-- Scan Results -->
+          <v-expand-transition>
+            <div v-if="scanResult" class="scan-result pa-4 mt-4 rounded">
+              <div class="text-subtitle-1 font-weight-bold mb-2">Scan Result:</div>
+              <div class="text-body-1 mb-2">{{ scanResult }}</div>
+              
+              <div class="d-flex">
+                <v-chip
+                  v-if="isUrl(scanResult)"
+                  prepend-icon="mdi-link-variant"
+                  color="primary"
+                  class="me-2"
+                  link
+                  :href="scanResult"
+                  target="_blank"
+                >
+                  Open Link
+                </v-chip>
+                
+                <v-chip
+                  prepend-icon="mdi-content-copy"
+                  @click="copyToClipboard(scanResult)"
+                >
+                  Copy Text
+                </v-chip>
+              </div>
+            </div>
+          </v-expand-transition>
+        </v-window-item>
+      </v-window>
+    </v-card-text>
+    
+    <v-snackbar
+      v-model="snackbar.show"
+      :color="snackbar.color"
+      :timeout="3000"
+    >
+      {{ snackbar.text }}
+    </v-snackbar>
+  </v-card>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
+
+// For QR code scanning
+let qrScanner: any = null;
+let scannerInterval: number | null = null;
+
+// Tabs
+const activeTab = ref('generate');
+
+// QR Generation variables
+const qrContent = ref('https://example.com');
+const qrCodeUrl = ref('');
+const qrSize = ref(200);
+const foregroundColor = ref('#000000');
+const backgroundColor = ref('#FFFFFF');
+const errorCorrection = ref('M');
+const errorCorrectionLevels = ['L', 'M', 'Q', 'H'];
+const colorSwatches = [
+  ['#000000', '#FFFFFF', '#FF0000', '#00FF00', '#0000FF'],
+  ['#FFFF00', '#FF00FF', '#00FFFF', '#FF5733', '#4CAF50'],
+  ['#2196F3', '#9C27B0', '#607D8B', '#FFC107', '#795548'],
+];
+
+// QR Scanning variables
+const isScanning = ref(false);
+const scanResult = ref('');
+const videoRef = ref<HTMLVideoElement | null>(null);
+const canvasRef = ref<HTMLCanvasElement | null>(null);
+const fileInputRef = ref<HTMLInputElement | null>(null);
+const stream = ref<MediaStream | null>(null);
+
+// Feedback
+const snackbar = ref({
+  show: false,
+  text: '',
+  color: 'success'
+});
+
+// Methods - QR Generation
+const generateQR = () => {
+  // In a real implementation, we would use a QR library
+  // For our demo, we'll generate a placeholder URL
+  const params = new URLSearchParams({
+    data: qrContent.value,
+    size: \`\${qrSize.value}x\${qrSize.value}\`,
+    color: foregroundColor.value.replace('#', ''),
+    bgcolor: backgroundColor.value.replace('#', ''),
+    ecc: errorCorrection.value.toLowerCase()
+  });
+  
+  // In a real app, use a QR code library like qrcode.js
+  // Here we're using a placeholder service
+  qrCodeUrl.value = \`https://api.qrserver.com/v1/create-qr-code/?\${params.toString()}\`;
+  
+  snackbar.value = {
+    show: true,
+    text: 'QR Code generated successfully!',
+    color: 'success'
+  };
+};
+
+const downloadQrCode = () => {
+  const link = document.createElement('a');
+  link.download = 'qrcode.png';
+  link.href = qrCodeUrl.value;
+  link.click();
+  
+  snackbar.value = {
+    show: true,
+    text: 'QR Code downloaded',
+    color: 'success'
+  };
+};
+
+const copyQrImage = async () => {
+  try {
+    const response = await fetch(qrCodeUrl.value);
+    const blob = await response.blob();
+    await navigator.clipboard.write([
+      new ClipboardItem({
+        [blob.type]: blob
+      })
+    ]);
+    
+    snackbar.value = {
+      show: true,
+      text: 'QR Code copied to clipboard',
+      color: 'success'
+    };
+  } catch (err) {
+    snackbar.value = {
+      show: true,
+      text: 'Failed to copy image',
+      color: 'error'
+    };
+  }
+};
+
+// Methods - QR Scanning
+const toggleScanner = async () => {
+  if (isScanning.value) {
+    stopScanner();
+  } else {
+    await startScanner();
+  }
+};
+
+const startScanner = async () => {
+  try {
+    // Request camera permission
+    stream.value = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment' }
+    });
+    
+    if (videoRef.value && stream.value) {
+      videoRef.value.srcObject = stream.value;
+      isScanning.value = true;
+      
+      // In a real app, we'd use a library like jsQR
+      // For our demo, we'll simulate scanning after a timeout
+      scannerInterval = window.setTimeout(() => {
+        simulateQrDetection();
+      }, 3000);
+    }
+  } catch (err) {
+    console.error('Error accessing camera:', err);
+    snackbar.value = {
+      show: true,
+      text: 'Could not access camera',
+      color: 'error'
+    };
+  }
+};
+
+const stopScanner = () => {
+  if (stream.value) {
+    stream.value.getTracks().forEach(track => track.stop());
+    stream.value = null;
+  }
+  
+  if (scannerInterval !== null) {
+    clearTimeout(scannerInterval);
+    scannerInterval = null;
+  }
+  
+  isScanning.value = false;
+};
+
+// This would actually use a QR code detection library like jsQR in a real app
+const simulateQrDetection = () => {
+  // Simulate detection of a QR code
+  const possibleResults = [
+    'https://example.com',
+    'Hello World!',
+    'Contact: John Doe, john@example.com',
+    'WIFI:S:MyNetwork;T:WPA;P:password123;H:true;'
+  ];
+  
+  scanResult.value = possibleResults[Math.floor(Math.random() * possibleResults.length)];
+  stopScanner();
+  
+  snackbar.value = {
+    show: true,
+    text: 'QR Code detected!',
+    color: 'success'
+  };
+};
+
+const openImageDialog = () => {
+  fileInputRef.value?.click();
+};
+
+const processImageFile = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  
+  if (input?.files && input.files[0]) {
+    const file = input.files[0];
+    const reader = new FileReader();
+    
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      if (e.target?.result) {
+        const image = new Image();
+        image.onload = () => {
+          // In a real app, we would process the image with a QR code library
+          // For the demo, we'll simulate detecting a QR code
+          setTimeout(() => {
+            scanResult.value = 'https://vuetifyjs.com';
+            
+            snackbar.value = {
+              show: true,
+              text: 'QR Code detected in image!',
+              color: 'success'
+            };
+          }, 1000);
+        };
+        
+        image.src = e.target.result as string;
+      }
+    };
+    
+    reader.readAsDataURL(file);
+    
+    // Reset the input
+    input.value = '';
+  }
+};
+
+// Helper functions
+const copyToClipboard = async (text: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    snackbar.value = {
+      show: true,
+      text: 'Copied to clipboard',
+      color: 'success'
+    };
+  } catch (err) {
+    snackbar.value = {
+      show: true,
+      text: 'Failed to copy',
+      color: 'error'
+    };
+  }
+};
+
+const isUrl = (text: string): boolean => {
+  try {
+    new URL(text);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+// Lifecycle hooks
+onMounted(() => {
+  // Generate initial QR code
+  generateQR();
+});
+
+onBeforeUnmount(() => {
+  // Clean up resources
+  stopScanner();
+});
+
+// Watch for tab changes to stop scanner when switching tabs
+watch(activeTab, (newValue) => {
+  if (newValue !== 'scan' && isScanning.value) {
+    stopScanner();
+  }
+});
+</script>
+
+<style scoped>
+.qr-code-component {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.qr-code-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.qr-image {
+  border: 1px solid #e0e0e0;
+  padding: 8px;
+  background-color: white;
+}
+
+.scanner-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+}
+
+.scanner-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.scanner-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scanner-canvas {
+  display: none;
+}
+
+.scanner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.scanner-frame {
+  width: 200px;
+  height: 200px;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+}
+
+.scan-result {
+  background-color: #f0f9ff;
+  border: 1px solid #d1e9ff;
+  word-break: break-all;
 }
 </style>`

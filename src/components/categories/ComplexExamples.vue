@@ -1031,51 +1031,47 @@
         </CodeShowcase>
 
         <!-- Video Player -->
-        <CodeShowcase 
-            title="Video Player" 
+        <CodeShowcase title="Video Player"
             description="Customizable video player with playback controls, progress bar, and fullscreen support"
-            icon="mdi-video" 
-            difficulty="Hard" 
-            :code="videoPlayerCode"
-        >
+            icon="mdi-video" difficulty="Hard" :code="videoPlayerCode">
             <template #preview>
                 <div class="d-flex justify-center">
                     <v-card width="600" class="video-player-preview">
                         <div class="video-container-preview">
-                            <video 
-                                class="video-element-preview" 
-                                poster="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
-                            >
-                                <source src="https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4" type="video/mp4">
+                            <video class="video-element-preview"
+                                poster="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80">
+                                <source src="https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+                                    type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
-                            
+
                             <div class="video-overlay-preview">
                                 <div class="video-top-controls-preview">
                                     <v-btn icon="mdi-fullscreen" variant="text" color="white" size="small"></v-btn>
                                 </div>
-                                
+
                                 <div class="video-center-controls-preview">
                                     <v-btn icon="mdi-play" size="x-large" color="white" variant="text"></v-btn>
                                 </div>
-                                
+
                                 <div class="video-bottom-controls-preview">
                                     <div class="progress-container-preview">
                                         <div class="progress-bar-preview" style="width: 35%"></div>
                                     </div>
-                                    
+
                                     <div class="controls-container-preview">
                                         <v-btn icon="mdi-play" size="small" color="white" variant="text"></v-btn>
                                         <div class="time-display-preview">1:25 / 3:45</div>
                                         <div class="volume-control-preview">
-                                            <v-btn icon="mdi-volume-high" size="small" color="white" variant="text"></v-btn>
+                                            <v-btn icon="mdi-volume-high" size="small" color="white"
+                                                variant="text"></v-btn>
                                         </div>
                                         <v-btn icon="mdi-speedometer" size="small" color="white" variant="text"></v-btn>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <v-card-text>
                             <div class="text-h6">Big Buck Bunny (Sample)</div>
                             <div class="text-subtitle-1 text-medium-emphasis">Sample video for demonstration</div>
@@ -1084,54 +1080,47 @@
                 </div>
             </template>
         </CodeShowcase>
-        
+
         <!-- Audio Player -->
-        <CodeShowcase 
-            title="Audio Player" 
+        <CodeShowcase title="Audio Player"
             description="Feature-rich audio player with playlist support, visualizations, and mini-player mode"
-            icon="mdi-music" 
-            difficulty="Hard" 
-            :code="audioPlayerCode"
-        >
+            icon="mdi-music" difficulty="Hard" :code="audioPlayerCode">
             <template #preview>
                 <div class="d-flex justify-center">
                     <v-card width="500" class="audio-player-preview">
                         <div class="audio-player-content-preview">
                             <div class="artwork-container-preview">
-                                <v-img
-                                    src="https://picsum.photos/id/1025/300/300"
-                                    aspect-ratio="1"
-                                    cover
-                                    class="artwork-preview"
-                                ></v-img>
+                                <v-img src="https://picsum.photos/id/1025/300/300" aspect-ratio="1" cover
+                                    class="artwork-preview"></v-img>
                             </div>
-                            
+
                             <div class="audio-info-preview">
                                 <div class="track-info-preview">
                                     <div class="text-h6 track-title-preview">Dreaming</div>
                                     <div class="text-subtitle-2 text-medium-emphasis">Acoustic Band</div>
                                 </div>
-                                
+
                                 <div class="playback-controls-preview">
                                     <div class="progress-container-preview">
                                         <div class="progress-bar-preview" style="width: 60%"></div>
                                     </div>
-                                    
+
                                     <div class="time-display-preview">
                                         <span>2:14</span>
                                         <span>3:45</span>
                                     </div>
-                                    
+
                                     <div class="control-buttons-preview">
                                         <v-btn icon="mdi-shuffle-variant" size="small" variant="text"></v-btn>
                                         <v-btn icon="mdi-skip-previous" size="small" variant="text"></v-btn>
-                                        <v-btn icon="mdi-pause-circle" color="primary" size="large" variant="text"></v-btn>
+                                        <v-btn icon="mdi-pause-circle" color="primary" size="large"
+                                            variant="text"></v-btn>
                                         <v-btn icon="mdi-skip-next" size="small" variant="text"></v-btn>
                                         <v-btn icon="mdi-repeat" size="small" color="primary" variant="text"></v-btn>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="additional-controls-preview">
                                 <div class="volume-control-preview">
                                     <v-btn icon="mdi-volume-high" size="small" variant="text"></v-btn>
@@ -1141,9 +1130,9 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <v-divider></v-divider>
-                        
+
                         <v-list density="compact" class="playlist-preview" style="max-height: 150px; overflow-y: auto">
                             <v-list-item active>
                                 <template v-slot:prepend>
@@ -1186,140 +1175,94 @@
                 </div>
             </template>
         </CodeShowcase>
-        
+
         <!-- File Upload Component -->
-        <CodeShowcase 
-            title="File Upload with Drag & Drop" 
+        <CodeShowcase title="File Upload with Drag & Drop"
             description="Interactive file upload with drag and drop support, file preview, and progress tracking"
-            icon="mdi-file-upload" 
-            difficulty="Hard" 
-            :code="fileUploadCode"
-        >
+            icon="mdi-file-upload" difficulty="Hard" :code="fileUploadCode">
             <template #preview>
                 <div class="d-flex justify-center">
                     <v-card width="600" class="pa-4" elevation="4">
                         <v-card-title class="pb-4">
                             Upload Files
                         </v-card-title>
-                        
+
                         <!-- Drop Zone -->
-                        <div 
-                            class="file-dropzone-preview"
-                            :class="{ 'dropzone-active': isDragActive }"
-                            @dragenter.prevent="onDragEnter"
-                            @dragover.prevent="onDragOver"
-                            @dragleave.prevent="onDragLeave"
-                            @drop.prevent="onDrop"
-                            @click="triggerFileInput"
-                        >
+                        <div class="file-dropzone-preview" :class="{ 'dropzone-active': isDragActive }"
+                            @dragenter.prevent="onDragEnter" @dragover.prevent="onDragOver"
+                            @dragleave.prevent="onDragLeave" @drop.prevent="onDrop" @click="triggerFileInput">
                             <!-- Hidden file input -->
-                            <input 
-                                type="file" 
-                                ref="fileInputRef" 
-                                multiple
-                                class="file-input-hidden"
-                                @change="onFileInputChange"
-                            />
-                            
+                            <input type="file" ref="fileInputRef" multiple class="file-input-hidden"
+                                @change="onFileInputChange" />
+
                             <div class="dropzone-content-preview">
-                                <v-icon 
-                                    :icon="isDragActive ? 'mdi-file-upload-outline' : 'mdi-cloud-upload'" 
-                                    color="primary" 
-                                    size="48"
-                                ></v-icon>
+                                <v-icon :icon="isDragActive ? 'mdi-file-upload-outline' : 'mdi-cloud-upload'"
+                                    color="primary" size="48"></v-icon>
                                 <div class="text-body-1 mt-4">
                                     <span v-if="isDragActive">Drop files here</span>
-                                    <span v-else><span class="text-primary">Click to upload</span> or drag and drop</span>
+                                    <span v-else><span class="text-primary">Click to upload</span> or drag and
+                                        drop</span>
                                 </div>
                                 <div class="text-body-2 text-grey mt-2">
                                     Upload multiple files (Max size: 5MB each)
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Preview area for uploaded files -->
                         <div v-if="uploadFiles.length > 0" class="preview-area-preview mt-4">
                             <div class="file-list-preview">
-                                <div 
-                                    v-for="(file, i) in uploadFiles" 
-                                    :key="file.id" 
-                                    class="file-item-preview"
-                                    :class="{'has-preview': file.previewUrl}"
-                                >
+                                <div v-for="(file, i) in uploadFiles" :key="file.id" class="file-item-preview"
+                                    :class="{ 'has-preview': file.previewUrl }">
                                     <!-- File preview -->
                                     <div class="file-preview-preview">
                                         <div v-if="file.previewUrl" class="preview-image-container-preview">
-                                            <img 
-                                                :src="file.previewUrl" 
-                                                class="preview-image-preview" 
-                                                alt="File preview"
-                                            />
+                                            <img :src="file.previewUrl" class="preview-image-preview"
+                                                alt="File preview" />
                                         </div>
-                                        <v-icon 
-                                            v-else 
-                                            :icon="getFileIcon(file.file)"
-                                            :color="getFileColor(file.file)" 
-                                            size="36"
-                                        ></v-icon>
+                                        <v-icon v-else :icon="getFileIcon(file.file)" :color="getFileColor(file.file)"
+                                            size="36"></v-icon>
                                     </div>
-                                    
+
                                     <!-- File details -->
                                     <div class="file-details-preview">
                                         <div class="file-name-preview text-truncate">{{ file.file.name }}</div>
                                         <div class="file-meta-preview text-caption">
                                             {{ formatFileSize(file.file.size) }}
                                             <span v-if="file.uploadProgress !== null">
-                                                • {{ file.uploadProgress === 100 ? 'Uploaded' : `${file.uploadProgress}%` }}
+                                                • {{ file.uploadProgress === 100 ? 'Uploaded' :
+                                                    `${file.uploadProgress}%` }}
                                             </span>
                                         </div>
-                                        
+
                                         <!-- Progress bar -->
-                                        <v-progress-linear 
+                                        <v-progress-linear
                                             v-if="file.uploadProgress !== null && file.uploadProgress < 100"
-                                            :model-value="file.uploadProgress"
-                                            color="primary"
-                                            height="4"
-                                            class="mt-1"
-                                        ></v-progress-linear>
-                                        
+                                            :model-value="file.uploadProgress" color="primary" height="4"
+                                            class="mt-1"></v-progress-linear>
+
                                         <!-- Status -->
-                                        <div 
-                                            v-if="file.error" 
-                                            class="file-error-preview text-caption text-error mt-1"
-                                        >
+                                        <div v-if="file.error" class="file-error-preview text-caption text-error mt-1">
                                             {{ file.error }}
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Actions -->
                                     <div class="file-actions-preview">
-                                        <v-btn 
-                                            icon="mdi-close" 
-                                            size="small" 
-                                            variant="text" 
-                                            color="default"
-                                            @click="removeFile(i)"
-                                        ></v-btn>
+                                        <v-btn icon="mdi-close" size="small" variant="text" color="default"
+                                            @click="removeFile(i)"></v-btn>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Action buttons -->
                             <div class="file-actions-container-preview mt-4">
-                                <v-btn
-                                    color="primary"
-                                    variant="elevated"
-                                    @click="uploadAllFiles"
-                                    :loading="isUploading"
-                                >
+                                <v-btn color="primary" variant="elevated" @click="uploadAllFiles"
+                                    :loading="isUploading">
                                     Upload {{ uploadFiles.length }} {{ uploadFiles.length === 1 ? 'file' : 'files' }}
                                 </v-btn>
-                                
-                                <v-btn
-                                    variant="text"
-                                    class="ms-2"
-                                    @click="clearAllFiles"
-                                >
+
+                                <v-btn variant="text" class="ms-2" @click="clearAllFiles">
                                     Clear all
                                 </v-btn>
                             </div>
@@ -1328,22 +1271,142 @@
                 </div>
             </template>
         </CodeShowcase>
-        
+
+        <!-- QR Code Generator/Scanner -->
+        <CodeShowcase title="QR Code Generator/Scanner"
+            description="Interactive QR code generator and scanner with customization options" icon="mdi-qrcode"
+            difficulty="Hard" :code="qrCodeComponentCode">
+            <template #preview>
+                <div class="d-flex justify-center">
+                    <v-card width="600" class="pa-4" elevation="4">
+                        <v-card-title class="pb-4">
+                            QR Code Generator & Scanner
+                        </v-card-title>
+
+                        <v-tabs v-model="qrActiveTab">
+                            <v-tab value="generate">
+                                <v-icon start>mdi-qrcode-edit</v-icon>
+                                Generate
+                            </v-tab>
+                            <v-tab value="scan">
+                                <v-icon start>mdi-qrcode-scan</v-icon>
+                                Scan
+                            </v-tab>
+                        </v-tabs>
+
+                        <v-window v-model="qrActiveTab" class="mt-4">
+                            <!-- Generator Tab -->
+                            <v-window-item value="generate">
+                                <div>
+                                    <v-text-field v-model="qrCodeValue" label="Text or URL"
+                                        placeholder="Enter text or URL to encode" variant="outlined"
+                                        :rules="[v => !!v || 'Content is required']"
+                                        @update:model-value="generateQRCode"></v-text-field>
+
+                                    <div class="d-flex align-start gap-4">
+                                        <div>
+                                            <v-select v-model="qrCodeSize" :items="qrSizeOptions" label="Size"
+                                                variant="outlined" density="compact"
+                                                @update:model-value="generateQRCode"></v-select>
+                                        </div>
+                                        <div>
+                                            <v-select v-model="qrCodeErrorCorrection" :items="qrErrorCorrectionOptions"
+                                                label="Error Correction" variant="outlined" density="compact"
+                                                @update:model-value="generateQRCode"></v-select>
+                                        </div>
+                                        <div>
+                                            <v-color-picker v-model="qrCodeColor" mode="hexa" hide-canvas hide-inputs
+                                                show-swatches swatches-max-height="120"
+                                                @update:model-value="generateQRCode"></v-color-picker>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="qrCodeValue" class="text-center my-4">
+                                        <div v-if="qrCodeDataUrl" class="d-inline-block border rounded pa-4">
+                                            <img :src="qrCodeDataUrl" alt="Generated QR Code" />
+                                        </div>
+                                        <v-skeleton-loader v-else type="image" width="200"
+                                            height="200"></v-skeleton-loader>
+                                    </div>
+
+                                    <div class="d-flex justify-center mt-4">
+                                        <v-btn color="primary" variant="elevated" prepend-icon="mdi-download"
+                                            @click="downloadQRCode" :disabled="!qrCodeDataUrl">
+                                            Download QR Code
+                                        </v-btn>
+                                    </div>
+                                </div>
+                            </v-window-item>
+
+                            <!-- Scanner Tab -->
+                            <v-window-item value="scan">
+                                <div>
+                                    <div v-if="!isScanning">
+                                        <div class="text-center mb-4">
+                                            <v-btn color="primary" variant="elevated" prepend-icon="mdi-camera"
+                                                @click="startScanning">
+                                                Start Camera
+                                            </v-btn>
+                                            <div class="text-caption mt-2">
+                                                Or upload a QR code image
+                                            </div>
+                                            <v-file-input v-model="qrFileInput" accept="image/*"
+                                                label="Select QR Code Image" variant="outlined" density="compact"
+                                                prepend-icon="mdi-file-image" class="mt-2" hide-details
+                                                @update:model-value="scanQRFromFile"></v-file-input>
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        <div class="text-center mb-4">
+                                            <div class="position-relative d-inline-block">
+                                                <div class="qr-scanner-container">
+                                                    <video ref="qrVideoElement" class="qr-video"></video>
+                                                    <div class="qr-overlay">
+                                                        <div class="qr-scanner-region"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <v-btn color="error" variant="elevated" prepend-icon="mdi-camera-off"
+                                                @click="stopScanning" class="mt-4">
+                                                Stop Camera
+                                            </v-btn>
+                                        </div>
+                                    </div>
+
+                                    <v-alert v-if="qrScanResult" color="success" variant="tonal" class="mt-4">
+                                        <div class="text-h6">Scanned Result:</div>
+                                        <div class="mt-2 text-break">{{ qrScanResult }}</div>
+                                        <v-btn v-if="isUrl(qrScanResult)" color="primary" variant="text"
+                                            prepend-icon="mdi-open-in-new" :href="qrScanResult" target="_blank"
+                                            class="mt-2">
+                                            Open URL
+                                        </v-btn>
+                                    </v-alert>
+
+                                    <v-alert v-if="qrScanError" color="error" variant="tonal" class="mt-4">
+                                        {{ qrScanError }}
+                                    </v-alert>
+                                </div>
+                            </v-window-item>
+                        </v-window>
+                    </v-card>
+                </div>
+            </template>
+        </CodeShowcase>
+
         <!-- Comment/Reply Thread -->
-        <CodeShowcase title="Comment/Reply Thread" 
+        <CodeShowcase title="Comment/Reply Thread"
             description="Interactive comment and reply system with voting, sorting, and threaded conversations"
-            icon="mdi-comment-text-multiple" 
-            difficulty="Hard" 
-            :code="commentThreadCode">
+            icon="mdi-comment-text-multiple" difficulty="Hard" :code="commentThreadCode">
             <template #preview>
                 <div class="d-flex justify-center">
                     <v-card width="500" class="pa-4" elevation="4">
                         <v-card-title class="pb-1">
                             Discussion ({{ comments.length }} comments)
                         </v-card-title>
-                        
+
                         <v-divider class="my-2"></v-divider>
-                        
+
                         <!-- Comment sorting -->
                         <div class="d-flex align-center pb-2">
                             <v-menu>
@@ -1363,28 +1426,17 @@
                                 </v-list>
                             </v-menu>
                         </div>
-                        
+
                         <!-- Add new comment -->
-                        <v-textarea
-                            v-model="newCommentText"
-                            label="Add a comment"
-                            variant="outlined"
-                            rows="2"
-                            hide-details
-                            class="mb-2"
-                        ></v-textarea>
-                        
+                        <v-textarea v-model="newCommentText" label="Add a comment" variant="outlined" rows="2"
+                            hide-details class="mb-2"></v-textarea>
+
                         <div class="d-flex justify-end mb-6">
-                            <v-btn 
-                                color="primary" 
-                                @click="addComment" 
-                                size="small"
-                                :disabled="!newCommentText.trim()"
-                            >
+                            <v-btn color="primary" @click="addComment" size="small" :disabled="!newCommentText.trim()">
                                 Comment
                             </v-btn>
                         </div>
-                        
+
                         <!-- Comments list -->
                         <v-list class="pa-0">
                             <template v-for="comment in sortedComments" :key="comment.id">
@@ -1399,71 +1451,47 @@
                                             <div class="text-caption">{{ comment.date }}</div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Comment content -->
                                     <div class="mt-2 mb-1 text-body-2">{{ comment.text }}</div>
-                                    
+
                                     <!-- Comment actions -->
                                     <div class="d-flex align-center">
-                                        <v-btn 
-                                            size="x-small" 
-                                            variant="text" 
-                                            :color="comment.userVoted === 'up' ? 'primary' : ''" 
-                                            @click="voteComment(comment, 'up')"
-                                        >
+                                        <v-btn size="x-small" variant="text"
+                                            :color="comment.userVoted === 'up' ? 'primary' : ''"
+                                            @click="voteComment(comment, 'up')">
                                             <v-icon size="small">mdi-thumb-up</v-icon>
                                         </v-btn>
                                         <span class="mx-1 text-caption">{{ comment.votes }}</span>
-                                        <v-btn 
-                                            size="x-small" 
-                                            variant="text" 
-                                            :color="comment.userVoted === 'down' ? 'primary' : ''" 
-                                            @click="voteComment(comment, 'down')"
-                                        >
+                                        <v-btn size="x-small" variant="text"
+                                            :color="comment.userVoted === 'down' ? 'primary' : ''"
+                                            @click="voteComment(comment, 'down')">
                                             <v-icon size="small">mdi-thumb-down</v-icon>
                                         </v-btn>
                                         <v-btn size="x-small" variant="text" @click="toggleReplyBox(comment.id)">
                                             Reply
                                         </v-btn>
                                     </div>
-                                    
+
                                     <!-- Reply input box -->
                                     <div v-if="replyingTo === comment.id" class="mt-2 mb-2">
-                                        <v-textarea
-                                            v-model="replyText"
-                                            label="Add a reply"
-                                            variant="outlined"
-                                            rows="2"
-                                            hide-details
-                                            class="mb-2"
-                                        ></v-textarea>
+                                        <v-textarea v-model="replyText" label="Add a reply" variant="outlined" rows="2"
+                                            hide-details class="mb-2"></v-textarea>
                                         <div class="d-flex justify-end">
-                                            <v-btn 
-                                                text 
-                                                @click="replyingTo = null" 
-                                                size="small"
-                                                class="me-2"
-                                            >
+                                            <v-btn text @click="replyingTo = null" size="small" class="me-2">
                                                 Cancel
                                             </v-btn>
-                                            <v-btn 
-                                                color="primary" 
-                                                @click="addReply(comment.id)" 
-                                                size="small"
-                                                :disabled="!replyText.trim()"
-                                            >
+                                            <v-btn color="primary" @click="addReply(comment.id)" size="small"
+                                                :disabled="!replyText.trim()">
                                                 Reply
                                             </v-btn>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Replies -->
                                     <div v-if="comment.replies && comment.replies.length > 0" class="ps-4 mt-2">
-                                        <div 
-                                            v-for="reply in comment.replies" 
-                                            :key="reply.id" 
-                                            class="reply-container mt-3"
-                                        >
+                                        <div v-for="reply in comment.replies" :key="reply.id"
+                                            class="reply-container mt-3">
                                             <div class="d-flex align-center">
                                                 <v-avatar size="24" color="grey-lighten-4">
                                                     <v-icon size="small">mdi-account</v-icon>
@@ -1475,21 +1503,15 @@
                                             </div>
                                             <div class="mt-1 text-body-2">{{ reply.text }}</div>
                                             <div class="d-flex align-center">
-                                                <v-btn 
-                                                    size="x-small" 
-                                                    variant="text" 
-                                                    :color="reply.userVoted === 'up' ? 'primary' : ''" 
-                                                    @click="voteReply(comment.id, reply, 'up')"
-                                                >
+                                                <v-btn size="x-small" variant="text"
+                                                    :color="reply.userVoted === 'up' ? 'primary' : ''"
+                                                    @click="voteReply(comment.id, reply, 'up')">
                                                     <v-icon size="x-small">mdi-thumb-up</v-icon>
                                                 </v-btn>
                                                 <span class="mx-1 text-caption">{{ reply.votes }}</span>
-                                                <v-btn 
-                                                    size="x-small" 
-                                                    variant="text" 
-                                                    :color="reply.userVoted === 'down' ? 'primary' : ''" 
-                                                    @click="voteReply(comment.id, reply, 'down')"
-                                                >
+                                                <v-btn size="x-small" variant="text"
+                                                    :color="reply.userVoted === 'down' ? 'primary' : ''"
+                                                    @click="voteReply(comment.id, reply, 'down')">
                                                     <v-icon size="x-small">mdi-thumb-down</v-icon>
                                                 </v-btn>
                                             </div>
@@ -1521,12 +1543,13 @@ import {
     NOTIFICATION_LIST_CODE,
     ORDER_SUMMARY_CODE,
     PRODUCT_CARD_CODE,
+    QR_CODE_COMPONENT_CODE,
     QUIZ_WIZARD_CODE,
     SOCIAL_CARD_CODE,
     VIDEO_PLAYER_CODE,
     WEATHER_CARD_CODE
 } from '@/constants/complexExamples'
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 
 interface AiMessage {
     id: number
@@ -1789,6 +1812,7 @@ const commentThreadCode = COMMENT_THREAD_CODE
 const videoPlayerCode = VIDEO_PLAYER_CODE
 const audioPlayerCode = AUDIO_PLAYER_CODE
 const fileUploadCode = FILE_UPLOAD_CODE
+const qrCodeComponentCode = QR_CODE_COMPONENT_CODE
 
 // Multi-step form preview
 const multiStepCurrentStep = ref(1)
@@ -1813,10 +1837,10 @@ const uploadFiles = ref<Array<{
 }>>([
     {
         id: '1',
-        file: { 
-            name: 'project-proposal.pdf', 
-            size: 2540000, 
-            type: 'application/pdf' 
+        file: {
+            name: 'project-proposal.pdf',
+            size: 2540000,
+            type: 'application/pdf'
         },
         previewUrl: null,
         uploadProgress: 100,
@@ -1824,10 +1848,10 @@ const uploadFiles = ref<Array<{
     },
     {
         id: '2',
-        file: { 
-            name: 'company-logo.png', 
-            size: 1250000, 
-            type: 'image/png' 
+        file: {
+            name: 'company-logo.png',
+            size: 1250000,
+            type: 'image/png'
         },
         previewUrl: 'https://picsum.photos/id/237/100/100',
         uploadProgress: 100,
@@ -1835,10 +1859,10 @@ const uploadFiles = ref<Array<{
     },
     {
         id: '3',
-        file: { 
-            name: 'large-video.mp4', 
-            size: 15200000, 
-            type: 'video/mp4' 
+        file: {
+            name: 'large-video.mp4',
+            size: 15200000,
+            type: 'video/mp4'
         },
         previewUrl: null,
         uploadProgress: null,
@@ -1867,7 +1891,7 @@ const onDragLeave = (event: DragEvent) => {
     // Only set to false if leaving the dropzone (not when entering a child element)
     const target = event.target as HTMLElement;
     const relatedTarget = event.relatedTarget as HTMLElement;
-    
+
     if (!target.contains(relatedTarget)) {
         isDragActive.value = false;
     }
@@ -1875,7 +1899,7 @@ const onDragLeave = (event: DragEvent) => {
 
 const onDrop = (event: DragEvent) => {
     isDragActive.value = false;
-    
+
     if (event.dataTransfer?.files) {
         handleFiles(event.dataTransfer.files);
     }
@@ -1893,55 +1917,55 @@ const onFileInputChange = (event: Event) => {
 const handleFiles = (fileList: FileList) => {
     const maxSizeMB = 5;
     const filesToAdd: typeof uploadFiles.value = [];
-    
+
     // Convert FileList to array
     const newFiles = Array.from(fileList);
-    
+
     for (const file of newFiles) {
         // Check file size
         const isTooBig = file.size > maxSizeMB * 1024 * 1024;
-        
+
         // Generate random ID
         const id = Math.random().toString(36).substring(2, 9);
-        
+
         // Check if the file is already added (by name and size)
         const isDuplicate = uploadFiles.value.some(
             f => f.file.name === file.name && f.file.size === file.size
         );
-        
+
         // Skip duplicates
         if (isDuplicate) {
             continue;
         }
-        
+
         // Create file object
         const newFile = {
             id,
-            file: { 
-                name: file.name, 
-                size: file.size, 
-                type: file.type 
+            file: {
+                name: file.name,
+                size: file.size,
+                type: file.type
             },
             previewUrl: null as string | null,
             uploadProgress: isTooBig ? null : 0,
             error: isTooBig ? `File exceeds maximum size of ${maxSizeMB}MB` : null
         };
-        
+
         // Create preview URL for images
         if (file.type.startsWith('image/') && !isTooBig) {
             newFile.previewUrl = URL.createObjectURL(file);
         }
-        
+
         filesToAdd.push(newFile);
     }
-    
+
     // Simulate upload for valid files
     filesToAdd.forEach(file => {
         if (!file.error) {
             simulateUpload(file);
         }
     });
-    
+
     // Add files to the list
     uploadFiles.value = [...uploadFiles.value, ...filesToAdd];
 }
@@ -1951,7 +1975,7 @@ const simulateUpload = (file: (typeof uploadFiles.value)[0]) => {
     const interval = setInterval(() => {
         progress += 10;
         file.uploadProgress = progress;
-        
+
         if (progress >= 100) {
             clearInterval(interval);
         }
@@ -1964,7 +1988,7 @@ const removeFile = (index: number) => {
     if (file && file.previewUrl) {
         URL.revokeObjectURL(file.previewUrl);
     }
-    
+
     // Remove file from the list
     uploadFiles.value.splice(index, 1);
 }
@@ -1976,39 +2000,39 @@ const clearAllFiles = () => {
             URL.revokeObjectURL(file.previewUrl);
         }
     });
-    
+
     // Clear the files array
     uploadFiles.value = [];
 }
 
 const uploadAllFiles = () => {
     if (isUploading.value || uploadFiles.value.length === 0) return;
-    
+
     isUploading.value = true;
-    
+
     // Get files that need to be uploaded (no errors and not already uploaded)
     const filesToUpload = uploadFiles.value.filter(
         file => !file.error && (!file.uploadProgress || file.uploadProgress < 100)
     );
-    
+
     if (filesToUpload.length === 0) {
         isUploading.value = false;
         return;
     }
-    
+
     // Simulate upload for all files
     let completedUploads = 0;
-    
+
     filesToUpload.forEach(file => {
         let progress = file.uploadProgress || 0;
         const interval = setInterval(() => {
             progress += 10;
             file.uploadProgress = progress;
-            
+
             if (progress >= 100) {
                 clearInterval(interval);
                 completedUploads++;
-                
+
                 if (completedUploads === filesToUpload.length) {
                     isUploading.value = false;
                 }
@@ -2019,11 +2043,11 @@ const uploadAllFiles = () => {
 
 const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes'
-    
+
     const k = 1024
     const sizes = ['Bytes', 'KB', 'MB', 'GB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
-    
+
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
@@ -2086,6 +2110,106 @@ const aiMessages = ref<AiMessage[]>([
 const aiNewMessage = ref('')
 const aiIsTyping = ref(false)
 const aiMessagesContainer = ref<HTMLDivElement | null>(null)
+
+// QR Code Generator/Scanner variables
+const qrActiveTab = ref('generate')
+const qrCodeValue = ref('https://example.com')
+const qrCodeSize = ref(200)
+const qrCodeColor = ref('#000000')
+const qrCodeErrorCorrection = ref('M')
+const qrCodeDataUrl = ref('')
+const qrSizeOptions = [
+    { title: 'Small (100px)', value: 100 },
+    { title: 'Medium (200px)', value: 200 },
+    { title: 'Large (300px)', value: 300 },
+    { title: 'Extra Large (400px)', value: 400 }
+]
+const qrErrorCorrectionOptions = [
+    { title: 'Low (L)', value: 'L' },
+    { title: 'Medium (M)', value: 'M' },
+    { title: 'Quartile (Q)', value: 'Q' },
+    { title: 'High (H)', value: 'H' }
+]
+const isScanning = ref(false)
+const qrVideoElement = ref<HTMLVideoElement | null>(null)
+const qrScanResult = ref('')
+const qrScanError = ref('')
+const qrFileInput = ref<File | null>(null)
+
+// Generate QR code when component mounts
+onMounted(() => {
+    generateQRCode()
+})
+
+// Generate QR code function
+const generateQRCode = () => {
+    if (!qrCodeValue.value) return
+
+    // In a real implementation, you'd use a library like qrcode-generator or qrcode.vue
+    // Here we simulate the generation with a timeout
+    qrCodeDataUrl.value = ''
+    setTimeout(() => {
+        // Simulate QR code generation (would use actual QR library in real implementation)
+        // This is just a placeholder URL for demo purposes
+        qrCodeDataUrl.value = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrCodeValue.value)}&size=${qrCodeSize.value}x${qrCodeSize.value}&color=${qrCodeColor.value.substring(1)}&ecc=${qrCodeErrorCorrection.value}`
+    }, 500)
+}
+
+// Download QR code
+const downloadQRCode = () => {
+    if (!qrCodeDataUrl.value) return
+
+    const link = document.createElement('a')
+    link.href = qrCodeDataUrl.value
+    link.download = 'qrcode.png'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+}
+
+// Start camera for QR scanning
+const startScanning = () => {
+    isScanning.value = true
+    qrScanResult.value = ''
+    qrScanError.value = ''
+
+    // In real implementation, you would use a library like jsQR or a browser API
+    // Here we simulate finding a QR code after a delay
+    setTimeout(() => {
+        // Simulate successful scan
+        qrScanResult.value = 'https://example.com/scanned-result'
+        // In a real implementation, we would continue scanning until stopped
+    }, 3000)
+}
+
+// Stop camera scanning
+const stopScanning = () => {
+    isScanning.value = false
+}
+
+// Scan QR from uploaded file
+const scanQRFromFile = () => {
+    if (!qrFileInput.value) return
+
+    qrScanResult.value = ''
+    qrScanError.value = ''
+
+    // Simulate processing uploaded image
+    setTimeout(() => {
+        // Simulate successful scan from file
+        qrScanResult.value = 'https://example.com/file-scan-result'
+    }, 1000)
+}
+
+// Check if string is a URL
+const isUrl = (str: string): boolean => {
+    try {
+        new URL(str)
+        return true
+    } catch {
+        return false
+    }
+}
 
 const aiQuickActions = [
     'Explain Vue.js',
@@ -2188,7 +2312,7 @@ const comments = ref([
 
 const sortedComments = computed(() => {
     const commentsCopy = [...comments.value]
-    
+
     if (sortOption.value === 'Newest') {
         // For demo purposes, we'll just reverse the array since we don't have actual timestamps
         return commentsCopy.reverse()
@@ -2199,7 +2323,7 @@ const sortedComments = computed(() => {
 
 const addComment = () => {
     if (!newCommentText.value.trim()) return
-    
+
     const newComment = {
         id: Date.now(),
         author: 'You',
@@ -2209,7 +2333,7 @@ const addComment = () => {
         userVoted: null,
         replies: []
     }
-    
+
     comments.value.unshift(newComment)
     newCommentText.value = ''
 }
@@ -2221,7 +2345,7 @@ const toggleReplyBox = (commentId: number) => {
 
 const addReply = (commentId: number) => {
     if (!replyText.value.trim()) return
-    
+
     const newReply = {
         id: Date.now(),
         author: 'You',
@@ -2230,7 +2354,7 @@ const addReply = (commentId: number) => {
         votes: 0,
         userVoted: null
     }
-    
+
     const comment = comments.value.find(c => c.id === commentId)
     if (comment) {
         if (!comment.replies) {
@@ -2238,7 +2362,7 @@ const addReply = (commentId: number) => {
         }
         comment.replies.push(newReply)
     }
-    
+
     replyText.value = ''
     replyingTo.value = null
 }
@@ -2401,7 +2525,8 @@ const voteReply = (commentId: number, reply: any, voteType: 'up' | 'down') => {
 .video-container-preview {
     position: relative;
     width: 100%;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    padding-top: 56.25%;
+    /* 16:9 Aspect Ratio */
     background-color: #000;
     overflow: hidden;
 }
@@ -2415,6 +2540,55 @@ const voteReply = (commentId: number, reply: any, voteType: 'up' | 'down') => {
     object-fit: contain;
 }
 
+/* QR Code Scanner Styles */
+.qr-scanner-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.qr-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.qr-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.qr-scanner-region {
+    width: 70%;
+    height: 70%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.5);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5), 0 0 0 5000px rgba(0, 0, 0, 0.5);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 255, 255, 0), 0 0 0 5000px rgba(0, 0, 0, 0.5);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0), 0 0 0 5000px rgba(0, 0, 0, 0.5);
+    }
+}
+
 .video-overlay-preview {
     position: absolute;
     top: 0;
@@ -2424,16 +2598,14 @@ const voteReply = (commentId: number, reply: any, voteType: 'up' | 'down') => {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.5) 0%,
-        rgba(0, 0, 0, 0) 30%,
-        rgba(0, 0, 0, 0) 70%,
-        rgba(0, 0, 0, 0.7) 100%
-    );
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.5) 0%,
+            rgba(0, 0, 0, 0) 30%,
+            rgba(0, 0, 0, 0) 70%,
+            rgba(0, 0, 0, 0.7) 100%);
 }
 
-.video-top-controls-preview, 
+.video-top-controls-preview,
 .video-bottom-controls-preview {
     display: flex;
     padding: 8px;
@@ -2671,7 +2843,8 @@ const voteReply = (commentId: number, reply: any, voteType: 'up' | 'down') => {
 
 .file-details-preview {
     flex: 1;
-    min-width: 0; /* Needed for text-truncate to work */
+    min-width: 0;
+    /* Needed for text-truncate to work */
 }
 
 .file-name-preview {
