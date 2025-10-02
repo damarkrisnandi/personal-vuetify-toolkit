@@ -1625,13 +1625,13 @@ export const MULTI_STEP_FORM_CODE = `<template>
     </v-card-title>
 
     <v-divider></v-divider>
-    
+
     <!-- Progress Stepper -->
     <v-stepper :items="steps" v-model="currentStep" alt-labels>
       <template v-slot:item="{ props, item }">
-        <v-stepper-item 
-          v-bind="props" 
-          :value="item" 
+        <v-stepper-item
+          v-bind="props"
+          :value="item"
           :complete="completedSteps[item.value - 1]"
           :disabled="!isStepAvailable(item.value)"
           @click="handleStepClick(item.value)"
@@ -1650,7 +1650,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
         <v-card-text>
           <v-form ref="personalForm" v-model="forms.personalValid" @submit.prevent>
             <p class="text-body-1 mb-4">Please enter your personal information.</p>
-            
+
             <div class="d-flex gap-3">
               <v-text-field
                 v-model="formData.firstName"
@@ -1660,7 +1660,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
                 :rules="[v => !!v || 'First name is required']"
                 class="flex-grow-1"
               ></v-text-field>
-              
+
               <v-text-field
                 v-model="formData.lastName"
                 label="Last Name"
@@ -1670,7 +1670,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
                 class="flex-grow-1"
               ></v-text-field>
             </div>
-            
+
             <v-text-field
               v-model="formData.email"
               label="Email"
@@ -1681,7 +1681,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
               prepend-inner-icon="mdi-email"
               class="mb-2"
             ></v-text-field>
-            
+
             <v-text-field
               v-model="formData.phone"
               label="Phone Number"
@@ -1691,7 +1691,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
               prepend-inner-icon="mdi-phone"
               class="mb-2"
             ></v-text-field>
-            
+
             <v-select
               v-model="formData.gender"
               label="Gender"
@@ -1700,7 +1700,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
               density="comfortable"
               class="mb-2"
             ></v-select>
-            
+
             <v-text-field
               v-model="formData.dob"
               label="Date of Birth"
@@ -1719,7 +1719,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
         <v-card-text>
           <v-form ref="addressForm" v-model="forms.addressValid" @submit.prevent>
             <p class="text-body-1 mb-4">Please enter your address information.</p>
-            
+
             <v-text-field
               v-model="formData.street"
               label="Street Address"
@@ -1728,7 +1728,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
               :rules="[v => !!v || 'Street address is required']"
               class="mb-2"
             ></v-text-field>
-            
+
             <v-text-field
               v-model="formData.apartment"
               label="Apartment / Suite / Unit (optional)"
@@ -1736,7 +1736,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
               density="comfortable"
               class="mb-2"
             ></v-text-field>
-            
+
             <div class="d-flex gap-3">
               <v-text-field
                 v-model="formData.city"
@@ -1746,7 +1746,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
                 :rules="[v => !!v || 'City is required']"
                 class="flex-grow-1"
               ></v-text-field>
-              
+
               <v-text-field
                 v-model="formData.state"
                 label="State / Province"
@@ -1756,7 +1756,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
                 class="flex-grow-1"
               ></v-text-field>
             </div>
-            
+
             <div class="d-flex gap-3">
               <v-text-field
                 v-model="formData.zipCode"
@@ -1766,7 +1766,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
                 :rules="[v => !!v || 'ZIP code is required']"
                 class="flex-grow-1"
               ></v-text-field>
-              
+
               <v-autocomplete
                 v-model="formData.country"
                 label="Country"
@@ -1777,9 +1777,9 @@ export const MULTI_STEP_FORM_CODE = `<template>
                 class="flex-grow-1"
               ></v-autocomplete>
             </div>
-            
-            <v-checkbox 
-              v-model="formData.billingIsSame" 
+
+            <v-checkbox
+              v-model="formData.billingIsSame"
               label="Billing address is same as shipping address"
             ></v-checkbox>
           </v-form>
@@ -1791,21 +1791,21 @@ export const MULTI_STEP_FORM_CODE = `<template>
         <v-card-text>
           <v-form ref="paymentForm" v-model="forms.paymentValid" @submit.prevent>
             <p class="text-body-1 mb-4">Please enter your payment information.</p>
-            
+
             <div class="payment-card-container mb-3">
               <v-radio-group v-model="formData.paymentMethod" inline>
                 <v-radio value="credit" label="Credit Card"></v-radio>
                 <v-radio value="debit" label="Debit Card"></v-radio>
                 <v-radio value="paypal" label="PayPal"></v-radio>
               </v-radio-group>
-              
+
               <div class="payment-icons">
                 <v-icon icon="mdi-credit-card" color="primary" class="me-2"></v-icon>
                 <v-icon icon="mdi-credit-card-outline" class="me-2"></v-icon>
                 <v-icon icon="mdi-paypal" color="info"></v-icon>
               </div>
             </div>
-            
+
             <div v-if="formData.paymentMethod !== 'paypal'">
               <v-text-field
                 v-model="formData.cardName"
@@ -1815,7 +1815,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
                 :rules="[v => !!v || 'Name on card is required']"
                 class="mb-2"
               ></v-text-field>
-              
+
               <v-text-field
                 v-model="formData.cardNumber"
                 label="Card Number"
@@ -1827,7 +1827,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
                 prepend-inner-icon="mdi-credit-card"
                 class="mb-2"
               ></v-text-field>
-              
+
               <div class="d-flex gap-3">
                 <v-text-field
                   v-model="formData.expiryDate"
@@ -1839,7 +1839,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
                   @input="formatExpiryDate"
                   class="flex-grow-1"
                 ></v-text-field>
-                
+
                 <v-text-field
                   v-model="formData.cvv"
                   label="CVV"
@@ -1852,7 +1852,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
                 ></v-text-field>
               </div>
             </div>
-            
+
             <div v-else>
               <v-alert type="info" variant="tonal" class="mb-3">
                 You will be redirected to PayPal to complete your payment after form submission.
@@ -1866,7 +1866,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
       <v-window-item :value="4">
         <v-card-text>
           <p class="text-body-1 mb-4">Please review your information before submitting.</p>
-          
+
           <v-card variant="outlined" class="mb-4">
             <v-card-title class="bg-grey-lighten-4 pa-3 text-subtitle-1">
               <v-icon icon="mdi-account" class="me-2"></v-icon>
@@ -1893,7 +1893,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
               </div>
             </v-card-text>
           </v-card>
-          
+
           <v-card variant="outlined" class="mb-4">
             <v-card-title class="bg-grey-lighten-4 pa-3 text-subtitle-1">
               <v-icon icon="mdi-map-marker" class="me-2"></v-icon>
@@ -1920,7 +1920,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
               </div>
             </v-card-text>
           </v-card>
-          
+
           <v-card variant="outlined">
             <v-card-title class="bg-grey-lighten-4 pa-3 text-subtitle-1">
               <v-icon icon="mdi-credit-card" class="me-2"></v-icon>
@@ -1932,7 +1932,7 @@ export const MULTI_STEP_FORM_CODE = `<template>
               <div class="review-item">
                 <span class="text-caption text-grey">Payment Method:</span>
                 <span class="text-body-2">
-                  {{ formData.paymentMethod === 'credit' ? 'Credit Card' : 
+                  {{ formData.paymentMethod === 'credit' ? 'Credit Card' :
                      formData.paymentMethod === 'debit' ? 'Debit Card' : 'PayPal' }}
                 </span>
               </div>
@@ -2009,7 +2009,7 @@ const formData = reactive({
   phone: '',
   gender: '',
   dob: '',
-  
+
   // Step 2: Address
   street: '',
   apartment: '',
@@ -2018,7 +2018,7 @@ const formData = reactive({
   zipCode: '',
   country: 'United States',
   billingIsSame: true,
-  
+
   // Step 3: Payment
   paymentMethod: 'credit',
   cardName: '',
@@ -2069,7 +2069,7 @@ const nextStep = async () => {
     if (!valid.valid) return
     completedSteps[2] = true
   }
-  
+
   if (currentStep.value < steps.length) {
     currentStep.value++
   }
@@ -2102,7 +2102,7 @@ const handleCancel = () => {
 
 const submitForm = async () => {
   isSubmitting.value = true
-  
+
   try {
     // Simulating API submission
     await new Promise(resolve => setTimeout(resolve, 2000))
@@ -2117,21 +2117,21 @@ const submitForm = async () => {
 const formatCardNumber = () => {
   let value = formData.cardNumber.replace(/\\s/g, '')
   let formattedValue = ''
-  
+
   for (let i = 0; i < value.length; i++) {
     if (i > 0 && i % 4 === 0) {
       formattedValue += ' '
     }
     formattedValue += value[i]
   }
-  
+
   formData.cardNumber = formattedValue
 }
 
 // Format expiry date to add slash between month and year
 const formatExpiryDate = () => {
   let value = formData.expiryDate.replace(/\\D/g, '')
-  
+
   if (value.length > 2) {
     formData.expiryDate = \`\${value.substring(0, 2)}/\${value.substring(2, 4)}\`
   } else {
@@ -2142,7 +2142,7 @@ const formatExpiryDate = () => {
 // Format date for display
 const formatDate = (dateString) => {
   if (!dateString) return ''
-  
+
   const options = { year: 'numeric', month: 'long', day: 'numeric' }
   return new Date(dateString).toLocaleDateString(undefined, options)
 }
@@ -2170,7 +2170,7 @@ const formatDate = (dateString) => {
   .review-item {
     flex-direction: row;
   }
-  
+
   .review-item .text-caption {
     width: 150px;
     padding-right: 16px;
@@ -2193,9 +2193,9 @@ export const KANBAN_BOARD_CODE = `<template>
     <v-card-text class="pa-4">
       <!-- Drag and drop container for task columns -->
       <div class="d-flex gap-4 kanban-container">
-        <div 
-          v-for="(column, columnIndex) in columns" 
-          :key="column.id" 
+        <div
+          v-for="(column, columnIndex) in columns"
+          :key="column.id"
           class="kanban-column"
         >
           <!-- Column header -->
@@ -2225,8 +2225,8 @@ export const KANBAN_BOARD_CODE = `<template>
           </div>
 
           <!-- Task container -->
-          <div 
-            class="task-container pa-2" 
+          <div
+            class="task-container pa-2"
             :data-column-id="column.id"
             @dragover="onDragOver($event)"
             @dragenter.prevent
@@ -2234,10 +2234,10 @@ export const KANBAN_BOARD_CODE = `<template>
             @drop="onDrop($event, column)"
           >
             <!-- Tasks in the column -->
-            <v-card 
-              v-for="task in column.tasks" 
-              :key="task.id" 
-              class="task-card ma-2" 
+            <v-card
+              v-for="task in column.tasks"
+              :key="task.id"
+              class="task-card ma-2"
               elevation="2"
               draggable="true"
               @dragstart="onDragStart($event, task, column)"
@@ -2278,7 +2278,7 @@ export const KANBAN_BOARD_CODE = `<template>
                     </v-avatar>
                     <span class="text-caption">{{ task.assignee ? task.assignee.name : 'Unassigned' }}</span>
                   </div>
-                  
+
                   <div class="text-caption d-flex align-center" v-if="task.dueDate">
                     <v-icon icon="mdi-calendar" size="small" class="me-1"></v-icon>
                     {{ formatDate(task.dueDate) }}
@@ -2298,7 +2298,7 @@ export const KANBAN_BOARD_CODE = `<template>
         </div>
       </div>
     </v-card-text>
-    
+
     <!-- New Task Dialog -->
     <v-dialog v-model="newTaskDialog" max-width="500">
       <v-card>
@@ -2313,7 +2313,7 @@ export const KANBAN_BOARD_CODE = `<template>
               class="mb-2"
               :rules="[v => !!v || 'Title is required']"
             ></v-text-field>
-            
+
             <v-textarea
               v-model="taskForm.description"
               label="Description"
@@ -2322,7 +2322,7 @@ export const KANBAN_BOARD_CODE = `<template>
               class="mb-2"
               rows="2"
             ></v-textarea>
-            
+
             <v-select
               v-model="taskForm.priority"
               label="Priority"
@@ -2331,7 +2331,7 @@ export const KANBAN_BOARD_CODE = `<template>
               density="comfortable"
               class="mb-2"
             ></v-select>
-            
+
             <v-select
               v-model="taskForm.columnId"
               label="Status"
@@ -2342,7 +2342,7 @@ export const KANBAN_BOARD_CODE = `<template>
               item-value="value"
               class="mb-2"
             ></v-select>
-            
+
             <v-select
               v-model="taskForm.assigneeId"
               label="Assignee"
@@ -2364,7 +2364,7 @@ export const KANBAN_BOARD_CODE = `<template>
                 </v-list-item>
               </template>
             </v-select>
-            
+
             <v-text-field
               v-model="taskForm.dueDate"
               label="Due Date"
@@ -2491,10 +2491,10 @@ function onDragStart(event, task, column) {
   draggedTask.value = task
   draggedColumn.value = column
   event.dataTransfer.effectAllowed = 'move'
-  
+
   // Add some data to the drag event
   event.dataTransfer.setData('text/plain', task.id)
-  
+
   // Add styling to indicate dragging
   if (event.target.classList) {
     setTimeout(() => {
@@ -2516,20 +2516,20 @@ function onDragLeave(event) {
 
 function onDrop(event, targetColumn) {
   event.preventDefault()
-  
+
   // Remove drag-over class
   event.currentTarget.classList.remove('drag-over')
-  
+
   // Remove dragging class from all elements
   const draggingElements = document.querySelectorAll('.dragging')
   draggingElements.forEach(el => el.classList.remove('dragging'))
-  
+
   if (draggedTask.value && draggedColumn.value) {
     // Remove task from original column
     const taskIndex = draggedColumn.value.tasks.findIndex(t => t.id === draggedTask.value.id)
     if (taskIndex !== -1) {
       draggedColumn.value.tasks.splice(taskIndex, 1)
-      
+
       // Add task to target column
       targetColumn.tasks.push(draggedTask.value)
     }
@@ -2578,7 +2578,7 @@ function editTask(task) {
 
 function saveTask() {
   if (!taskForm.title) return
-  
+
   const assignee = team.find(t => t.id === taskForm.assigneeId)
   const newTask = {
     id: editingTask.value ? taskForm.id : \`t\${Date.now()}\`,
@@ -2588,7 +2588,7 @@ function saveTask() {
     assignee: assignee,
     dueDate: taskForm.dueDate
   }
-  
+
   if (editingTask.value) {
     // Update existing task
     columns.forEach(column => {
@@ -2598,13 +2598,13 @@ function saveTask() {
       }
     })
   }
-  
+
   // Add task to selected column
   const targetColumn = columns.find(col => col.id === taskForm.columnId)
   if (targetColumn) {
     targetColumn.tasks.push(newTask)
   }
-  
+
   newTaskDialog.value = false
 }
 
