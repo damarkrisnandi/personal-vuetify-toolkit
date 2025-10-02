@@ -1029,6 +1029,479 @@
                 </div>
             </template>
         </CodeShowcase>
+
+        <!-- Video Player -->
+        <CodeShowcase 
+            title="Video Player" 
+            description="Customizable video player with playback controls, progress bar, and fullscreen support"
+            icon="mdi-video" 
+            difficulty="Hard" 
+            :code="videoPlayerCode"
+        >
+            <template #preview>
+                <div class="d-flex justify-center">
+                    <v-card width="600" class="video-player-preview">
+                        <div class="video-container-preview">
+                            <video 
+                                class="video-element-preview" 
+                                poster="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
+                            >
+                                <source src="https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            
+                            <div class="video-overlay-preview">
+                                <div class="video-top-controls-preview">
+                                    <v-btn icon="mdi-fullscreen" variant="text" color="white" size="small"></v-btn>
+                                </div>
+                                
+                                <div class="video-center-controls-preview">
+                                    <v-btn icon="mdi-play" size="x-large" color="white" variant="text"></v-btn>
+                                </div>
+                                
+                                <div class="video-bottom-controls-preview">
+                                    <div class="progress-container-preview">
+                                        <div class="progress-bar-preview" style="width: 35%"></div>
+                                    </div>
+                                    
+                                    <div class="controls-container-preview">
+                                        <v-btn icon="mdi-play" size="small" color="white" variant="text"></v-btn>
+                                        <div class="time-display-preview">1:25 / 3:45</div>
+                                        <div class="volume-control-preview">
+                                            <v-btn icon="mdi-volume-high" size="small" color="white" variant="text"></v-btn>
+                                        </div>
+                                        <v-btn icon="mdi-speedometer" size="small" color="white" variant="text"></v-btn>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <v-card-text>
+                            <div class="text-h6">Big Buck Bunny (Sample)</div>
+                            <div class="text-subtitle-1 text-medium-emphasis">Sample video for demonstration</div>
+                        </v-card-text>
+                    </v-card>
+                </div>
+            </template>
+        </CodeShowcase>
+        
+        <!-- Audio Player -->
+        <CodeShowcase 
+            title="Audio Player" 
+            description="Feature-rich audio player with playlist support, visualizations, and mini-player mode"
+            icon="mdi-music" 
+            difficulty="Hard" 
+            :code="audioPlayerCode"
+        >
+            <template #preview>
+                <div class="d-flex justify-center">
+                    <v-card width="500" class="audio-player-preview">
+                        <div class="audio-player-content-preview">
+                            <div class="artwork-container-preview">
+                                <v-img
+                                    src="https://picsum.photos/id/1025/300/300"
+                                    aspect-ratio="1"
+                                    cover
+                                    class="artwork-preview"
+                                ></v-img>
+                            </div>
+                            
+                            <div class="audio-info-preview">
+                                <div class="track-info-preview">
+                                    <div class="text-h6 track-title-preview">Dreaming</div>
+                                    <div class="text-subtitle-2 text-medium-emphasis">Acoustic Band</div>
+                                </div>
+                                
+                                <div class="playback-controls-preview">
+                                    <div class="progress-container-preview">
+                                        <div class="progress-bar-preview" style="width: 60%"></div>
+                                    </div>
+                                    
+                                    <div class="time-display-preview">
+                                        <span>2:14</span>
+                                        <span>3:45</span>
+                                    </div>
+                                    
+                                    <div class="control-buttons-preview">
+                                        <v-btn icon="mdi-shuffle-variant" size="small" variant="text"></v-btn>
+                                        <v-btn icon="mdi-skip-previous" size="small" variant="text"></v-btn>
+                                        <v-btn icon="mdi-pause-circle" color="primary" size="large" variant="text"></v-btn>
+                                        <v-btn icon="mdi-skip-next" size="small" variant="text"></v-btn>
+                                        <v-btn icon="mdi-repeat" size="small" color="primary" variant="text"></v-btn>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="additional-controls-preview">
+                                <div class="volume-control-preview">
+                                    <v-btn icon="mdi-volume-high" size="small" variant="text"></v-btn>
+                                </div>
+                                <div class="right-controls-preview">
+                                    <v-btn icon="mdi-playlist-music" size="small" variant="text"></v-btn>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <v-divider></v-divider>
+                        
+                        <v-list density="compact" class="playlist-preview" style="max-height: 150px; overflow-y: auto">
+                            <v-list-item active>
+                                <template v-slot:prepend>
+                                    <v-avatar size="32" class="me-2">
+                                        <v-img src="https://picsum.photos/id/1025/300/300" cover></v-img>
+                                    </v-avatar>
+                                </template>
+                                <v-list-item-title>Dreaming</v-list-item-title>
+                                <v-list-item-subtitle>Acoustic Band</v-list-item-subtitle>
+                                <template v-slot:append>
+                                    <span class="text-caption">3:45</span>
+                                </template>
+                            </v-list-item>
+                            <v-list-item>
+                                <template v-slot:prepend>
+                                    <v-avatar size="32" class="me-2">
+                                        <v-img src="https://picsum.photos/id/1062/300/300" cover></v-img>
+                                    </v-avatar>
+                                </template>
+                                <v-list-item-title>Sunset Melody</v-list-item-title>
+                                <v-list-item-subtitle>The Nature Sounds</v-list-item-subtitle>
+                                <template v-slot:append>
+                                    <span class="text-caption">4:12</span>
+                                </template>
+                            </v-list-item>
+                            <v-list-item>
+                                <template v-slot:prepend>
+                                    <v-avatar size="32" class="me-2">
+                                        <v-img src="https://picsum.photos/id/96/300/300" cover></v-img>
+                                    </v-avatar>
+                                </template>
+                                <v-list-item-title>Mountain High</v-list-item-title>
+                                <v-list-item-subtitle>Elevation</v-list-item-subtitle>
+                                <template v-slot:append>
+                                    <span class="text-caption">3:28</span>
+                                </template>
+                            </v-list-item>
+                        </v-list>
+                    </v-card>
+                </div>
+            </template>
+        </CodeShowcase>
+        
+        <!-- File Upload Component -->
+        <CodeShowcase 
+            title="File Upload with Drag & Drop" 
+            description="Interactive file upload with drag and drop support, file preview, and progress tracking"
+            icon="mdi-file-upload" 
+            difficulty="Hard" 
+            :code="fileUploadCode"
+        >
+            <template #preview>
+                <div class="d-flex justify-center">
+                    <v-card width="600" class="pa-4" elevation="4">
+                        <v-card-title class="pb-4">
+                            Upload Files
+                        </v-card-title>
+                        
+                        <!-- Drop Zone -->
+                        <div 
+                            class="file-dropzone-preview"
+                            :class="{ 'dropzone-active': isDragActive }"
+                            @dragenter.prevent="onDragEnter"
+                            @dragover.prevent="onDragOver"
+                            @dragleave.prevent="onDragLeave"
+                            @drop.prevent="onDrop"
+                            @click="triggerFileInput"
+                        >
+                            <!-- Hidden file input -->
+                            <input 
+                                type="file" 
+                                ref="fileInputRef" 
+                                multiple
+                                class="file-input-hidden"
+                                @change="onFileInputChange"
+                            />
+                            
+                            <div class="dropzone-content-preview">
+                                <v-icon 
+                                    :icon="isDragActive ? 'mdi-file-upload-outline' : 'mdi-cloud-upload'" 
+                                    color="primary" 
+                                    size="48"
+                                ></v-icon>
+                                <div class="text-body-1 mt-4">
+                                    <span v-if="isDragActive">Drop files here</span>
+                                    <span v-else><span class="text-primary">Click to upload</span> or drag and drop</span>
+                                </div>
+                                <div class="text-body-2 text-grey mt-2">
+                                    Upload multiple files (Max size: 5MB each)
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Preview area for uploaded files -->
+                        <div v-if="uploadFiles.length > 0" class="preview-area-preview mt-4">
+                            <div class="file-list-preview">
+                                <div 
+                                    v-for="(file, i) in uploadFiles" 
+                                    :key="file.id" 
+                                    class="file-item-preview"
+                                    :class="{'has-preview': file.previewUrl}"
+                                >
+                                    <!-- File preview -->
+                                    <div class="file-preview-preview">
+                                        <div v-if="file.previewUrl" class="preview-image-container-preview">
+                                            <img 
+                                                :src="file.previewUrl" 
+                                                class="preview-image-preview" 
+                                                alt="File preview"
+                                            />
+                                        </div>
+                                        <v-icon 
+                                            v-else 
+                                            :icon="getFileIcon(file.file)"
+                                            :color="getFileColor(file.file)" 
+                                            size="36"
+                                        ></v-icon>
+                                    </div>
+                                    
+                                    <!-- File details -->
+                                    <div class="file-details-preview">
+                                        <div class="file-name-preview text-truncate">{{ file.file.name }}</div>
+                                        <div class="file-meta-preview text-caption">
+                                            {{ formatFileSize(file.file.size) }}
+                                            <span v-if="file.uploadProgress !== null">
+                                                • {{ file.uploadProgress === 100 ? 'Uploaded' : `${file.uploadProgress}%` }}
+                                            </span>
+                                        </div>
+                                        
+                                        <!-- Progress bar -->
+                                        <v-progress-linear 
+                                            v-if="file.uploadProgress !== null && file.uploadProgress < 100"
+                                            :model-value="file.uploadProgress"
+                                            color="primary"
+                                            height="4"
+                                            class="mt-1"
+                                        ></v-progress-linear>
+                                        
+                                        <!-- Status -->
+                                        <div 
+                                            v-if="file.error" 
+                                            class="file-error-preview text-caption text-error mt-1"
+                                        >
+                                            {{ file.error }}
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Actions -->
+                                    <div class="file-actions-preview">
+                                        <v-btn 
+                                            icon="mdi-close" 
+                                            size="small" 
+                                            variant="text" 
+                                            color="default"
+                                            @click="removeFile(i)"
+                                        ></v-btn>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Action buttons -->
+                            <div class="file-actions-container-preview mt-4">
+                                <v-btn
+                                    color="primary"
+                                    variant="elevated"
+                                    @click="uploadAllFiles"
+                                    :loading="isUploading"
+                                >
+                                    Upload {{ uploadFiles.length }} {{ uploadFiles.length === 1 ? 'file' : 'files' }}
+                                </v-btn>
+                                
+                                <v-btn
+                                    variant="text"
+                                    class="ms-2"
+                                    @click="clearAllFiles"
+                                >
+                                    Clear all
+                                </v-btn>
+                            </div>
+                        </div>
+                    </v-card>
+                </div>
+            </template>
+        </CodeShowcase>
+        
+        <!-- Comment/Reply Thread -->
+        <CodeShowcase title="Comment/Reply Thread" 
+            description="Interactive comment and reply system with voting, sorting, and threaded conversations"
+            icon="mdi-comment-text-multiple" 
+            difficulty="Hard" 
+            :code="commentThreadCode">
+            <template #preview>
+                <div class="d-flex justify-center">
+                    <v-card width="500" class="pa-4" elevation="4">
+                        <v-card-title class="pb-1">
+                            Discussion ({{ comments.length }} comments)
+                        </v-card-title>
+                        
+                        <v-divider class="my-2"></v-divider>
+                        
+                        <!-- Comment sorting -->
+                        <div class="d-flex align-center pb-2">
+                            <v-menu>
+                                <template v-slot:activator="{ props }">
+                                    <v-btn variant="text" size="small" v-bind="props">
+                                        Sort by: {{ sortOption }}
+                                        <v-icon end>mdi-chevron-down</v-icon>
+                                    </v-btn>
+                                </template>
+                                <v-list density="compact">
+                                    <v-list-item @click="sortOption = 'Newest'">
+                                        <v-list-item-title>Newest</v-list-item-title>
+                                    </v-list-item>
+                                    <v-list-item @click="sortOption = 'Top Rated'">
+                                        <v-list-item-title>Top Rated</v-list-item-title>
+                                    </v-list-item>
+                                </v-list>
+                            </v-menu>
+                        </div>
+                        
+                        <!-- Add new comment -->
+                        <v-textarea
+                            v-model="newCommentText"
+                            label="Add a comment"
+                            variant="outlined"
+                            rows="2"
+                            hide-details
+                            class="mb-2"
+                        ></v-textarea>
+                        
+                        <div class="d-flex justify-end mb-6">
+                            <v-btn 
+                                color="primary" 
+                                @click="addComment" 
+                                size="small"
+                                :disabled="!newCommentText.trim()"
+                            >
+                                Comment
+                            </v-btn>
+                        </div>
+                        
+                        <!-- Comments list -->
+                        <v-list class="pa-0">
+                            <template v-for="comment in sortedComments" :key="comment.id">
+                                <div class="comment-container mb-4">
+                                    <!-- Comment header -->
+                                    <div class="d-flex align-center">
+                                        <v-avatar size="32" color="grey-lighten-3">
+                                            <v-icon>mdi-account</v-icon>
+                                        </v-avatar>
+                                        <div class="ms-2">
+                                            <div class="text-subtitle-2">{{ comment.author }}</div>
+                                            <div class="text-caption">{{ comment.date }}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Comment content -->
+                                    <div class="mt-2 mb-1 text-body-2">{{ comment.text }}</div>
+                                    
+                                    <!-- Comment actions -->
+                                    <div class="d-flex align-center">
+                                        <v-btn 
+                                            size="x-small" 
+                                            variant="text" 
+                                            :color="comment.userVoted === 'up' ? 'primary' : ''" 
+                                            @click="voteComment(comment, 'up')"
+                                        >
+                                            <v-icon size="small">mdi-thumb-up</v-icon>
+                                        </v-btn>
+                                        <span class="mx-1 text-caption">{{ comment.votes }}</span>
+                                        <v-btn 
+                                            size="x-small" 
+                                            variant="text" 
+                                            :color="comment.userVoted === 'down' ? 'primary' : ''" 
+                                            @click="voteComment(comment, 'down')"
+                                        >
+                                            <v-icon size="small">mdi-thumb-down</v-icon>
+                                        </v-btn>
+                                        <v-btn size="x-small" variant="text" @click="toggleReplyBox(comment.id)">
+                                            Reply
+                                        </v-btn>
+                                    </div>
+                                    
+                                    <!-- Reply input box -->
+                                    <div v-if="replyingTo === comment.id" class="mt-2 mb-2">
+                                        <v-textarea
+                                            v-model="replyText"
+                                            label="Add a reply"
+                                            variant="outlined"
+                                            rows="2"
+                                            hide-details
+                                            class="mb-2"
+                                        ></v-textarea>
+                                        <div class="d-flex justify-end">
+                                            <v-btn 
+                                                text 
+                                                @click="replyingTo = null" 
+                                                size="small"
+                                                class="me-2"
+                                            >
+                                                Cancel
+                                            </v-btn>
+                                            <v-btn 
+                                                color="primary" 
+                                                @click="addReply(comment.id)" 
+                                                size="small"
+                                                :disabled="!replyText.trim()"
+                                            >
+                                                Reply
+                                            </v-btn>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Replies -->
+                                    <div v-if="comment.replies && comment.replies.length > 0" class="ps-4 mt-2">
+                                        <div 
+                                            v-for="reply in comment.replies" 
+                                            :key="reply.id" 
+                                            class="reply-container mt-3"
+                                        >
+                                            <div class="d-flex align-center">
+                                                <v-avatar size="24" color="grey-lighten-4">
+                                                    <v-icon size="small">mdi-account</v-icon>
+                                                </v-avatar>
+                                                <div class="ms-2">
+                                                    <div class="text-subtitle-2">{{ reply.author }}</div>
+                                                    <div class="text-caption">{{ reply.date }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-1 text-body-2">{{ reply.text }}</div>
+                                            <div class="d-flex align-center">
+                                                <v-btn 
+                                                    size="x-small" 
+                                                    variant="text" 
+                                                    :color="reply.userVoted === 'up' ? 'primary' : ''" 
+                                                    @click="voteReply(comment.id, reply, 'up')"
+                                                >
+                                                    <v-icon size="x-small">mdi-thumb-up</v-icon>
+                                                </v-btn>
+                                                <span class="mx-1 text-caption">{{ reply.votes }}</span>
+                                                <v-btn 
+                                                    size="x-small" 
+                                                    variant="text" 
+                                                    :color="reply.userVoted === 'down' ? 'primary' : ''" 
+                                                    @click="voteReply(comment.id, reply, 'down')"
+                                                >
+                                                    <v-icon size="x-small">mdi-thumb-down</v-icon>
+                                                </v-btn>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </v-list>
+                    </v-card>
+                </div>
+            </template>
+        </CodeShowcase>
     </div>
 </template>
 
@@ -1036,8 +1509,11 @@
 import CodeShowcase from '@/components/CodeShowcase.vue'
 import {
     AI_CHAT_CODE,
+    AUDIO_PLAYER_CODE,
     CHAT_PAGE_CODE,
+    COMMENT_THREAD_CODE,
     DASHBOARD_CODE,
+    FILE_UPLOAD_CODE,
     FORM_GROUP_CODE,
     KANBAN_BOARD_CODE,
     LOGIN_CARD_CODE,
@@ -1047,6 +1523,7 @@ import {
     PRODUCT_CARD_CODE,
     QUIZ_WIZARD_CODE,
     SOCIAL_CARD_CODE,
+    VIDEO_PLAYER_CODE,
     WEATHER_CARD_CODE
 } from '@/constants/complexExamples'
 import { computed, nextTick, ref } from 'vue'
@@ -1308,6 +1785,10 @@ const formGroupCode = FORM_GROUP_CODE
 const aiChatCode = AI_CHAT_CODE
 const kanbanBoardCode = KANBAN_BOARD_CODE
 const multiStepFormCode = MULTI_STEP_FORM_CODE
+const commentThreadCode = COMMENT_THREAD_CODE
+const videoPlayerCode = VIDEO_PLAYER_CODE
+const audioPlayerCode = AUDIO_PLAYER_CODE
+const fileUploadCode = FILE_UPLOAD_CODE
 
 // Multi-step form preview
 const multiStepCurrentStep = ref(1)
@@ -1316,6 +1797,268 @@ const nextMultiStepPreview = () => {
     if (multiStepCurrentStep.value < 4) {
         multiStepCurrentStep.value++
     }
+}
+
+// File Upload Component Data
+const fileInputRef = ref<HTMLInputElement | null>(null);
+const isDragActive = ref(false);
+const isUploading = ref(false);
+
+const uploadFiles = ref<Array<{
+    id: string;
+    file: { name: string; size: number; type: string };
+    previewUrl: string | null;
+    uploadProgress: number | null;
+    error: string | null;
+}>>([
+    {
+        id: '1',
+        file: { 
+            name: 'project-proposal.pdf', 
+            size: 2540000, 
+            type: 'application/pdf' 
+        },
+        previewUrl: null,
+        uploadProgress: 100,
+        error: null
+    },
+    {
+        id: '2',
+        file: { 
+            name: 'company-logo.png', 
+            size: 1250000, 
+            type: 'image/png' 
+        },
+        previewUrl: 'https://picsum.photos/id/237/100/100',
+        uploadProgress: 100,
+        error: null
+    },
+    {
+        id: '3',
+        file: { 
+            name: 'large-video.mp4', 
+            size: 15200000, 
+            type: 'video/mp4' 
+        },
+        previewUrl: null,
+        uploadProgress: null,
+        error: 'File exceeds maximum size of 5MB'
+    }
+])
+
+// File upload methods
+const triggerFileInput = () => {
+    fileInputRef.value?.click();
+}
+
+const onDragEnter = (event: DragEvent) => {
+    isDragActive.value = true;
+}
+
+const onDragOver = (event: DragEvent) => {
+    isDragActive.value = true;
+    // Add dataTransfer effect to show the drop is possible
+    if (event.dataTransfer) {
+        event.dataTransfer.dropEffect = 'copy';
+    }
+}
+
+const onDragLeave = (event: DragEvent) => {
+    // Only set to false if leaving the dropzone (not when entering a child element)
+    const target = event.target as HTMLElement;
+    const relatedTarget = event.relatedTarget as HTMLElement;
+    
+    if (!target.contains(relatedTarget)) {
+        isDragActive.value = false;
+    }
+}
+
+const onDrop = (event: DragEvent) => {
+    isDragActive.value = false;
+    
+    if (event.dataTransfer?.files) {
+        handleFiles(event.dataTransfer.files);
+    }
+}
+
+const onFileInputChange = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+        handleFiles(input.files);
+        // Reset input value so that selecting the same file again triggers an event
+        input.value = '';
+    }
+}
+
+const handleFiles = (fileList: FileList) => {
+    const maxSizeMB = 5;
+    const filesToAdd: typeof uploadFiles.value = [];
+    
+    // Convert FileList to array
+    const newFiles = Array.from(fileList);
+    
+    for (const file of newFiles) {
+        // Check file size
+        const isTooBig = file.size > maxSizeMB * 1024 * 1024;
+        
+        // Generate random ID
+        const id = Math.random().toString(36).substring(2, 9);
+        
+        // Check if the file is already added (by name and size)
+        const isDuplicate = uploadFiles.value.some(
+            f => f.file.name === file.name && f.file.size === file.size
+        );
+        
+        // Skip duplicates
+        if (isDuplicate) {
+            continue;
+        }
+        
+        // Create file object
+        const newFile = {
+            id,
+            file: { 
+                name: file.name, 
+                size: file.size, 
+                type: file.type 
+            },
+            previewUrl: null as string | null,
+            uploadProgress: isTooBig ? null : 0,
+            error: isTooBig ? `File exceeds maximum size of ${maxSizeMB}MB` : null
+        };
+        
+        // Create preview URL for images
+        if (file.type.startsWith('image/') && !isTooBig) {
+            newFile.previewUrl = URL.createObjectURL(file);
+        }
+        
+        filesToAdd.push(newFile);
+    }
+    
+    // Simulate upload for valid files
+    filesToAdd.forEach(file => {
+        if (!file.error) {
+            simulateUpload(file);
+        }
+    });
+    
+    // Add files to the list
+    uploadFiles.value = [...uploadFiles.value, ...filesToAdd];
+}
+
+const simulateUpload = (file: (typeof uploadFiles.value)[0]) => {
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += 10;
+        file.uploadProgress = progress;
+        
+        if (progress >= 100) {
+            clearInterval(interval);
+        }
+    }, 300);
+}
+
+const removeFile = (index: number) => {
+    // Revoke object URL to prevent memory leaks
+    const file = uploadFiles.value[index];
+    if (file && file.previewUrl) {
+        URL.revokeObjectURL(file.previewUrl);
+    }
+    
+    // Remove file from the list
+    uploadFiles.value.splice(index, 1);
+}
+
+const clearAllFiles = () => {
+    // Revoke all object URLs
+    uploadFiles.value.forEach((file) => {
+        if (file && file.previewUrl) {
+            URL.revokeObjectURL(file.previewUrl);
+        }
+    });
+    
+    // Clear the files array
+    uploadFiles.value = [];
+}
+
+const uploadAllFiles = () => {
+    if (isUploading.value || uploadFiles.value.length === 0) return;
+    
+    isUploading.value = true;
+    
+    // Get files that need to be uploaded (no errors and not already uploaded)
+    const filesToUpload = uploadFiles.value.filter(
+        file => !file.error && (!file.uploadProgress || file.uploadProgress < 100)
+    );
+    
+    if (filesToUpload.length === 0) {
+        isUploading.value = false;
+        return;
+    }
+    
+    // Simulate upload for all files
+    let completedUploads = 0;
+    
+    filesToUpload.forEach(file => {
+        let progress = file.uploadProgress || 0;
+        const interval = setInterval(() => {
+            progress += 10;
+            file.uploadProgress = progress;
+            
+            if (progress >= 100) {
+                clearInterval(interval);
+                completedUploads++;
+                
+                if (completedUploads === filesToUpload.length) {
+                    isUploading.value = false;
+                }
+            }
+        }, 300);
+    });
+}
+
+const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes'
+    
+    const k = 1024
+    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
+
+const getFileIcon = (file: { type: string; name: string }): string => {
+    if (file.type.startsWith('image/')) {
+        return 'mdi-file-image'
+    } else if (file.type.startsWith('video/')) {
+        return 'mdi-file-video'
+    } else if (file.type.includes('pdf')) {
+        return 'mdi-file-pdf'
+    } else if (file.type.includes('document') || file.name.endsWith('.doc') || file.name.endsWith('.docx')) {
+        return 'mdi-file-word'
+    } else if (file.type.includes('sheet') || file.name.endsWith('.xls') || file.name.endsWith('.xlsx')) {
+        return 'mdi-file-excel'
+    } else if (file.name.match(/\.(zip|rar|tar|gz)$/i)) {
+        return 'mdi-zip-box'
+    }
+    return 'mdi-file'
+}
+
+const getFileColor = (file: { type: string; name: string }): string => {
+    if (file.type.startsWith('image/')) {
+        return 'blue'
+    } else if (file.type.startsWith('video/')) {
+        return 'purple'
+    } else if (file.type.includes('pdf')) {
+        return 'red'
+    } else if (file.type.includes('document') || file.name.endsWith('.doc') || file.name.endsWith('.docx')) {
+        return 'blue-darken-4'
+    } else if (file.type.includes('sheet') || file.name.endsWith('.xls') || file.name.endsWith('.xlsx')) {
+        return 'green'
+    } else if (file.name.match(/\.(zip|rar|tar|gz)$/i)) {
+        return 'amber-darken-2'
+    }
+    return 'grey'
 }
 
 // AI Chat Component Data
@@ -1404,6 +2147,135 @@ const sendAiQuickMessage = (message: string) => {
 const scrollAiToBottom = () => {
     if (aiMessagesContainer.value) {
         aiMessagesContainer.value.scrollTop = aiMessagesContainer.value.scrollHeight
+    }
+}
+
+// Comment Thread data
+const newCommentText = ref('')
+const replyText = ref('')
+const replyingTo = ref<number | null>(null)
+const sortOption = ref('Newest')
+
+const comments = ref([
+    {
+        id: 1,
+        author: 'Sarah Johnson',
+        date: '2 days ago',
+        text: 'This is a great article! I really enjoyed the insights about Vue 3 composition API.',
+        votes: 5,
+        userVoted: null as string | null,
+        replies: [
+            {
+                id: 101,
+                author: 'Mike Chen',
+                date: '1 day ago',
+                text: 'I agree! I particularly liked the section on reactive references vs. reactive objects.',
+                votes: 2,
+                userVoted: null as string | null,
+            }
+        ]
+    },
+    {
+        id: 2,
+        author: 'Alex Thompson',
+        date: '3 days ago',
+        text: 'Does anyone know if there are any performance concerns when using the composition API with large datasets?',
+        votes: 3,
+        userVoted: null as string | null,
+        replies: []
+    }
+])
+
+const sortedComments = computed(() => {
+    const commentsCopy = [...comments.value]
+    
+    if (sortOption.value === 'Newest') {
+        // For demo purposes, we'll just reverse the array since we don't have actual timestamps
+        return commentsCopy.reverse()
+    } else {
+        return commentsCopy.sort((a, b) => b.votes - a.votes)
+    }
+})
+
+const addComment = () => {
+    if (!newCommentText.value.trim()) return
+    
+    const newComment = {
+        id: Date.now(),
+        author: 'You',
+        date: 'Just now',
+        text: newCommentText.value,
+        votes: 0,
+        userVoted: null,
+        replies: []
+    }
+    
+    comments.value.unshift(newComment)
+    newCommentText.value = ''
+}
+
+const toggleReplyBox = (commentId: number) => {
+    replyingTo.value = replyingTo.value === commentId ? null : commentId
+    replyText.value = ''
+}
+
+const addReply = (commentId: number) => {
+    if (!replyText.value.trim()) return
+    
+    const newReply = {
+        id: Date.now(),
+        author: 'You',
+        date: 'Just now',
+        text: replyText.value,
+        votes: 0,
+        userVoted: null
+    }
+    
+    const comment = comments.value.find(c => c.id === commentId)
+    if (comment) {
+        if (!comment.replies) {
+            comment.replies = []
+        }
+        comment.replies.push(newReply)
+    }
+    
+    replyText.value = ''
+    replyingTo.value = null
+}
+
+const voteComment = (comment: any, voteType: 'up' | 'down') => {
+    if (comment.userVoted === voteType) {
+        // User is un-voting
+        comment.votes += voteType === 'up' ? -1 : 1
+        comment.userVoted = null
+    } else {
+        // User is changing their vote or voting for the first time
+        if (comment.userVoted === 'up' && voteType === 'down') {
+            comment.votes -= 2
+        } else if (comment.userVoted === 'down' && voteType === 'up') {
+            comment.votes += 2
+        } else {
+            comment.votes += voteType === 'up' ? 1 : -1
+        }
+        comment.userVoted = voteType
+    }
+}
+
+const voteReply = (commentId: number, reply: any, voteType: 'up' | 'down') => {
+    if (reply.userVoted === voteType) {
+        // User is un-voting
+        reply.votes += voteType === 'up' ? -1 : 1
+        reply.userVoted = null
+    } else {
+        // User is changing their vote or voting for the first time
+        if (reply.userVoted === 'up' && voteType === 'down') {
+            reply.votes -= 2
+        } else if (reply.userVoted === 'down' && voteType === 'up') {
+            reply.votes += 2
+        } else {
+            reply.votes += voteType === 'up' ? 1 : -1
+        }
+        reply.userVoted = voteType
     }
 }
 </script>
@@ -1497,5 +2369,331 @@ const scrollAiToBottom = () => {
         width: 150px;
         padding-right: 16px;
     }
+}
+
+/* Comment thread styles */
+.comment-container {
+    border-left: 3px solid transparent;
+    padding-left: 10px;
+    transition: border-color 0.2s;
+}
+
+.comment-container:hover {
+    border-left-color: var(--v-theme-primary);
+}
+
+.reply-container {
+    border-left: 2px solid rgba(0, 0, 0, 0.08);
+    padding-left: 10px;
+    transition: border-color 0.2s;
+}
+
+.reply-container:hover {
+    border-left-color: var(--v-theme-secondary);
+}
+
+/* Video Player Preview Styles */
+.video-player-preview {
+    background-color: #121212;
+    overflow: hidden;
+}
+
+.video-container-preview {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    background-color: #000;
+    overflow: hidden;
+}
+
+.video-element-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.video-overlay-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.5) 0%,
+        rgba(0, 0, 0, 0) 30%,
+        rgba(0, 0, 0, 0) 70%,
+        rgba(0, 0, 0, 0.7) 100%
+    );
+}
+
+.video-top-controls-preview, 
+.video-bottom-controls-preview {
+    display: flex;
+    padding: 8px;
+    width: 100%;
+}
+
+.video-top-controls-preview {
+    justify-content: flex-end;
+}
+
+.video-center-controls-preview {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-bottom-controls-preview {
+    flex-direction: column;
+    gap: 8px;
+}
+
+.progress-container-preview {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar-preview {
+    position: absolute;
+    height: 100%;
+    background-color: #f44336;
+    border-radius: 2px;
+}
+
+.controls-container-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.time-display-preview {
+    color: white;
+    font-size: 12px;
+    margin: 0 10px;
+}
+
+.volume-control-preview {
+    display: flex;
+    align-items: center;
+}
+
+/* Audio Player Preview Styles */
+.audio-player-preview {
+    overflow: hidden;
+}
+
+.audio-player-content-preview {
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    position: relative;
+}
+
+.artwork-container-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-right: 16px;
+}
+
+.artwork-preview {
+    border-radius: 8px;
+}
+
+.audio-info-preview {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.track-info-preview {
+    margin-bottom: 16px;
+}
+
+.track-title-preview {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.playback-controls-preview {
+    width: 100%;
+}
+
+.progress-container-preview {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.time-display-preview {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 8px;
+}
+
+.control-buttons-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.additional-controls-preview {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.right-controls-preview {
+    display: flex;
+}
+
+.playlist-preview {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+/* File Upload Preview Styles */
+.file-dropzone-preview {
+    width: 100%;
+    border: 2px dashed rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    padding: 32px 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.dropzone-content-preview {
+    position: relative;
+    z-index: 1;
+}
+
+.file-dropzone-preview:hover {
+    border-color: var(--v-theme-primary);
+    background-color: rgba(0, 123, 255, 0.04);
+}
+
+.file-dropzone-preview.dropzone-active {
+    border-color: var(--v-theme-primary);
+    background-color: rgba(0, 123, 255, 0.08);
+}
+
+.file-input-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.preview-area-preview {
+    margin-top: 24px;
+}
+
+.file-list-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.file-item-preview {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.03);
+    transition: all 0.2s ease;
+}
+
+.file-item-preview:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+}
+
+.file-item-preview.has-preview .file-preview-preview {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+}
+
+.preview-image-container-preview {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-image-preview {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.file-preview-preview {
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.file-details-preview {
+    flex: 1;
+    min-width: 0; /* Needed for text-truncate to work */
+}
+
+.file-name-preview {
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.file-meta-preview {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.file-error-preview {
+    color: var(--v-theme-error);
+}
+
+.file-actions-preview {
+    margin-left: 8px;
+}
+
+.file-actions-container-preview {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 </style>

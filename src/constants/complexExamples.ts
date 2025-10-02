@@ -944,7 +944,7 @@ const messages = ref([
   {
     id: 2,
     sender: 'me',
-    text: 'I\'m doing great! Just working on a new project.',
+    text: "I'm doing great! Just working on a new project.",
     timestamp: new Date(Date.now() - 8 * 60 * 1000)
   },
   {
@@ -956,7 +956,7 @@ const messages = ref([
   {
     id: 4,
     sender: 'me',
-    text: 'It\'s a Vue.js application with Vuetify components. Really enjoying the development process!',
+    text: "It's a Vue.js application with Vuetify components. Really enjoying the development process!",
     timestamp: new Date(Date.now() - 4 * 60 * 1000)
   },
   {
@@ -989,7 +989,7 @@ const sendMessage = async () => {
     setTimeout(() => {
       isTyping.value = false
       const responses = [
-        'That\'s awesome!',
+        "That's awesome!",
         'Sounds great!',
         'I agree!',
         'Tell me more about it!',
@@ -1308,12 +1308,12 @@ const nameRules = [
 
 const emailRules = [
   v => !!v || 'Email is required',
-  v => /.+@.+\..+/.test(v) || 'Email must be valid'
+  v => /.+@.+[.].+/.test(v) || 'Email must be valid'
 ]
 
 const phoneRules = [
   v => !!v || 'Phone number is required',
-  v => /^[+]?[1-9][\d-\s()]+$/.test(v) || 'Phone number must be valid'
+  v => /^[+]?[1-9][0-9-s()]+$/.test(v) || 'Phone number must be valid'
 ]
 
 const dateRules = [
@@ -1333,7 +1333,7 @@ const usernameRules = [
 const passwordRules = [
   v => !!v || 'Password is required',
   v => (v && v.length >= 8) || 'Password must be at least 8 characters',
-  v => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(v) || 'Password must contain uppercase, lowercase, and number'
+  v => /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(v) || 'Password must contain uppercase, lowercase, and number'
 ]
 
 const confirmPasswordRules = [
@@ -1612,6 +1612,645 @@ const scrollToBottom = () => {
 
 .border-t {
   border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+</style>`
+
+export const COMMENT_THREAD_CODE = `<template>
+  <div class="comment-system">
+    <!-- Comment Input -->
+    <v-card elevation="1" class="mb-6">
+      <v-card-title class="text-h6">
+        Discussion ({{ totalComments }})
+      </v-card-title>
+      
+      <v-card-text>
+        <div class="d-flex comment-input-container">
+          <v-avatar color="primary" size="40" class="me-3">
+            <span class="text-white">{{ getInitials(currentUser.name) }}</span>
+          </v-avatar>
+          
+          <div class="flex-grow-1">
+            <v-textarea
+              v-model="newComment"
+              :rules="commentRules"
+              :counter="1000"
+              rows="3"
+              auto-grow
+              variant="outlined"
+              hide-details="auto"
+              density="comfortable"
+              placeholder="Share your thoughts..."
+              class="mb-2"
+            ></v-textarea>
+            
+            <div class="d-flex align-center">
+              <v-btn-group variant="outlined" density="comfortable" class="me-auto">
+                <v-btn prepend-icon="mdi-format-bold" @click="formatText('bold')"></v-btn>
+                <v-btn prepend-icon="mdi-format-italic" @click="formatText('italic')"></v-btn>
+                <v-btn prepend-icon="mdi-link" @click="addLink"></v-btn>
+              </v-btn-group>
+              
+              <v-btn
+                variant="text"
+                @click="clearComment"
+                :disabled="!newComment"
+                class="me-2"
+              >
+                Cancel
+              </v-btn>
+              
+              <v-btn
+                color="primary"
+                :disabled="!newComment.trim()"
+                @click="submitComment(null)"
+              >
+                Comment
+              </v-btn>
+            </div>
+          </div>
+        </div>
+      </v-card-text>
+    </v-card>
+    
+    <!-- Comment List -->
+    <div v-if="comments.length" class="comments-list">
+      <!-- Comment Sorting -->
+      <div class="comment-sorting mb-4 d-flex align-center">
+        <span class="me-3 text-subtitle-1">Sort by:</span>
+        <v-chip-group v-model="sortOption" mandatory>
+          <v-chip value="newest">Newest</v-chip>
+          <v-chip value="oldest">Oldest</v-chip>
+          <v-chip value="popular">Most Popular</v-chip>
+        </v-chip-group>
+      </div>
+      
+      <!-- List of Comments -->
+      <v-expand-transition group>
+        <comment-item
+          v-for="comment in sortedComments"
+          :key="comment.id"
+          :comment="comment"
+          :current-user="currentUser"
+          class="mb-6"
+          @reply="startReply"
+          @edit="startEdit"
+          @delete="deleteComment"
+          @like="toggleLike"
+        ></comment-item>
+      </v-expand-transition>
+      
+      <!-- Load More -->
+      <div v-if="hasMoreComments" class="text-center mt-4">
+        <v-btn
+          variant="outlined"
+          @click="loadMoreComments"
+          :loading="isLoadingMore"
+        >
+          Load More Comments
+        </v-btn>
+      </div>
+    </div>
+    
+    <!-- Empty State -->
+    <div v-else class="empty-comments text-center py-8">
+      <v-icon icon="mdi-comment-outline" size="64" color="grey-lighten-1" class="mb-4"></v-icon>
+      <div class="text-h6 text-grey">No comments yet</div>
+      <div class="text-body-2 text-grey">Be the first to share your thoughts!</div>
+    </div>
+    
+    <!-- Reply Dialog -->
+    <v-dialog v-model="replyDialog" max-width="600">
+      <v-card>
+        <v-card-title class="text-h6">
+          {{ editingComment ? 'Edit Comment' : \`Reply to \${replyingTo?.author.name}\` }}
+        </v-card-title>
+        
+        <v-card-text>
+          <v-textarea
+            v-model="replyContent"
+            :rules="commentRules"
+            auto-grow
+            rows="3"
+            variant="outlined"
+            density="comfortable"
+            :placeholder="editingComment ? 'Edit your comment...' : 'Write your reply...'"
+            :counter="1000"
+            class="mb-2"
+          ></v-textarea>
+        </v-card-text>
+        
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn variant="text" @click="cancelReply">Cancel</v-btn>
+          <v-btn
+            color="primary"
+            :disabled="!replyContent.trim()"
+            @click="submitReply"
+          >
+            {{ editingComment ? 'Save Changes' : 'Reply' }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, watch } from 'vue'
+import CommentItem from './CommentItem.vue'
+
+const props = defineProps({
+  initialComments: {
+    type: Array,
+    default: () => []
+  },
+  currentUser: {
+    type: Object,
+    required: true
+  }
+})
+
+// State variables
+const comments = ref([...props.initialComments])
+const newComment = ref('')
+const replyDialog = ref(false)
+const replyContent = ref('')
+const replyingTo = ref(null)
+const editingComment = ref(null)
+const sortOption = ref('newest')
+const isLoadingMore = ref(false)
+const hasMoreComments = ref(true)
+const commentsPerPage = 10
+const currentPage = ref(1)
+
+// Validation rules
+const commentRules = [
+  v => (v && v.length <= 1000) || 'Comment must be less than 1000 characters'
+]
+
+// Computed properties
+const sortedComments = computed(() => {
+  let sorted = [...comments.value]
+  
+  switch (sortOption.value) {
+    case 'newest':
+      sorted.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+      break
+    case 'oldest':
+      sorted.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+      break
+    case 'popular':
+      sorted.sort((a, b) => b.likes.length - a.likes.length)
+      break
+  }
+  
+  return sorted
+})
+
+const totalComments = computed(() => {
+  // Count all comments including replies
+  let count = comments.value.length
+  comments.value.forEach(comment => {
+    count += comment.replies?.length || 0
+  })
+  return count
+})
+
+// Methods
+function getInitials(name) {
+  return name
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .toUpperCase()
+    .substring(0, 2)
+}
+
+function formatText(format) {
+  // Implement text formatting (bold, italic, etc.)
+  switch (format) {
+    case 'bold':
+      newComment.value += '**bold text**'
+      break
+    case 'italic':
+      newComment.value += '_italic text_'
+      break
+  }
+}
+
+function addLink() {
+  newComment.value += '[link text](https://example.com)'
+}
+
+function clearComment() {
+  newComment.value = ''
+}
+
+function submitComment(parentId) {
+  const comment = {
+    id: \`comment-\${Date.now()}\`,
+    author: {
+      id: currentUser.id,
+      name: currentUser.name,
+      avatar: currentUser.avatar
+    },
+    content: newComment.value,
+    timestamp: new Date().toISOString(),
+    likes: [],
+    replies: [],
+    edited: false
+  }
+  
+  comments.value.unshift(comment)
+  newComment.value = ''
+}
+
+function startReply(comment) {
+  replyingTo.value = comment
+  editingComment.value = null
+  replyContent.value = ''
+  replyDialog.value = true
+}
+
+function startEdit(comment) {
+  editingComment.value = comment
+  replyingTo.value = null
+  replyContent.value = comment.content
+  replyDialog.value = true
+}
+
+function cancelReply() {
+  replyDialog.value = false
+  replyContent.value = ''
+  replyingTo.value = null
+  editingComment.value = null
+}
+
+function submitReply() {
+  if (editingComment.value) {
+    // Handle edit
+    editingComment.value.content = replyContent.value
+    editingComment.value.edited = true
+  } else if (replyingTo.value) {
+    // Handle reply
+    const reply = {
+      id: \`reply-\${Date.now()}\`,
+      author: {
+        id: currentUser.id,
+        name: currentUser.name,
+        avatar: currentUser.avatar
+      },
+      content: replyContent.value,
+      timestamp: new Date().toISOString(),
+      likes: [],
+      edited: false,
+      parentId: replyingTo.value.id
+    }
+    
+    const parent = comments.value.find(c => c.id === replyingTo.value.id)
+    if (parent) {
+      if (!parent.replies) parent.replies = []
+      parent.replies.push(reply)
+    }
+  }
+  
+  cancelReply()
+}
+
+function deleteComment(comment) {
+  if (comment.parentId) {
+    // It's a reply, find the parent comment
+    const parent = comments.value.find(c => c.id === comment.parentId)
+    if (parent && parent.replies) {
+      parent.replies = parent.replies.filter(r => r.id !== comment.id)
+    }
+  } else {
+    // It's a top-level comment
+    comments.value = comments.value.filter(c => c.id !== comment.id)
+  }
+}
+
+function toggleLike(comment) {
+  const userId = currentUser.id
+  const index = comment.likes.findIndex(id => id === userId)
+  
+  if (index === -1) {
+    comment.likes.push(userId)
+  } else {
+    comment.likes.splice(index, 1)
+  }
+}
+
+function loadMoreComments() {
+  isLoadingMore.value = true
+  
+  // Simulate loading delay
+  setTimeout(() => {
+    // In a real app, you would fetch more comments from the server
+    // For this example, we'll just set hasMoreComments to false
+    hasMoreComments.value = false
+    isLoadingMore.value = false
+    currentPage.value++
+  }, 1000)
+}
+
+// Watch for changes in sort option to save user preference
+watch(sortOption, (newValue) => {
+  // In a real app, you could save this preference to localStorage or user settings
+  console.log(\`Sort option changed to: \${newValue}\`)
+})
+</script>
+
+<style scoped>
+.comment-system {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.comment-input-container {
+  align-items: flex-start;
+}
+
+.comments-list {
+  position: relative;
+}
+
+.comment-item-enter-active,
+.comment-item-leave-active {
+  transition: all 0.3s ease;
+}
+
+.comment-item-enter-from,
+.comment-item-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+</style>`
+
+export const COMMENT_ITEM_CODE = `<template>
+  <v-card variant="outlined" class="comment-item" :class="{ 'comment-reply': isReply }">
+    <v-card-text class="pa-4">
+      <!-- Comment Header -->
+      <div class="d-flex comment-header">
+        <v-avatar size="40" class="me-3">
+          <v-img v-if="comment.author.avatar" :src="comment.author.avatar" alt="Avatar"></v-img>
+          <span v-else class="text-white">{{ getInitials(comment.author.name) }}</span>
+        </v-avatar>
+        
+        <div class="flex-grow-1 d-flex flex-column justify-center">
+          <div class="d-flex align-center">
+            <span class="font-weight-medium me-2">{{ comment.author.name }}</span>
+            <v-chip v-if="isAuthor" size="x-small" color="primary" class="me-2">Author</v-chip>
+            <span class="text-caption text-grey">{{ formatTimestamp(comment.timestamp) }}</span>
+            <span v-if="comment.edited" class="text-caption text-grey ms-2">(edited)</span>
+          </div>
+        </div>
+        
+        <v-menu v-if="canModify">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              icon="mdi-dots-vertical"
+              variant="text"
+              density="comfortable"
+              v-bind="props"
+            ></v-btn>
+          </template>
+          
+          <v-list density="compact">
+            <v-list-item @click="$emit('edit', comment)">
+              <template v-slot:prepend>
+                <v-icon icon="mdi-pencil" size="small"></v-icon>
+              </template>
+              <v-list-item-title>Edit</v-list-item-title>
+            </v-list-item>
+            
+            <v-list-item @click="confirmDelete">
+              <template v-slot:prepend>
+                <v-icon icon="mdi-delete" size="small"></v-icon>
+              </template>
+              <v-list-item-title>Delete</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
+      
+      <!-- Comment Content -->
+      <div class="comment-content my-3" v-html="formattedContent"></div>
+      
+      <!-- Comment Actions -->
+      <div class="d-flex comment-actions align-center mt-2">
+        <v-btn
+          :color="isLiked ? 'primary' : undefined"
+          prepend-icon="mdi-thumb-up"
+          variant="text"
+          size="small"
+          @click="$emit('like', comment)"
+          :disabled="isAuthor"
+        >
+          {{ comment.likes.length > 0 ? comment.likes.length : '' }}
+          {{ isLiked ? 'Liked' : 'Like' }}
+        </v-btn>
+        
+        <v-btn
+          v-if="!isReply"
+          prepend-icon="mdi-reply"
+          variant="text"
+          size="small"
+          @click="$emit('reply', comment)"
+        >
+          Reply
+        </v-btn>
+        
+        <v-btn
+          v-if="isAuthor && comment.edited"
+          prepend-icon="mdi-history"
+          variant="text"
+          size="small"
+        >
+          History
+        </v-btn>
+        
+        <v-spacer></v-spacer>
+        
+        <v-btn
+          v-if="!isReply && hasReplies"
+          :icon="showReplies ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+          variant="text"
+          size="small"
+          @click="showReplies = !showReplies"
+        >
+          {{ showReplies ? 'Hide' : 'Show' }} {{ comment.replies.length }} {{ comment.replies.length === 1 ? 'reply' : 'replies' }}
+        </v-btn>
+      </div>
+    </v-card-text>
+    
+    <!-- Nested Replies -->
+    <v-expand-transition>
+      <div v-if="showReplies && hasReplies" class="replies-container ms-6">
+        <div v-for="reply in comment.replies" :key="reply.id" class="reply-item">
+          <!-- Recursively render nested comments -->
+          <comment-item
+            :comment="{ ...reply, parentId: comment.id }"
+            :current-user="currentUser"
+            class="mb-2"
+            @reply="$emit('reply', reply)"
+            @edit="$emit('edit', reply)"
+            @delete="$emit('delete', reply)"
+            @like="$emit('like', reply)"
+          ></comment-item>
+        </div>
+      </div>
+    </v-expand-transition>
+    
+    <!-- Delete Confirmation Dialog -->
+    <v-dialog v-model="deleteDialog" max-width="400">
+      <v-card>
+        <v-card-title class="text-h6">Delete {{ isReply ? 'Reply' : 'Comment' }}</v-card-title>
+        
+        <v-card-text>
+          Are you sure you want to delete this {{ isReply ? 'reply' : 'comment' }}? This action cannot be undone.
+        </v-card-text>
+        
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn variant="text" @click="deleteDialog = false">Cancel</v-btn>
+          <v-btn color="error" @click="handleDelete">Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-card>
+</template>
+
+<script setup>
+import { computed, ref, getCurrentInstance } from 'vue'
+import DOMPurify from 'dompurify'
+import { marked } from 'marked'
+
+const props = defineProps({
+  comment: {
+    type: Object,
+    required: true
+  },
+  currentUser: {
+    type: Object,
+    required: true
+  }
+})
+
+const emit = defineEmits(['reply', 'edit', 'delete', 'like'])
+
+const deleteDialog = ref(false)
+const showReplies = ref(true)
+
+// Computed properties
+const isReply = computed(() => !!props.comment.parentId)
+const isAuthor = computed(() => props.comment.author.id === props.currentUser.id)
+const canModify = computed(() => isAuthor.value)
+const hasReplies = computed(() => props.comment.replies && props.comment.replies.length > 0)
+const isLiked = computed(() => props.comment.likes.includes(props.currentUser.id))
+
+// Format timestamp
+function formatTimestamp(timestamp) {
+  const date = new Date(timestamp)
+  const now = new Date()
+  const diffMs = now - date
+  const diffSec = Math.floor(diffMs / 1000)
+  const diffMin = Math.floor(diffSec / 60)
+  const diffHour = Math.floor(diffMin / 60)
+  const diffDay = Math.floor(diffHour / 24)
+  
+  if (diffSec < 60) {
+    return 'just now'
+  } else if (diffMin < 60) {
+    return \`\${diffMin} \${diffMin === 1 ? 'minute' : 'minutes'} ago\`
+  } else if (diffHour < 24) {
+    return \`\${diffHour} \${diffHour === 1 ? 'hour' : 'hours'} ago\`
+  } else if (diffDay < 7) {
+    return \`\${diffDay} \${diffDay === 1 ? 'day' : 'days'} ago\`
+  } else {
+    return date.toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    })
+  }
+}
+
+// Format comment content with markdown
+const formattedContent = computed(() => {
+  // Convert markdown to HTML and sanitize
+  const html = marked.parse(props.comment.content)
+  return DOMPurify.sanitize(html)
+})
+
+// Get user initials for avatar fallback
+function getInitials(name) {
+  return name
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .toUpperCase()
+    .substring(0, 2)
+}
+
+// Handle comment deletion
+function confirmDelete() {
+  deleteDialog.value = true
+}
+
+function handleDelete() {
+  deleteDialog.value = false
+  emit('delete', props.comment)
+}
+</script>
+
+<style scoped>
+.comment-item {
+  transition: background-color 0.2s ease;
+}
+
+.comment-reply {
+  border-left: 3px solid var(--v-primary-base, #1976d2);
+}
+
+.comment-content {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.comment-content :deep(p) {
+  margin-bottom: 0.75rem;
+}
+
+.comment-content :deep(p:last-child) {
+  margin-bottom: 0;
+}
+
+.comment-content :deep(a) {
+  color: #1976d2;
+  text-decoration: none;
+}
+
+.comment-content :deep(a:hover) {
+  text-decoration: underline;
+}
+
+.comment-content :deep(code) {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.comment-content :deep(blockquote) {
+  border-left: 4px solid #e0e0e0;
+  margin-left: 0;
+  padding-left: 1em;
+  color: #757575;
+}
+
+.replies-container {
+  padding: 0 16px 16px 16px;
 }
 </style>`
 
@@ -2703,5 +3342,2234 @@ function formatDate(dateString) {
 /* Prevent text selection across the entire kanban board */
 .kanban-container, .kanban-column, .column-header, .task-container {
   user-select: none;
+}
+</style>`
+
+export const FILE_UPLOAD_CODE = `<template>
+  <div class="file-uploader-container">
+    <!-- Drop zone -->
+    <div 
+      class="dropzone" 
+      :class="{ 
+        'dropzone-active': isDragActive, 
+        'dropzone-error': hasError,
+        'dropzone-disabled': disabled
+      }"
+      @dragenter.prevent="onDragEnter"
+      @dragover.prevent="onDragOver"
+      @dragleave.prevent="onDragLeave"
+      @drop.prevent="onDrop"
+      @click="triggerFileInput"
+    >
+      <!-- Hidden file input -->
+      <input 
+        type="file" 
+        ref="fileInputRef" 
+        :multiple="multiple" 
+        :accept="accept" 
+        class="file-input"
+        @change="onFileInputChange"
+        :disabled="disabled"
+      />
+      
+      <div class="dropzone-content">
+        <slot name="icon">
+          <v-icon 
+            :icon="hasError ? 'mdi-alert-circle' : (isDragActive ? 'mdi-file-upload-outline' : 'mdi-cloud-upload')" 
+            :color="hasError ? 'error' : 'primary'" 
+            size="64"
+          ></v-icon>
+        </slot>
+        
+        <div class="text-body-1 mt-4">
+          <slot name="title">
+            <span v-if="hasError">{{ errorMessage || 'Error uploading files' }}</span>
+            <span v-else-if="isDragActive">Drop {{ multiple ? 'files' : 'file' }} here</span>
+            <span v-else>
+              <span class="text-primary">Click to upload</span> or drag and drop
+              {{ multiple ? 'files' : 'a file' }} here
+            </span>
+          </slot>
+        </div>
+        
+        <div class="text-body-2 text-grey mt-2">
+          <slot name="subtitle">
+            <div v-if="!hasError">
+              {{ acceptDescription || (multiple ? 'Upload multiple files' : 'Upload a file') }}
+              {{ maxFileSizeMB ? \`(Max size: \${maxFileSizeMB}MB each)\` : '' }}
+            </div>
+          </slot>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Preview area for uploaded files -->
+    <div v-if="files.length > 0" class="preview-area">
+      <transition-group name="file-list" tag="div" class="file-list">
+        <div 
+          v-for="(file, index) in files" 
+          :key="file.id" 
+          class="file-item"
+          :class="{'has-preview': file.previewUrl}"
+        >
+          <!-- File preview -->
+          <div class="file-preview">
+            <div v-if="file.previewUrl" class="preview-image-container">
+              <img 
+                :src="file.previewUrl" 
+                class="preview-image" 
+                alt="File preview"
+                @error="onPreviewError(file)"
+              />
+            </div>
+            <v-icon 
+              v-else 
+              :icon="getFileIcon(file)"
+              :color="getFileColor(file)" 
+              size="36"
+            ></v-icon>
+          </div>
+          
+          <!-- File details -->
+          <div class="file-details">
+            <div class="file-name text-truncate">{{ file.file.name }}</div>
+            <div class="file-meta text-caption">
+              {{ formatFileSize(file.file.size) }}
+              <span v-if="file.uploadProgress !== null">
+                • {{ file.uploadProgress === 100 ? 'Uploaded' : \`\${file.uploadProgress}%\` }}
+              </span>
+            </div>
+            
+            <!-- Progress bar -->
+            <v-progress-linear 
+              v-if="file.uploadProgress !== null && file.uploadProgress < 100"
+              :model-value="file.uploadProgress"
+              color="primary"
+              height="4"
+              class="mt-1"
+            ></v-progress-linear>
+            
+            <!-- Status -->
+            <div 
+              v-if="file.error" 
+              class="file-error text-caption text-error mt-1"
+            >
+              {{ file.error }}
+            </div>
+          </div>
+          
+          <!-- Actions -->
+          <div class="file-actions">
+            <v-btn 
+              v-if="!isUploading || file.uploadProgress === 100 || file.error" 
+              icon="mdi-close" 
+              size="small" 
+              variant="text" 
+              color="default"
+              @click="removeFile(index)"
+            ></v-btn>
+            <v-progress-circular
+              v-else-if="isUploading && file.uploadProgress !== null && file.uploadProgress < 100"
+              :model-value="file.uploadProgress"
+              size="24"
+              width="2"
+              color="primary"
+            ></v-progress-circular>
+          </div>
+        </div>
+      </transition-group>
+      
+      <!-- Action buttons -->
+      <div class="file-actions-container mt-4">
+        <v-btn
+          v-if="files.length > 0 && !autoUpload && !isUploading"
+          color="primary"
+          variant="elevated"
+          :disabled="hasAnyError || disabled || files.length === 0"
+          @click="uploadFiles"
+          :loading="isUploading"
+        >
+          Upload {{ files.length }} {{ files.length === 1 ? 'file' : 'files' }}
+        </v-btn>
+        
+        <v-btn
+          v-if="files.length > 0"
+          variant="text"
+          :disabled="isUploading"
+          @click="clearFiles"
+          class="ml-2"
+        >
+          Clear all
+        </v-btn>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+
+interface UploadedFile {
+  id: string;
+  file: File;
+  previewUrl: string | null;
+  uploadProgress: number | null;
+  uploaded: boolean;
+  error: string | null;
+}
+
+// Props
+const props = defineProps({
+  // File selection options
+  multiple: {
+    type: Boolean,
+    default: true
+  },
+  accept: {
+    type: String,
+    default: '*/*'
+  },
+  acceptDescription: {
+    type: String,
+    default: ''
+  },
+  maxFiles: {
+    type: Number,
+    default: 10
+  },
+  maxFileSizeMB: {
+    type: Number,
+    default: 5
+  },
+  
+  // Validation options
+  validateFiles: {
+    type: Function,
+    default: null
+  },
+  
+  // Upload options
+  uploadUrl: {
+    type: String,
+    default: ''
+  },
+  autoUpload: {
+    type: Boolean,
+    default: false
+  },
+  uploadHeaders: {
+    type: Object,
+    default: () => ({})
+  },
+  uploadMethod: {
+    type: String,
+    default: 'POST'
+  },
+  uploadFieldName: {
+    type: String,
+    default: 'files'
+  },
+  uploadWithCredentials: {
+    type: Boolean,
+    default: false
+  },
+  simulateUpload: {
+    type: Boolean,
+    default: false
+  },
+  
+  // UI states
+  disabled: {
+    type: Boolean,
+    default: false
+  }
+})
+
+// Emits
+const emit = defineEmits([
+  'files-selected', 
+  'files-removed',
+  'upload-start',
+  'upload-progress',
+  'upload-success',
+  'upload-error',
+  'upload-complete',
+  'error'
+])
+
+// Refs
+const fileInputRef = ref<HTMLInputElement | null>(null)
+const files = ref<UploadedFile[]>([])
+const isDragActive = ref(false)
+const isUploading = ref(false)
+const hasError = ref(false)
+const errorMessage = ref('')
+const abortControllers = ref<Map<string, AbortController>>(new Map())
+
+// Computed
+const hasAnyError = computed(() => {
+  return files.value.some(file => file.error !== null)
+})
+
+// Methods
+const generateId = () => {
+  return Math.random().toString(36).substr(2, 9)
+}
+
+const triggerFileInput = () => {
+  if (!props.disabled) {
+    fileInputRef.value?.click()
+  }
+}
+
+const onDragEnter = (event: DragEvent) => {
+  if (props.disabled) return
+  isDragActive.value = true
+  hasError.value = false
+}
+
+const onDragOver = (event: DragEvent) => {
+  if (props.disabled) return
+  isDragActive.value = true
+  // Add dataTransfer effect to show the drop is possible
+  if (event.dataTransfer) {
+    event.dataTransfer.dropEffect = 'copy'
+  }
+}
+
+const onDragLeave = (event: DragEvent) => {
+  if (props.disabled) return
+  
+  // Only set to false if leaving the dropzone (not when entering a child element)
+  // Check if the related target is not a child of the dropzone
+  const target = event.target as HTMLElement
+  const relatedTarget = event.relatedTarget as HTMLElement
+  
+  if (!target.contains(relatedTarget)) {
+    isDragActive.value = false
+  }
+}
+
+const onDrop = (event: DragEvent) => {
+  if (props.disabled) return
+  isDragActive.value = false
+  
+  if (event.dataTransfer?.files) {
+    processFiles(event.dataTransfer.files)
+  }
+}
+
+const onFileInputChange = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  if (input.files) {
+    processFiles(input.files)
+    // Reset input value so that selecting the same file again triggers an event
+    input.value = ''
+  }
+}
+
+const processFiles = (fileList: FileList) => {
+  hasError.value = false
+  errorMessage.value = ''
+  
+  // Convert FileList to array
+  const newFiles = Array.from(fileList)
+  
+  // Check max files
+  if (!props.multiple && files.value.length + newFiles.length > 1) {
+    hasError.value = true
+    errorMessage.value = 'Only one file can be uploaded'
+    return
+  }
+  
+  if (props.multiple && props.maxFiles > 0 && files.value.length + newFiles.length > props.maxFiles) {
+    hasError.value = true
+    errorMessage.value = \`Maximum \${props.maxFiles} files allowed\`
+    return
+  }
+  
+  // Process each file
+  const filesToAdd: UploadedFile[] = []
+  
+  for (const file of newFiles) {
+    // Check file size
+    if (props.maxFileSizeMB > 0 && file.size > props.maxFileSizeMB * 1024 * 1024) {
+      const rejectedFile: UploadedFile = {
+        id: generateId(),
+        file,
+        previewUrl: null,
+        uploadProgress: null,
+        uploaded: false,
+        error: \`File exceeds maximum size of \${props.maxFileSizeMB}MB\`
+      }
+      filesToAdd.push(rejectedFile)
+      continue
+    }
+    
+    // Check if the file is already added (by name and size)
+    const isDuplicate = files.value.some(
+      f => f.file.name === file.name && f.file.size === file.size
+    )
+    
+    if (isDuplicate) {
+      continue
+    }
+    
+    // Create new file record
+    const newFile: UploadedFile = {
+      id: generateId(),
+      file,
+      previewUrl: null,
+      uploadProgress: null,
+      uploaded: false,
+      error: null
+    }
+    
+    // Create preview URL for images
+    if (file.type.startsWith('image/')) {
+      newFile.previewUrl = URL.createObjectURL(file)
+    }
+    
+    filesToAdd.push(newFile)
+  }
+  
+  // Custom validation if provided
+  if (props.validateFiles && filesToAdd.length > 0) {
+    try {
+      const filesToValidate = filesToAdd.map(f => f.file)
+      const validationResult = props.validateFiles(filesToValidate)
+      
+      // If validation returns false or a string error message
+      if (typeof validationResult === 'string') {
+        hasError.value = true
+        errorMessage.value = validationResult
+        
+        // Mark all files as error
+        filesToAdd.forEach(file => {
+          file.error = validationResult
+        })
+      } else if (validationResult === false) {
+        hasError.value = true
+        errorMessage.value = 'Files validation failed'
+        
+        // Mark all files as error
+        filesToAdd.forEach(file => {
+          file.error = 'Invalid file'
+        })
+      }
+    } catch (err) {
+      hasError.value = true
+      errorMessage.value = 'Error validating files'
+      console.error('File validation error:', err)
+      
+      // Mark all files as error
+      filesToAdd.forEach(file => {
+        file.error = 'Validation error'
+      })
+    }
+  }
+  
+  // Add valid files to the list
+  if (filesToAdd.length > 0) {
+    files.value.push(...filesToAdd)
+    
+    // Emit event
+    emit('files-selected', filesToAdd.map(f => f.file))
+    
+    // If auto upload is enabled, start upload
+    if (props.autoUpload && !hasError.value) {
+      uploadFiles()
+    }
+  }
+}
+
+const removeFile = (index: number) => {
+  const file = files.value[index]
+  
+  // Revoke object URL to prevent memory leaks
+  if (file.previewUrl) {
+    URL.revokeObjectURL(file.previewUrl)
+  }
+  
+  // Abort upload if in progress
+  if (isUploading.value && file.uploadProgress !== null && file.uploadProgress < 100) {
+    abortControllers.value.get(file.id)?.abort()
+    abortControllers.value.delete(file.id)
+  }
+  
+  // Remove file from list
+  const removedFile = files.value.splice(index, 1)[0]
+  emit('files-removed', [removedFile.file])
+}
+
+const clearFiles = () => {
+  // Abort all uploads
+  if (isUploading.value) {
+    abortControllers.value.forEach(controller => {
+      controller.abort()
+    })
+    abortControllers.value.clear()
+    isUploading.value = false
+  }
+  
+  // Revoke object URLs
+  files.value.forEach(file => {
+    if (file.previewUrl) {
+      URL.revokeObjectURL(file.previewUrl)
+    }
+  })
+  
+  // Clear files
+  const removedFiles = files.value.map(f => f.file)
+  files.value = []
+  
+  emit('files-removed', removedFiles)
+}
+
+const uploadFiles = async () => {
+  if (isUploading.value || files.value.length === 0 || hasAnyError.value) return
+  
+  isUploading.value = true
+  emit('upload-start', files.value.map(f => f.file))
+  
+  // Get files that need to be uploaded
+  const filesToUpload = files.value.filter(
+    file => !file.uploaded && !file.error
+  )
+  
+  if (filesToUpload.length === 0) {
+    isUploading.value = false
+    return
+  }
+  
+  // If no upload URL provided, simulate upload
+  const simulateMode = props.simulateUpload || !props.uploadUrl
+  
+  if (simulateMode) {
+    // Simulate upload with delays
+    await Promise.all(
+      filesToUpload.map(async (file) => {
+        file.uploadProgress = 0
+        
+        // Create abort controller
+        const controller = new AbortController()
+        abortControllers.value.set(file.id, controller)
+        
+        try {
+          // Simulate upload progress
+          for (let i = 0; i <= 10; i++) {
+            if (controller.signal.aborted) {
+              file.uploadProgress = null
+              file.error = 'Upload cancelled'
+              throw new Error('Upload cancelled')
+            }
+            
+            await new Promise(resolve => setTimeout(resolve, 300))
+            file.uploadProgress = i * 10
+            emit('upload-progress', {
+              file: file.file,
+              progress: file.uploadProgress
+            })
+          }
+          
+          file.uploaded = true
+          emit('upload-success', {
+            file: file.file,
+            response: { success: true }
+          })
+        } catch (err) {
+          if (!controller.signal.aborted) {
+            file.error = 'Simulation error'
+            emit('upload-error', {
+              file: file.file,
+              error: 'Simulation error'
+            })
+          }
+        } finally {
+          abortControllers.value.delete(file.id)
+        }
+      })
+    )
+    
+    isUploading.value = false
+    emit('upload-complete', files.value.map(f => f.file))
+    return
+  }
+  
+  // Real upload to server
+  await Promise.all(
+    filesToUpload.map(async (file) => {
+      file.uploadProgress = 0
+      
+      // Create FormData
+      const formData = new FormData()
+      
+      // Single or multiple file field name
+      if (props.multiple) {
+        formData.append(props.uploadFieldName, file.file)
+      } else {
+        formData.append(props.uploadFieldName, file.file)
+      }
+      
+      // Create abort controller
+      const controller = new AbortController()
+      abortControllers.value.set(file.id, controller)
+      
+      try {
+        const response = await fetch(props.uploadUrl, {
+          method: props.uploadMethod,
+          headers: props.uploadHeaders as HeadersInit,
+          body: formData,
+          credentials: props.uploadWithCredentials ? 'include' : 'same-origin',
+          signal: controller.signal
+        })
+        
+        if (!response.ok) {
+          throw new Error(\`Server responded with \${response.status}: \${response.statusText}\`)
+        }
+        
+        const result = await response.json()
+        file.uploadProgress = 100
+        file.uploaded = true
+        
+        emit('upload-success', {
+          file: file.file,
+          response: result
+        })
+      } catch (err) {
+        if (controller.signal.aborted) {
+          file.uploadProgress = null
+          file.error = 'Upload cancelled'
+        } else {
+          file.uploadProgress = null
+          file.error = err instanceof Error ? err.message : 'Upload failed'
+          
+          emit('upload-error', {
+            file: file.file,
+            error: file.error
+          })
+        }
+      } finally {
+        abortControllers.value.delete(file.id)
+      }
+    })
+  )
+  
+  isUploading.value = false
+  emit('upload-complete', files.value.map(f => f.file))
+}
+
+const onPreviewError = (file: UploadedFile) => {
+  // Preview failed to load, remove preview URL
+  if (file.previewUrl) {
+    URL.revokeObjectURL(file.previewUrl)
+    file.previewUrl = null
+  }
+}
+
+const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return '0 Bytes'
+  
+  const k = 1024
+  const sizes = ['Bytes', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
+
+const getFileIcon = (file: UploadedFile): string => {
+  const type = file.file.type
+  
+  if (type.startsWith('image/')) {
+    return 'mdi-file-image'
+  } else if (type.startsWith('video/')) {
+    return 'mdi-file-video'
+  } else if (type.startsWith('audio/')) {
+    return 'mdi-file-music'
+  } else if (type.includes('pdf')) {
+    return 'mdi-file-pdf'
+  } else if (type.includes('word') || type.includes('document')) {
+    return 'mdi-file-word'
+  } else if (type.includes('excel') || type.includes('spreadsheet')) {
+    return 'mdi-file-excel'
+  } else if (type.includes('powerpoint') || type.includes('presentation')) {
+    return 'mdi-file-powerpoint'
+  } else if (type.includes('zip') || type.includes('compressed') || type.includes('archive')) {
+    return 'mdi-zip-box'
+  } else if (type.includes('text/')) {
+    return 'mdi-file-document'
+  } else if (type.includes('code') || file.file.name.match(/\\.(html|css|js|ts|jsx|tsx|vue|php|py|java|rb|go)$/i)) {
+    return 'mdi-file-code'
+  }
+  
+  return 'mdi-file'
+}
+
+const getFileColor = (file: UploadedFile): string => {
+  const type = file.file.type
+  
+  if (type.startsWith('image/')) {
+    return 'blue'
+  } else if (type.startsWith('video/')) {
+    return 'purple'
+  } else if (type.startsWith('audio/')) {
+    return 'deep-purple'
+  } else if (type.includes('pdf')) {
+    return 'red'
+  } else if (type.includes('word') || type.includes('document')) {
+    return 'blue-darken-4'
+  } else if (type.includes('excel') || type.includes('spreadsheet')) {
+    return 'green-darken-2'
+  } else if (type.includes('powerpoint') || type.includes('presentation')) {
+    return 'orange-darken-2'
+  } else if (type.includes('zip') || type.includes('compressed') || type.includes('archive')) {
+    return 'amber-darken-2'
+  } else if (type.includes('text/')) {
+    return 'grey-darken-1'
+  } else if (type.includes('code') || file.file.name.match(/\\.(html|css|js|ts|jsx|tsx|vue|php|py|java|rb|go)$/i)) {
+    return 'cyan-darken-2'
+  }
+  
+  return 'grey'
+}
+
+// Clean up on unmount
+onBeforeUnmount(() => {
+  // Cancel all uploads
+  abortControllers.value.forEach(controller => {
+    controller.abort()
+  })
+  
+  // Clean up preview URLs
+  files.value.forEach(file => {
+    if (file.previewUrl) {
+      URL.revokeObjectURL(file.previewUrl)
+    }
+  })
+})
+</script>
+
+<style scoped>
+.file-uploader-container {
+  width: 100%;
+}
+
+.dropzone {
+  width: 100%;
+  border: 2px dashed rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  padding: 32px 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.dropzone-content {
+  position: relative;
+  z-index: 1;
+}
+
+.dropzone:hover {
+  border-color: var(--v-theme-primary);
+  background-color: rgba(var(--v-theme-primary), 0.04);
+}
+
+.dropzone-active {
+  border-color: var(--v-theme-primary);
+  background-color: rgba(var(--v-theme-primary), 0.08);
+}
+
+.dropzone-error {
+  border-color: var(--v-theme-error);
+  background-color: rgba(var(--v-theme-error), 0.04);
+}
+
+.dropzone-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.preview-area {
+  margin-top: 24px;
+}
+
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+}
+
+.file-item:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.file-item.has-preview .file-preview {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.preview-image-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.file-preview {
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-details {
+  flex: 1;
+  min-width: 0; /* Needed for text-truncate to work */
+}
+
+.file-name {
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.file-meta {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.file-error {
+  color: var(--v-theme-error);
+}
+
+.file-actions {
+  margin-left: 8px;
+}
+
+.file-actions-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* Animation for file list items */
+.file-list-enter-active,
+.file-list-leave-active {
+  transition: all 0.3s ease;
+}
+
+.file-list-enter-from,
+.file-list-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+</style>`
+export const VIDEO_PLAYER_CODE = `<template>
+  <v-card class="video-player-card" :elevation="4">
+    <!-- Video Container -->
+    <div class="video-container">
+      <video 
+        ref="videoRef"
+        class="video-element"
+        @timeupdate="updateProgress"
+        @ended="videoEnded"
+        @click="togglePlay"
+        :poster="poster"
+      >
+        <source :src="source" :type="videoType">
+        Your browser does not support the video tag.
+      </video>
+      
+      <!-- Overlay controls (shown on hover) -->
+      <div class="video-overlay" :class="{ 'hide-overlay': hideControls && isPlaying }">
+        <div class="video-top-controls">
+          <v-btn
+            v-if="fullscreenEnabled"
+            icon="mdi-fullscreen"
+            variant="text"
+            color="white"
+            size="small"
+            @click="toggleFullscreen"
+          ></v-btn>
+        </div>
+        
+        <div class="video-center-controls" @click="togglePlay">
+          <v-btn 
+            v-if="!isPlaying || (!hideControls || isHovering)"
+            :icon="isPlaying ? 'mdi-pause' : 'mdi-play'" 
+            size="x-large" 
+            color="white" 
+            variant="text"
+          ></v-btn>
+        </div>
+
+        <div class="video-bottom-controls">
+          <!-- Progress bar -->
+          <div class="progress-container">
+            <input 
+              type="range" 
+              class="progress-slider" 
+              min="0" 
+              max="100" 
+              step="0.1" 
+              :value="progress" 
+              @input="seek"
+            >
+            <div class="progress-bar" :style="{ width: \`\${progress}%\` }"></div>
+          </div>
+          
+          <!-- Controls -->
+          <div class="controls-container">
+            <v-btn 
+              :icon="isPlaying ? 'mdi-pause' : 'mdi-play'" 
+              size="small" 
+              color="white" 
+              variant="text"
+              @click.stop="togglePlay"
+            ></v-btn>
+            
+            <div class="time-display">
+              {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
+            </div>
+            
+            <div class="volume-control">
+              <v-btn 
+                :icon="volume > 0 ? (volume > 0.5 ? 'mdi-volume-high' : 'mdi-volume-medium') : 'mdi-volume-off'" 
+                size="small" 
+                color="white" 
+                variant="text"
+                @click.stop="toggleMute"
+              ></v-btn>
+              <input 
+                type="range" 
+                class="volume-slider" 
+                min="0" 
+                max="1" 
+                step="0.05" 
+                :value="volume" 
+                @input="adjustVolume"
+              >
+            </div>
+            
+            <v-btn 
+              :icon="playbackRate === 1 ? 'mdi-speedometer' : 'mdi-numeric-' + playbackRate + '-box'" 
+              size="small" 
+              color="white" 
+              variant="text"
+              @click.stop="togglePlaybackRate"
+            ></v-btn>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Information (Optional) -->
+    <v-card-text v-if="title || description">
+      <div class="text-h6">{{ title }}</div>
+      <div class="text-subtitle-1 text-medium-emphasis">{{ description }}</div>
+    </v-card-text>
+
+    <!-- Playlist (Optional) -->
+    <v-list v-if="playlist && playlist.length > 0" density="compact" bg-color="grey-darken-4">
+      <v-list-item 
+        v-for="(item, index) in playlist" 
+        :key="index"
+        :active="currentVideoIndex === index"
+        @click="changeVideo(index)"
+      >
+        <template v-slot:prepend>
+          <v-avatar size="36" class="me-2">
+            <v-img :src="item.thumbnail" cover></v-img>
+          </v-avatar>
+        </template>
+        <v-list-item-title class="text-white">{{ item.title }}</v-list-item-title>
+        <v-list-item-subtitle class="text-grey">{{ item.duration }}</v-list-item-subtitle>
+      </v-list-item>
+    </v-list>
+  </v-card>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+
+// Props
+const props = defineProps({
+  title: {
+    type: String,
+    default: ''
+  },
+  description: {
+    type: String,
+    default: ''
+  },
+  source: {
+    type: String,
+    default: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4'
+  },
+  videoType: {
+    type: String,
+    default: 'video/mp4'
+  },
+  poster: {
+    type: String,
+    default: ''
+  },
+  autoplay: {
+    type: Boolean,
+    default: false
+  },
+  hideControls: {
+    type: Boolean,
+    default: true
+  },
+  playlist: {
+    type: Array,
+    default: () => []
+  }
+})
+
+// Refs
+const videoRef = ref<HTMLVideoElement | null>(null)
+const isPlaying = ref(false)
+const progress = ref(0)
+const currentTime = ref(0)
+const duration = ref(0)
+const volume = ref(1)
+const lastVolume = ref(1)
+const playbackRate = ref(1)
+const isHovering = ref(false)
+const currentVideoIndex = ref(0)
+const fullscreenEnabled = ref(
+  document.fullscreenEnabled || 
+  (document as any).webkitFullscreenEnabled ||
+  (document as any).mozFullScreenEnabled ||
+  (document as any).msFullscreenEnabled
+)
+
+// Computed
+const currentVideo = computed(() => {
+  if (props.playlist && props.playlist.length > 0) {
+    return props.playlist[currentVideoIndex.value]
+  }
+  return { source: props.source, type: props.videoType, poster: props.poster }
+})
+
+// Methods
+const togglePlay = () => {
+  if (!videoRef.value) return
+  
+  if (videoRef.value.paused || videoRef.value.ended) {
+    videoRef.value.play()
+    isPlaying.value = true
+  } else {
+    videoRef.value.pause()
+    isPlaying.value = false
+  }
+}
+
+const updateProgress = () => {
+  if (!videoRef.value) return
+  
+  currentTime.value = videoRef.value.currentTime
+  duration.value = videoRef.value.duration
+  progress.value = (videoRef.value.currentTime / videoRef.value.duration) * 100
+}
+
+const seek = (event: Event) => {
+  if (!videoRef.value) return
+  
+  const target = event.target as HTMLInputElement
+  const seekTime = (parseFloat(target.value) / 100) * videoRef.value.duration
+  videoRef.value.currentTime = seekTime
+}
+
+const adjustVolume = (event: Event) => {
+  if (!videoRef.value) return
+  
+  const target = event.target as HTMLInputElement
+  const newVolume = parseFloat(target.value)
+  videoRef.value.volume = newVolume
+  volume.value = newVolume
+  lastVolume.value = newVolume > 0 ? newVolume : lastVolume.value
+}
+
+const toggleMute = () => {
+  if (!videoRef.value) return
+  
+  if (volume.value > 0) {
+    lastVolume.value = volume.value
+    volume.value = 0
+  } else {
+    volume.value = lastVolume.value
+  }
+  videoRef.value.volume = volume.value
+}
+
+const togglePlaybackRate = () => {
+  const rates = [0.5, 1, 1.5, 2]
+  const currentIndex = rates.indexOf(playbackRate.value)
+  const nextIndex = (currentIndex + 1) % rates.length
+  playbackRate.value = rates[nextIndex]
+  
+  if (videoRef.value) {
+    videoRef.value.playbackRate = playbackRate.value
+  }
+}
+
+const formatTime = (timeInSeconds: number) => {
+  if (isNaN(timeInSeconds)) return '0:00'
+  
+  const minutes = Math.floor(timeInSeconds / 60)
+  const seconds = Math.floor(timeInSeconds % 60)
+  return \`\${minutes}:\${seconds < 10 ? '0' : ''}\${seconds}\`
+}
+
+const videoEnded = () => {
+  isPlaying.value = false
+  
+  // Auto-play next video if available
+  if (props.playlist && props.playlist.length > 0 && currentVideoIndex.value < props.playlist.length - 1) {
+    currentVideoIndex.value++
+  }
+}
+
+const changeVideo = (index: number) => {
+  currentVideoIndex.value = index
+  
+  // Reset video state
+  if (videoRef.value) {
+    videoRef.value.currentTime = 0
+    progress.value = 0
+    
+    // Start playing the new video
+    setTimeout(() => {
+      if (videoRef.value && isPlaying.value) {
+        videoRef.value.play()
+      }
+    }, 50)
+  }
+}
+
+const toggleFullscreen = () => {
+  if (!videoRef.value) return
+  
+  const videoContainer = videoRef.value.parentElement
+  if (!videoContainer) return
+  
+  if (!document.fullscreenElement) {
+    if (videoContainer.requestFullscreen) {
+      videoContainer.requestFullscreen()
+    } else if ((videoContainer as any).webkitRequestFullscreen) {
+      (videoContainer as any).webkitRequestFullscreen()
+    } else if ((videoContainer as any).msRequestFullscreen) {
+      (videoContainer as any).msRequestFullscreen()
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen()
+    } else if ((document as any).webkitExitFullscreen) {
+      (document as any).webkitExitFullscreen()
+    } else if ((document as any).msExitFullscreen) {
+      (document as any).msExitFullscreen()
+    }
+  }
+}
+
+// Event handlers for hover state
+const handleMouseEnter = () => {
+  isHovering.value = true
+}
+
+const handleMouseLeave = () => {
+  isHovering.value = false
+}
+
+// Keyboard shortcuts
+const handleKeydown = (event: KeyboardEvent) => {
+  if (!videoRef.value) return
+  
+  switch(event.code) {
+    case 'Space':
+      event.preventDefault()
+      togglePlay()
+      break
+    case 'ArrowRight':
+      videoRef.value.currentTime += 10
+      break
+    case 'ArrowLeft':
+      videoRef.value.currentTime -= 10
+      break
+    case 'ArrowUp':
+      volume.value = Math.min(1, volume.value + 0.1)
+      videoRef.value.volume = volume.value
+      break
+    case 'ArrowDown':
+      volume.value = Math.max(0, volume.value - 0.1)
+      videoRef.value.volume = volume.value
+      break
+    case 'KeyM':
+      toggleMute()
+      break
+  }
+}
+
+// Lifecycle hooks
+onMounted(() => {
+  if (videoRef.value) {
+    duration.value = videoRef.value.duration || 0
+    videoRef.value.volume = volume.value
+    
+    if (props.autoplay) {
+      videoRef.value.play().then(() => {
+        isPlaying.value = true
+      }).catch(() => {
+        console.warn('Autoplay was prevented by the browser')
+      })
+    }
+    
+    // Add event listeners
+    const videoContainer = videoRef.value.parentElement
+    if (videoContainer) {
+      videoContainer.addEventListener('mouseenter', handleMouseEnter)
+      videoContainer.addEventListener('mouseleave', handleMouseLeave)
+    }
+    
+    window.addEventListener('keydown', handleKeydown)
+  }
+})
+
+onUnmounted(() => {
+  if (videoRef.value) {
+    const videoContainer = videoRef.value.parentElement
+    if (videoContainer) {
+      videoContainer.removeEventListener('mouseenter', handleMouseEnter)
+      videoContainer.removeEventListener('mouseleave', handleMouseLeave)
+    }
+  }
+  
+  window.removeEventListener('keydown', handleKeydown)
+})
+
+// Watch for playlist changes
+watch(
+  () => currentVideo.value,
+  (newVideo) => {
+    if (videoRef.value && newVideo) {
+      videoRef.value.src = newVideo.source
+      videoRef.value.poster = newVideo.poster || ''
+    }
+  }
+)
+</script>
+
+<style scoped>
+.video-player-card {
+  max-width: 100%;
+  overflow: hidden;
+  background-color: #121212;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  background-color: #000;
+  overflow: hidden;
+}
+
+.video-element {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0) 30%,
+    rgba(0, 0, 0, 0) 70%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.video-overlay.hide-overlay {
+  opacity: 0;
+}
+
+.video-overlay:hover {
+  opacity: 1;
+}
+
+.video-top-controls, .video-bottom-controls {
+  display: flex;
+  padding: 8px;
+  width: 100%;
+}
+
+.video-top-controls {
+  justify-content: flex-end;
+}
+
+.video-center-controls {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-bottom-controls {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progress-container {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-slider {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  z-index: 2;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.progress-bar {
+  position: absolute;
+  height: 100%;
+  background-color: #f44336;
+  border-radius: 2px;
+  transition: width 0.1s;
+}
+
+.controls-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.time-display {
+  color: white;
+  font-size: 12px;
+  margin: 0 10px;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  width: 120px;
+}
+
+.volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  outline: none;
+  border-radius: 2px;
+  transition: all 0.2s;
+  margin-left: 4px;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  border: none;
+}
+</style>`
+
+export const AUDIO_PLAYER_CODE = `<template>
+  <v-card class="audio-player-card" :class="{ 'player-mini': mini }" :elevation="4">
+    <!-- Artwork and Track Info -->
+    <div class="audio-player-content" :class="{ 'mini-layout': mini }">
+      <div class="artwork-container" :class="{ 'mini-artwork': mini }">
+        <v-img
+          :src="currentTrack.artwork || 'https://via.placeholder.com/300x300?text=No+Image'"
+          :aspect-ratio="1"
+          cover
+          class="artwork"
+          :class="{ 'artwork-spinning': isPlaying && showDiscAnimation }"
+        ></v-img>
+        
+        <div class="artwork-overlay" v-if="!mini" @click="togglePlay">
+          <v-icon :icon="isPlaying ? 'mdi-pause-circle' : 'mdi-play-circle'" size="64" color="white"></v-icon>
+        </div>
+      </div>
+
+      <div class="audio-info" :class="{ 'mini-info': mini }">
+        <div class="track-info">
+          <div class="text-h6 track-title">{{ currentTrack.title || 'Unknown Track' }}</div>
+          <div class="text-subtitle-2 text-medium-emphasis">{{ currentTrack.artist || 'Unknown Artist' }}</div>
+        </div>
+
+        <div class="playback-controls" v-if="!mini">
+          <div class="progress-container">
+            <input 
+              type="range" 
+              class="progress-slider" 
+              min="0" 
+              max="100" 
+              step="0.1" 
+              :value="progress" 
+              @input="seek"
+            >
+            <div class="progress-bar" :style="{ width: \`\${progress}%\` }"></div>
+          </div>
+          
+          <div class="time-display">
+            <span>{{ formatTime(currentTime) }}</span>
+            <span>{{ formatTime(duration) }}</span>
+          </div>
+          
+          <div class="control-buttons">
+            <v-btn 
+              icon="mdi-shuffle-variant" 
+              size="small" 
+              :color="shuffle ? 'primary' : ''" 
+              variant="text"
+              @click="toggleShuffle"
+            ></v-btn>
+            
+            <v-btn 
+              icon="mdi-skip-previous" 
+              size="small" 
+              @click="playPrevious" 
+              :disabled="!hasPrevious" 
+              variant="text"
+            ></v-btn>
+            
+            <v-btn 
+              :icon="isPlaying ? 'mdi-pause-circle' : 'mdi-play-circle'" 
+              color="primary"
+              size="large" 
+              @click="togglePlay"
+              variant="text"
+            ></v-btn>
+            
+            <v-btn 
+              icon="mdi-skip-next" 
+              size="small" 
+              @click="playNext" 
+              :disabled="!hasNext" 
+              variant="text"
+            ></v-btn>
+            
+            <v-btn 
+              :icon="repeat ? (repeatOne ? 'mdi-repeat-once' : 'mdi-repeat') : 'mdi-repeat-off'" 
+              size="small" 
+              :color="repeat ? 'primary' : ''" 
+              variant="text"
+              @click="toggleRepeat"
+            ></v-btn>
+          </div>
+        </div>
+        
+        <!-- Mini player controls -->
+        <div class="mini-controls" v-if="mini">
+          <v-btn 
+            :icon="isPlaying ? 'mdi-pause' : 'mdi-play'" 
+            size="small" 
+            color="primary" 
+            variant="text"
+            @click="togglePlay"
+          ></v-btn>
+          
+          <v-btn 
+            icon="mdi-skip-next" 
+            size="small" 
+            @click="playNext" 
+            :disabled="!hasNext" 
+            variant="text"
+          ></v-btn>
+        </div>
+      </div>
+      
+      <!-- Additional controls -->
+      <div class="additional-controls" v-if="!mini">
+        <div class="volume-control">
+          <v-btn 
+            :icon="volume > 0 ? (volume > 0.5 ? 'mdi-volume-high' : 'mdi-volume-medium') : 'mdi-volume-off'" 
+            size="small" 
+            variant="text"
+            @click="toggleMute"
+          ></v-btn>
+          <input 
+            type="range" 
+            class="volume-slider" 
+            min="0" 
+            max="1" 
+            step="0.05" 
+            :value="volume" 
+            @input="adjustVolume"
+          >
+        </div>
+        
+        <div class="right-controls">
+          <v-btn 
+            :icon="mini ? 'mdi-arrow-expand' : 'mdi-arrow-collapse'" 
+            size="small" 
+            variant="text"
+            @click="toggleMiniPlayer"
+          ></v-btn>
+          
+          <v-btn 
+            icon="mdi-playlist-music" 
+            size="small" 
+            variant="text"
+            @click="togglePlaylist"
+          ></v-btn>
+        </div>
+      </div>
+      
+      <!-- Mini player progress bar -->
+      <div class="mini-progress" v-if="mini">
+        <div class="mini-progress-bar" :style="{ width: \`\${progress}%\` }"></div>
+      </div>
+    </div>
+    
+    <!-- Audio element -->
+    <audio 
+      ref="audioRef"
+      @timeupdate="updateProgress"
+      @loadedmetadata="loadedMetadata"
+      @ended="handleTrackEnd"
+    >
+      <source :src="currentTrack.source" :type="currentTrack.type || 'audio/mp3'">
+      Your browser does not support the audio element.
+    </audio>
+
+    <!-- Playlist -->
+    <v-expand-transition>
+      <div class="playlist-container" v-if="showPlaylist && !mini">
+        <v-divider></v-divider>
+        <div class="playlist-header">
+          <div class="text-subtitle-1 font-weight-bold">Playlist</div>
+          <v-spacer></v-spacer>
+          <v-btn 
+            icon="mdi-close" 
+            size="small" 
+            variant="text"
+            @click="showPlaylist = false"
+          ></v-btn>
+        </div>
+        
+        <v-list density="compact" class="playlist-list">
+          <v-list-item 
+            v-for="(track, index) in tracks" 
+            :key="index"
+            :active="currentTrackIndex === index"
+            @click="playTrack(index)"
+            :ripple="true"
+          >
+            <template v-slot:prepend>
+              <v-avatar size="32" class="me-2">
+                <v-img :src="track.artwork || 'https://via.placeholder.com/32x32'" cover></v-img>
+              </v-avatar>
+              <v-icon v-if="currentTrackIndex === index && isPlaying" class="playing-icon">mdi-volume-high</v-icon>
+            </template>
+            <v-list-item-title>{{ track.title || 'Unknown Track' }}</v-list-item-title>
+            <v-list-item-subtitle>{{ track.artist || 'Unknown Artist' }}</v-list-item-subtitle>
+            <template v-slot:append>
+              <span class="text-caption">{{ track.duration || '--:--' }}</span>
+            </template>
+          </v-list-item>
+        </v-list>
+      </div>
+    </v-expand-transition>
+  </v-card>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+
+// Define track interface
+interface Track {
+  title: string
+  artist: string
+  source: string
+  type?: string
+  artwork?: string
+  duration?: string
+}
+
+// Props
+const props = defineProps({
+  tracks: {
+    type: Array as () => Track[],
+    default: () => ([
+      {
+        title: 'Sample Track 1',
+        artist: 'Artist Name',
+        source: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+        artwork: 'https://via.placeholder.com/300x300/2196F3/FFFFFF?text=Track+1'
+      },
+      {
+        title: 'Sample Track 2',
+        artist: 'Another Artist',
+        source: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+        artwork: 'https://via.placeholder.com/300x300/E91E63/FFFFFF?text=Track+2'
+      },
+      {
+        title: 'Sample Track 3',
+        artist: 'Third Artist',
+        source: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+        artwork: 'https://via.placeholder.com/300x300/4CAF50/FFFFFF?text=Track+3'
+      }
+    ])
+  },
+  autoplay: {
+    type: Boolean,
+    default: false
+  },
+  startMini: {
+    type: Boolean,
+    default: false
+  },
+  showDiscAnimation: {
+    type: Boolean,
+    default: true
+  }
+})
+
+// Refs
+const audioRef = ref<HTMLAudioElement | null>(null)
+const isPlaying = ref(false)
+const currentTrackIndex = ref(0)
+const progress = ref(0)
+const currentTime = ref(0)
+const duration = ref(0)
+const volume = ref(1)
+const lastVolume = ref(1)
+const shuffle = ref(false)
+const repeat = ref(false)
+const repeatOne = ref(false)
+const showPlaylist = ref(false)
+const mini = ref(props.startMini)
+
+// Computed
+const currentTrack = computed(() => {
+  return props.tracks[currentTrackIndex.value] || {
+    title: 'No Track Available',
+    artist: 'Please add tracks to playlist',
+    source: '',
+    artwork: ''
+  }
+})
+
+const hasNext = computed(() => {
+  if (shuffle.value) return props.tracks.length > 1
+  return currentTrackIndex.value < props.tracks.length - 1
+})
+
+const hasPrevious = computed(() => {
+  if (shuffle.value) return props.tracks.length > 1
+  return currentTrackIndex.value > 0
+})
+
+// Methods
+const togglePlay = () => {
+  if (!audioRef.value || !currentTrack.value.source) return
+  
+  if (audioRef.value.paused) {
+    audioRef.value.play()
+    isPlaying.value = true
+  } else {
+    audioRef.value.pause()
+    isPlaying.value = false
+  }
+}
+
+const updateProgress = () => {
+  if (!audioRef.value) return
+  
+  currentTime.value = audioRef.value.currentTime
+  progress.value = (audioRef.value.currentTime / audioRef.value.duration) * 100 || 0
+}
+
+const loadedMetadata = () => {
+  if (!audioRef.value) return
+  
+  duration.value = audioRef.value.duration
+}
+
+const seek = (event: Event) => {
+  if (!audioRef.value) return
+  
+  const target = event.target as HTMLInputElement
+  const seekTime = (parseFloat(target.value) / 100) * audioRef.value.duration
+  audioRef.value.currentTime = seekTime
+  currentTime.value = seekTime
+}
+
+const adjustVolume = (event: Event) => {
+  if (!audioRef.value) return
+  
+  const target = event.target as HTMLInputElement
+  const newVolume = parseFloat(target.value)
+  audioRef.value.volume = newVolume
+  volume.value = newVolume
+  lastVolume.value = newVolume > 0 ? newVolume : lastVolume.value
+}
+
+const toggleMute = () => {
+  if (!audioRef.value) return
+  
+  if (volume.value > 0) {
+    lastVolume.value = volume.value
+    volume.value = 0
+  } else {
+    volume.value = lastVolume.value
+  }
+  audioRef.value.volume = volume.value
+}
+
+const formatTime = (timeInSeconds: number) => {
+  if (isNaN(timeInSeconds)) return '0:00'
+  
+  const minutes = Math.floor(timeInSeconds / 60)
+  const seconds = Math.floor(timeInSeconds % 60)
+  return \`\${minutes}:\${seconds < 10 ? '0' : ''}\${seconds}\`
+}
+
+const playTrack = (index: number) => {
+  if (index < 0 || index >= props.tracks.length) return
+  
+  currentTrackIndex.value = index
+  
+  // Reset audio state
+  if (audioRef.value) {
+    audioRef.value.currentTime = 0
+    progress.value = 0
+    
+    // Start playing the new track
+    setTimeout(() => {
+      if (audioRef.value) {
+        audioRef.value.play()
+          .then(() => {
+            isPlaying.value = true
+          })
+          .catch((error) => {
+            console.error('Error playing audio:', error)
+            isPlaying.value = false
+          })
+      }
+    }, 50)
+  }
+}
+
+const playNext = () => {
+  if (props.tracks.length === 0) return
+  
+  let nextIndex
+  
+  if (shuffle.value) {
+    // Get random track but not the same as current
+    let possibleIndices = Array.from({ length: props.tracks.length }, (_, i) => i)
+      .filter(i => i !== currentTrackIndex.value)
+    
+    if (possibleIndices.length > 0) {
+      const randomIndex = Math.floor(Math.random() * possibleIndices.length)
+      nextIndex = possibleIndices[randomIndex]
+    } else {
+      nextIndex = currentTrackIndex.value
+    }
+  } else {
+    nextIndex = (currentTrackIndex.value + 1) % props.tracks.length
+  }
+  
+  playTrack(nextIndex)
+}
+
+const playPrevious = () => {
+  if (props.tracks.length === 0) return
+  
+  // If current time > 3 seconds, restart the current track
+  if (audioRef.value && audioRef.value.currentTime > 3) {
+    audioRef.value.currentTime = 0
+    return
+  }
+  
+  let prevIndex
+  
+  if (shuffle.value) {
+    // Get random track but not the same as current
+    let possibleIndices = Array.from({ length: props.tracks.length }, (_, i) => i)
+      .filter(i => i !== currentTrackIndex.value)
+    
+    if (possibleIndices.length > 0) {
+      const randomIndex = Math.floor(Math.random() * possibleIndices.length)
+      prevIndex = possibleIndices[randomIndex]
+    } else {
+      prevIndex = currentTrackIndex.value
+    }
+  } else {
+    prevIndex = currentTrackIndex.value - 1
+    if (prevIndex < 0) prevIndex = props.tracks.length - 1
+  }
+  
+  playTrack(prevIndex)
+}
+
+const handleTrackEnd = () => {
+  if (repeatOne.value) {
+    // Replay the same track
+    playTrack(currentTrackIndex.value)
+  } else if (repeat.value) {
+    // Continue to next track, looping to beginning if needed
+    playNext()
+  } else if (currentTrackIndex.value < props.tracks.length - 1) {
+    // Continue to next track if not the last one
+    playNext()
+  } else {
+    // Stop playback if last track and no repeat
+    isPlaying.value = false
+  }
+}
+
+const toggleShuffle = () => {
+  shuffle.value = !shuffle.value
+}
+
+const toggleRepeat = () => {
+  if (!repeat.value) {
+    repeat.value = true
+    repeatOne.value = false
+  } else if (!repeatOne.value) {
+    repeatOne.value = true
+  } else {
+    repeat.value = false
+    repeatOne.value = false
+  }
+}
+
+const togglePlaylist = () => {
+  showPlaylist.value = !showPlaylist.value
+}
+
+const toggleMiniPlayer = () => {
+  mini.value = !mini.value
+  showPlaylist.value = false // Always close playlist when toggling size
+}
+
+// Keyboard shortcuts
+const handleKeydown = (event: KeyboardEvent) => {
+  if (!audioRef.value) return
+  
+  switch(event.code) {
+    case 'Space':
+      if (document.activeElement?.tagName !== 'BUTTON' && 
+          document.activeElement?.tagName !== 'INPUT') {
+        event.preventDefault()
+        togglePlay()
+      }
+      break
+    case 'ArrowRight':
+      if (event.ctrlKey || event.metaKey) {
+        event.preventDefault()
+        playNext()
+      } else {
+        audioRef.value.currentTime += 5
+      }
+      break
+    case 'ArrowLeft':
+      if (event.ctrlKey || event.metaKey) {
+        event.preventDefault()
+        playPrevious()
+      } else {
+        audioRef.value.currentTime -= 5
+      }
+      break
+    case 'ArrowUp':
+      if (event.ctrlKey || event.metaKey) {
+        event.preventDefault()
+        volume.value = Math.min(1, volume.value + 0.1)
+        audioRef.value.volume = volume.value
+      }
+      break
+    case 'ArrowDown':
+      if (event.ctrlKey || event.metaKey) {
+        event.preventDefault()
+        volume.value = Math.max(0, volume.value - 0.1)
+        audioRef.value.volume = volume.value
+      }
+      break
+    case 'KeyM':
+      if (event.ctrlKey || event.metaKey) {
+        event.preventDefault()
+        toggleMute()
+      }
+      break
+  }
+}
+
+// Lifecycle hooks
+onMounted(() => {
+  if (audioRef.value) {
+    audioRef.value.volume = volume.value
+    
+    if (props.autoplay && currentTrack.value.source) {
+      audioRef.value.play().then(() => {
+        isPlaying.value = true
+      }).catch(() => {
+        console.warn('Autoplay was prevented by the browser')
+      })
+    }
+  }
+  
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
+
+// Watch for track changes
+watch(
+  () => currentTrack.value,
+  (newTrack) => {
+    if (audioRef.value && newTrack && newTrack.source) {
+      // Reset progress
+      progress.value = 0
+      currentTime.value = 0
+      duration.value = 0
+    }
+  }
+)
+</script>
+
+<style scoped>
+.audio-player-card {
+  max-width: 100%;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.audio-player-card.player-mini {
+  border-radius: 8px;
+}
+
+.audio-player-content {
+  display: flex;
+  padding: 16px;
+  align-items: center;
+}
+
+.audio-player-content.mini-layout {
+  padding: 8px;
+}
+
+.artwork-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-right: 16px;
+}
+
+.mini-artwork {
+  width: 48px;
+  height: 48px;
+  margin-right: 12px;
+}
+
+.artwork {
+  border-radius: 8px;
+  transition: transform 1s ease-in-out;
+}
+
+.artwork-spinning {
+  animation: spin 20s linear infinite;
+}
+
+.artwork-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.artwork-overlay:hover {
+  opacity: 1;
+}
+
+.audio-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.track-info {
+  margin-bottom: 16px;
+}
+
+.mini-info {
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+}
+
+.mini-info .track-info {
+  flex: 1;
+  margin-bottom: 0;
+  min-width: 0;
+}
+
+.track-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mini-info .track-title {
+  font-size: 0.875rem;
+  line-height: 1.25;
+}
+
+.playback-controls {
+  width: 100%;
+}
+
+.progress-container {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-slider {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  z-index: 2;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.progress-bar {
+  position: absolute;
+  height: 100%;
+  background-color: var(--v-theme-primary);
+  border-radius: 2px;
+  transition: width 0.1s;
+}
+
+.time-display {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 8px;
+}
+
+.control-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.additional-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  width: 120px;
+}
+
+.volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80px;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.1);
+  outline: none;
+  border-radius: 2px;
+  transition: all 0.2s;
+  margin-left: 4px;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--v-theme-primary);
+  cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--v-theme-primary);
+  cursor: pointer;
+  border: none;
+}
+
+.right-controls {
+  display: flex;
+}
+
+.mini-controls {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.mini-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.mini-progress-bar {
+  height: 100%;
+  background-color: var(--v-theme-primary);
+}
+
+.playlist-container {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.playlist-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+}
+
+.playlist-list {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.playing-icon {
+  animation: pulse 2s infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
 }
 </style>`
