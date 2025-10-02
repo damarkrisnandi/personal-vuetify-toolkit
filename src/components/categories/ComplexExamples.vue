@@ -1415,7 +1415,7 @@
                                         </p>
                                         <div class="hero-features-preview">
                                             <v-chip v-for="feature in heroFeatures" :key="feature" class="ma-1"
-                                                color="primary" variant="outlined" size="small">
+                                                color="white" variant="outlined" size="small">
                                                 <v-icon start>mdi-check</v-icon>
                                                 {{ feature }}
                                             </v-chip>
@@ -2295,6 +2295,7 @@ const heroFeatures = ref([
     'Modern Design',
     'Responsive',
     'Customizable',
+    'Community Support',
     'TypeScript Ready'
 ])
 

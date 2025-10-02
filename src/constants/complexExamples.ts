@@ -6130,7 +6130,7 @@ export const HERO_SECTION_CODE = `<template>
                 v-for="feature in heroData.features"
                 :key="feature"
                 class="ma-1"
-                color="primary"
+                color="white"
                 variant="outlined"
                 size="small"
               >
@@ -6243,7 +6243,7 @@ const heroData = ref({
   title: "Build Amazing",
   highlight: "Vue.js Apps",
   subtitle: "Create stunning, responsive web applications with our comprehensive component library and modern design system.",
-  features: ["Modern Design", "Responsive", "Customizable", "TypeScript Ready"],
+  features: ["Modern Design", "Responsive", "Customizable", "Community Support", "TypeScript Ready"],
   primaryButton: "Get Started",
   secondaryButton: "Watch Demo",
   image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=500&fit=crop",
