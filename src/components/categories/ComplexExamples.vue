@@ -1410,43 +1410,30 @@
                                             <span class="hero-highlight-preview">Vue.js Apps</span>
                                         </h1>
                                         <p class="hero-subtitle-preview">
-                                            Create stunning, responsive web applications with our comprehensive component library and modern design system.
+                                            Create stunning, responsive web applications with our comprehensive
+                                            component library and modern design system.
                                         </p>
                                         <div class="hero-features-preview">
-                                            <v-chip
-                                                v-for="feature in heroFeatures"
-                                                :key="feature"
-                                                class="ma-1"
-                                                color="primary"
-                                                variant="outlined"
-                                                size="small"
-                                            >
+                                            <v-chip v-for="feature in heroFeatures" :key="feature" class="ma-1"
+                                                color="primary" variant="outlined" size="small">
                                                 <v-icon start>mdi-check</v-icon>
                                                 {{ feature }}
                                             </v-chip>
                                         </div>
                                         <div class="hero-actions-preview">
-                                            <v-btn
-                                                size="large"
-                                                color="primary"
-                                                variant="elevated"
-                                                class="me-4 mb-2"
-                                                prepend-icon="mdi-rocket-launch"
-                                            >
+                                            <v-btn size="large" color="primary" variant="elevated" class="me-4 mb-2"
+                                                prepend-icon="mdi-rocket-launch">
                                                 Get Started
                                             </v-btn>
-                                            <v-btn
-                                                size="large"
-                                                variant="outlined"
-                                                class="mb-2"
-                                                prepend-icon="mdi-play-circle"
-                                            >
+                                            <v-btn size="large" variant="outlined" class="mb-2"
+                                                prepend-icon="mdi-play-circle">
                                                 Watch Demo
                                             </v-btn>
                                         </div>
                                         <div class="hero-stats-preview">
                                             <div class="stats-grid-preview">
-                                                <div v-for="stat in heroStats" :key="stat.label" class="stat-item-preview">
+                                                <div v-for="stat in heroStats" :key="stat.label"
+                                                    class="stat-item-preview">
                                                     <div class="stat-number-preview">{{ stat.value }}</div>
                                                     <div class="stat-label-preview">{{ stat.label }}</div>
                                                 </div>
@@ -1456,34 +1443,21 @@
                                 </v-col>
                                 <v-col cols="12" md="6" lg="7" class="hero-visual-preview">
                                     <div class="hero-image-container-preview">
-                                        <v-card
-                                            class="hero-card-preview"
-                                            elevation="12"
-                                            rounded="lg"
-                                        >
+                                        <v-card class="hero-card-preview" elevation="12" rounded="lg">
                                             <v-img
                                                 src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=300&fit=crop"
-                                                alt="Modern web development"
-                                                aspect-ratio="16/10"
-                                                cover
-                                                class="hero-main-image-preview"
-                                            >
+                                                alt="Modern web development" aspect-ratio="16/10" cover
+                                                class="hero-main-image-preview">
                                                 <template #placeholder>
                                                     <div class="d-flex align-center justify-center fill-height">
-                                                        <v-progress-circular
-                                                            color="primary"
-                                                            indeterminate
-                                                        ></v-progress-circular>
+                                                        <v-progress-circular color="primary"
+                                                            indeterminate></v-progress-circular>
                                                     </div>
                                                 </template>
                                             </v-img>
                                             <div class="hero-card-overlay-preview">
-                                                <v-chip
-                                                    color="success"
-                                                    variant="elevated"
-                                                    prepend-icon="mdi-trending-up"
-                                                    class="floating-chip-preview"
-                                                >
+                                                <v-chip color="success" variant="elevated"
+                                                    prepend-icon="mdi-trending-up" class="floating-chip-preview">
                                                     New Features
                                                 </v-chip>
                                             </div>
@@ -3089,9 +3063,12 @@ const voteReply = (commentId: number, reply: any, voteType: 'up' | 'down') => {
 }
 
 @keyframes cardFloat {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0px);
     }
+
     50% {
         transform: translateY(-10px);
     }
@@ -3112,9 +3089,12 @@ const voteReply = (commentId: number, reply: any, voteType: 'up' | 'down') => {
 }
 
 @keyframes chipFloat {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0px);
     }
+
     50% {
         transform: translateY(-5px);
     }
@@ -3127,16 +3107,16 @@ const voteReply = (commentId: number, reply: any, voteType: 'up' | 'down') => {
         min-height: 500px;
         padding: 1rem;
     }
-    
+
     .hero-content-preview {
         text-align: center;
         margin-bottom: 2rem;
     }
-    
+
     .stats-grid-preview {
         justify-content: center;
     }
-    
+
     .hero-actions-preview .v-btn {
         display: block;
         width: 100%;
@@ -3148,15 +3128,15 @@ const voteReply = (commentId: number, reply: any, voteType: 'up' | 'down') => {
     .hero-title-preview {
         font-size: 2rem;
     }
-    
+
     .hero-subtitle-preview {
         font-size: 1rem;
     }
-    
+
     .stats-grid-preview {
         gap: 1rem;
     }
-    
+
     .stat-number-preview {
         font-size: 1.25rem;
     }

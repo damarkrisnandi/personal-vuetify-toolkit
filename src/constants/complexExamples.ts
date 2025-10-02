@@ -6212,7 +6212,7 @@ export const HERO_SECTION_CODE = `<template>
         </v-col>
       </v-row>
     </v-container>
-    
+
     <!-- Scroll indicator -->
     <div class="scroll-indicator" :class="{ 'bounce': scrollIndicatorVisible }">
       <v-btn
@@ -6259,7 +6259,7 @@ const heroData = ref({
 // Trigger animations on mount
 onMounted(async () => {
   await nextTick()
-  
+
   // Staggered animations
   setTimeout(() => titleVisible.value = true, 100)
   setTimeout(() => subtitleVisible.value = true, 300)
@@ -6548,16 +6548,16 @@ const scrollToNext = () => {
     min-height: 100vh;
     padding: 1rem;
   }
-  
+
   .hero-content {
     text-align: center;
     margin-bottom: 2rem;
   }
-  
+
   .stats-grid {
     justify-content: center;
   }
-  
+
   .hero-actions .v-btn {
     display: block;
     width: 100%;
@@ -6569,15 +6569,15 @@ const scrollToNext = () => {
   .hero-title {
     font-size: 2.5rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1.1rem;
   }
-  
+
   .stats-grid {
     gap: 1rem;
   }
-  
+
   .stat-number {
     font-size: 1.5rem;
   }
