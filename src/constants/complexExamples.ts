@@ -5593,7 +5593,7 @@ export const QR_CODE_COMPONENT_CODE = `<template>
               :rules="[v => !!v || 'This field is required']"
               class="mb-3"
             ></v-text-field>
-            
+
             <div class="mb-4">
               <div class="text-subtitle-2 mb-2">QR Code Options</div>
               <v-row>
@@ -5645,7 +5645,7 @@ export const QR_CODE_COMPONENT_CODE = `<template>
                 </v-col>
               </v-row>
             </div>
-            
+
             <v-btn
               type="submit"
               color="primary"
@@ -5656,17 +5656,17 @@ export const QR_CODE_COMPONENT_CODE = `<template>
               Generate QR Code
             </v-btn>
           </v-form>
-          
+
           <!-- QR Code Result -->
           <div v-if="qrCodeUrl" class="qr-code-result text-center">
-            <img 
-              :src="qrCodeUrl" 
-              :width="qrSize" 
-              :height="qrSize" 
+            <img
+              :src="qrCodeUrl"
+              :width="qrSize"
+              :height="qrSize"
               alt="Generated QR Code"
               class="qr-image"
             />
-            
+
             <div class="mt-4 d-flex justify-center">
               <v-btn
                 prepend-icon="mdi-download"
@@ -5677,7 +5677,7 @@ export const QR_CODE_COMPONENT_CODE = `<template>
               >
                 Download
               </v-btn>
-              
+
               <v-btn
                 prepend-icon="mdi-content-copy"
                 variant="outlined"
@@ -5697,7 +5697,7 @@ export const QR_CODE_COMPONENT_CODE = `<template>
                 <v-icon icon="mdi-qrcode-scan" size="64" color="primary" class="mb-4"></v-icon>
                 <div class="text-body-1">Click the button below to scan a QR code</div>
               </div>
-              
+
               <video
                 v-show="isScanning"
                 ref="videoRef"
@@ -5705,14 +5705,14 @@ export const QR_CODE_COMPONENT_CODE = `<template>
                 autoplay
                 playsinline
               ></video>
-              
+
               <canvas ref="canvasRef" class="scanner-canvas"></canvas>
-              
+
               <div v-if="isScanning" class="scanner-overlay">
                 <div class="scanner-frame"></div>
               </div>
             </div>
-            
+
             <div class="mt-6 d-flex justify-center">
               <v-btn
                 :color="isScanning ? 'error' : 'primary'"
@@ -5722,7 +5722,7 @@ export const QR_CODE_COMPONENT_CODE = `<template>
               >
                 {{ isScanning ? 'Stop' : 'Start' }} Scanner
               </v-btn>
-              
+
               <v-btn
                 prepend-icon="mdi-image"
                 variant="outlined"
@@ -5730,7 +5730,7 @@ export const QR_CODE_COMPONENT_CODE = `<template>
               >
                 Upload Image
               </v-btn>
-              
+
               <input
                 type="file"
                 ref="fileInputRef"
@@ -5740,13 +5740,13 @@ export const QR_CODE_COMPONENT_CODE = `<template>
               />
             </div>
           </div>
-          
+
           <!-- Scan Results -->
           <v-expand-transition>
             <div v-if="scanResult" class="scan-result pa-4 mt-4 rounded">
               <div class="text-subtitle-1 font-weight-bold mb-2">Scan Result:</div>
               <div class="text-body-1 mb-2">{{ scanResult }}</div>
-              
+
               <div class="d-flex">
                 <v-chip
                   v-if="isUrl(scanResult)"
@@ -5759,7 +5759,7 @@ export const QR_CODE_COMPONENT_CODE = `<template>
                 >
                   Open Link
                 </v-chip>
-                
+
                 <v-chip
                   prepend-icon="mdi-content-copy"
                   @click="copyToClipboard(scanResult)"
@@ -5772,7 +5772,7 @@ export const QR_CODE_COMPONENT_CODE = `<template>
         </v-window-item>
       </v-window>
     </v-card-text>
-    
+
     <v-snackbar
       v-model="snackbar.show"
       :color="snackbar.color"
@@ -5833,11 +5833,11 @@ const generateQR = () => {
     bgcolor: backgroundColor.value.replace('#', ''),
     ecc: errorCorrection.value.toLowerCase()
   });
-  
+
   // In a real app, use a QR code library like qrcode.js
   // Here we're using a placeholder service
   qrCodeUrl.value = \`https://api.qrserver.com/v1/create-qr-code/?\${params.toString()}\`;
-  
+
   snackbar.value = {
     show: true,
     text: 'QR Code generated successfully!',
@@ -5850,7 +5850,7 @@ const downloadQrCode = () => {
   link.download = 'qrcode.png';
   link.href = qrCodeUrl.value;
   link.click();
-  
+
   snackbar.value = {
     show: true,
     text: 'QR Code downloaded',
@@ -5867,7 +5867,7 @@ const copyQrImage = async () => {
         [blob.type]: blob
       })
     ]);
-    
+
     snackbar.value = {
       show: true,
       text: 'QR Code copied to clipboard',
@@ -5897,11 +5897,11 @@ const startScanner = async () => {
     stream.value = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: 'environment' }
     });
-    
+
     if (videoRef.value && stream.value) {
       videoRef.value.srcObject = stream.value;
       isScanning.value = true;
-      
+
       // In a real app, we'd use a library like jsQR
       // For our demo, we'll simulate scanning after a timeout
       scannerInterval = window.setTimeout(() => {
@@ -5923,12 +5923,12 @@ const stopScanner = () => {
     stream.value.getTracks().forEach(track => track.stop());
     stream.value = null;
   }
-  
+
   if (scannerInterval !== null) {
     clearTimeout(scannerInterval);
     scannerInterval = null;
   }
-  
+
   isScanning.value = false;
 };
 
@@ -5941,10 +5941,10 @@ const simulateQrDetection = () => {
     'Contact: John Doe, john@example.com',
     'WIFI:S:MyNetwork;T:WPA;P:password123;H:true;'
   ];
-  
+
   scanResult.value = possibleResults[Math.floor(Math.random() * possibleResults.length)];
   stopScanner();
-  
+
   snackbar.value = {
     show: true,
     text: 'QR Code detected!',
@@ -5958,11 +5958,11 @@ const openImageDialog = () => {
 
 const processImageFile = (event: Event) => {
   const input = event.target as HTMLInputElement;
-  
+
   if (input?.files && input.files[0]) {
     const file = input.files[0];
     const reader = new FileReader();
-    
+
     reader.onload = (e: ProgressEvent<FileReader>) => {
       if (e.target?.result) {
         const image = new Image();
@@ -5971,7 +5971,7 @@ const processImageFile = (event: Event) => {
           // For the demo, we'll simulate detecting a QR code
           setTimeout(() => {
             scanResult.value = 'https://vuetifyjs.com';
-            
+
             snackbar.value = {
               show: true,
               text: 'QR Code detected in image!',
@@ -5979,13 +5979,13 @@ const processImageFile = (event: Event) => {
             };
           }, 1000);
         };
-        
+
         image.src = e.target.result as string;
       }
     };
-    
+
     reader.readAsDataURL(file);
-    
+
     // Reset the input
     input.value = '';
   }
