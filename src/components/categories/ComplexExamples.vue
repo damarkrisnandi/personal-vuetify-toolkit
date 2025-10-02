@@ -729,6 +729,333 @@
                 </div>
             </template>
         </CodeShowcase>
+
+        <!-- Multi-Step Form -->
+        <CodeShowcase title="Multi-Step Form"
+            description="Interactive multi-step registration form with validation and progress tracking"
+            icon="mdi-form-select" difficulty="Hard" :code="multiStepFormCode">
+            <template #preview>
+                <div class="d-flex justify-center">
+                    <v-card class="multi-step-form-preview" width="700" elevation="3">
+                        <v-card-title class="d-flex align-center pa-4">
+                            <v-icon icon="mdi-form-select" class="me-2"></v-icon>
+                            Multi-Step Registration
+                            <v-spacer></v-spacer>
+                            <v-btn icon="mdi-close" variant="text" size="small"></v-btn>
+                        </v-card-title>
+
+                        <v-divider></v-divider>
+                        
+                        <!-- Progress Stepper -->
+                        <v-stepper :items="[
+                            { title: 'Personal Info', value: 1 },
+                            { title: 'Address', value: 2 },
+                            { title: 'Payment', value: 3 },
+                            { title: 'Review', value: 4 }
+                        ]" v-model="multiStepCurrentStep" alt-labels>
+                        </v-stepper>
+
+                        <!-- Form Content Preview -->
+                        <v-window v-model="multiStepCurrentStep" class="pa-4">
+                            <!-- Step 1: Personal Information -->
+                            <v-window-item :value="1">
+                                <v-card-text>
+                                    <p class="text-body-1 mb-4">Please enter your personal information.</p>
+                                    
+                                    <div class="d-flex gap-3">
+                                        <v-text-field
+                                            label="First Name"
+                                            variant="outlined"
+                                            density="comfortable"
+                                            class="flex-grow-1"
+                                        ></v-text-field>
+                                        
+                                        <v-text-field
+                                            label="Last Name"
+                                            variant="outlined"
+                                            density="comfortable"
+                                            class="flex-grow-1"
+                                        ></v-text-field>
+                                    </div>
+                                    
+                                    <v-text-field
+                                        label="Email"
+                                        type="email"
+                                        variant="outlined"
+                                        density="comfortable"
+                                        prepend-inner-icon="mdi-email"
+                                        class="mb-2"
+                                    ></v-text-field>
+                                    
+                                    <v-text-field
+                                        label="Phone Number"
+                                        variant="outlined"
+                                        density="comfortable"
+                                        prepend-inner-icon="mdi-phone"
+                                        class="mb-2"
+                                    ></v-text-field>
+                                </v-card-text>
+                            </v-window-item>
+
+                            <!-- Step 2: Address Information -->
+                            <v-window-item :value="2">
+                                <v-card-text>
+                                    <p class="text-body-1 mb-4">Please enter your address information.</p>
+                                    
+                                    <v-text-field
+                                        label="Street Address"
+                                        variant="outlined"
+                                        density="comfortable"
+                                        class="mb-2"
+                                    ></v-text-field>
+                                    
+                                    <div class="d-flex gap-3">
+                                        <v-text-field
+                                            label="City"
+                                            variant="outlined"
+                                            density="comfortable"
+                                            class="flex-grow-1"
+                                        ></v-text-field>
+                                        
+                                        <v-text-field
+                                            label="State / Province"
+                                            variant="outlined"
+                                            density="comfortable"
+                                            class="flex-grow-1"
+                                        ></v-text-field>
+                                    </div>
+                                </v-card-text>
+                            </v-window-item>
+
+                            <!-- Step 3: Payment Information -->
+                            <v-window-item :value="3">
+                                <v-card-text>
+                                    <p class="text-body-1 mb-4">Please enter your payment information.</p>
+                                    
+                                    <div class="payment-preview-icons d-flex align-center mb-4">
+                                        <v-radio-group inline>
+                                            <v-radio value="credit" label="Credit Card"></v-radio>
+                                            <v-radio value="debit" label="Debit Card"></v-radio>
+                                            <v-radio value="paypal" label="PayPal"></v-radio>
+                                        </v-radio-group>
+                                        
+                                        <div class="ms-auto">
+                                            <v-icon icon="mdi-credit-card" color="primary" class="me-2"></v-icon>
+                                            <v-icon icon="mdi-credit-card-outline" class="me-2"></v-icon>
+                                            <v-icon icon="mdi-paypal" color="info"></v-icon>
+                                        </div>
+                                    </div>
+                                    
+                                    <v-text-field
+                                        label="Card Number"
+                                        variant="outlined"
+                                        density="comfortable"
+                                        prepend-inner-icon="mdi-credit-card"
+                                        class="mb-2"
+                                    ></v-text-field>
+                                    
+                                    <div class="d-flex gap-3">
+                                        <v-text-field
+                                            label="Expiry Date (MM/YY)"
+                                            variant="outlined"
+                                            density="comfortable"
+                                            class="flex-grow-1"
+                                        ></v-text-field>
+                                        
+                                        <v-text-field
+                                            label="CVV"
+                                            variant="outlined"
+                                            density="comfortable"
+                                            type="password"
+                                            class="flex-grow-1"
+                                        ></v-text-field>
+                                    </div>
+                                </v-card-text>
+                            </v-window-item>
+
+                            <!-- Step 4: Review & Submit -->
+                            <v-window-item :value="4">
+                                <v-card-text>
+                                    <p class="text-body-1 mb-4">Please review your information before submitting.</p>
+                                    
+                                    <v-card variant="outlined" class="mb-4">
+                                        <v-card-title class="bg-grey-lighten-4 pa-3 text-subtitle-1">
+                                            <v-icon icon="mdi-account" class="me-2"></v-icon>
+                                            Personal Information
+                                            <v-spacer></v-spacer>
+                                            <v-btn size="small" variant="text" icon="mdi-pencil"></v-btn>
+                                        </v-card-title>
+                                        <v-card-text class="pa-3">
+                                            <div class="review-preview-item">
+                                                <span class="text-caption text-grey">Full Name:</span>
+                                                <span class="text-body-2">John Smith</span>
+                                            </div>
+                                            <div class="review-preview-item">
+                                                <span class="text-caption text-grey">Email:</span>
+                                                <span class="text-body-2">john.smith@example.com</span>
+                                            </div>
+                                        </v-card-text>
+                                    </v-card>
+                                    
+                                    <v-card variant="outlined">
+                                        <v-card-title class="bg-grey-lighten-4 pa-3 text-subtitle-1">
+                                            <v-icon icon="mdi-credit-card" class="me-2"></v-icon>
+                                            Payment Method
+                                            <v-spacer></v-spacer>
+                                            <v-btn size="small" variant="text" icon="mdi-pencil"></v-btn>
+                                        </v-card-title>
+                                        <v-card-text class="pa-3">
+                                            <div class="review-preview-item">
+                                                <span class="text-caption text-grey">Payment Method:</span>
+                                                <span class="text-body-2">Credit Card</span>
+                                            </div>
+                                            <div class="review-preview-item">
+                                                <span class="text-caption text-grey">Card Number:</span>
+                                                <span class="text-body-2">**** **** **** 1234</span>
+                                            </div>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-card-text>
+                            </v-window-item>
+                        </v-window>
+
+                        <!-- Form Buttons -->
+                        <v-divider></v-divider>
+                        <v-card-actions class="pa-4">
+                            <v-btn variant="outlined" :disabled="multiStepCurrentStep === 1">
+                                <v-icon icon="mdi-arrow-left" start></v-icon>
+                                Back
+                            </v-btn>
+                            <v-spacer></v-spacer>
+                            <v-btn v-if="multiStepCurrentStep < 4" color="primary" @click="nextMultiStepPreview">
+                                Next
+                                <v-icon icon="mdi-arrow-right" end></v-icon>
+                            </v-btn>
+                            <v-btn v-else color="success">
+                                Submit
+                                <v-icon icon="mdi-check" end></v-icon>
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </div>
+            </template>
+        </CodeShowcase>
+
+        <!-- Kanban Board / Todo List -->
+        <CodeShowcase title="Kanban Board / Todo List"
+            description="Drag-and-drop task management board with CRUD operations and filtering"
+            icon="mdi-format-list-checks" difficulty="Hard" :code="kanbanBoardCode">
+            <template #preview>
+                <div class="d-flex justify-center">
+                    <v-card class="kanban-preview" elevation="1" width="900">
+                        <v-card-title class="d-flex align-center pa-3">
+                            <v-icon icon="mdi-format-list-checks" class="me-2"></v-icon>
+                            Project Tasks
+                            <v-spacer></v-spacer>
+                            <v-btn icon="mdi-plus" variant="text" size="small"></v-btn>
+                            <v-btn icon="mdi-filter-variant" variant="text" size="small"></v-btn>
+                        </v-card-title>
+                        <v-divider></v-divider>
+                        <v-card-text class="pa-3">
+                            <div class="d-flex gap-3 overflow-x-auto py-2">
+                                <!-- To Do Column -->
+                                <div class="kanban-column-preview" style="min-width: 220px;">
+                                    <div class="column-header-preview d-flex align-center pa-2 bg-grey-lighten-4 rounded-t">
+                                        <span class="text-body-2 font-weight-medium">To Do</span>
+                                        <v-chip class="ms-2" size="x-small" color="grey">2</v-chip>
+                                        <v-spacer></v-spacer>
+                                        <v-btn icon="mdi-dots-vertical" variant="text" density="compact" size="x-small"></v-btn>
+                                    </div>
+                                    <div class="task-container-preview pa-1" style="background-color: #f5f5f5; min-height: 200px; border-radius: 0 0 4px 4px;">
+                                        <v-card class="ma-1 task-card-preview" elevation="2">
+                                            <v-card-text class="pa-2">
+                                                <div class="d-flex justify-space-between align-center mb-1">
+                                                    <v-chip color="warning" size="x-small">Medium</v-chip>
+                                                </div>
+                                                <div class="text-body-2 font-weight-medium">Research competitors</div>
+                                                <div class="text-caption text-grey mb-2">Analyze main competitors and their features</div>
+                                            </v-card-text>
+                                        </v-card>
+                                        <v-card class="ma-1 task-card-preview" elevation="2">
+                                            <v-card-text class="pa-2">
+                                                <div class="d-flex justify-space-between align-center mb-1">
+                                                    <v-chip color="error" size="x-small">High</v-chip>
+                                                </div>
+                                                <div class="text-body-2 font-weight-medium">Create wireframes</div>
+                                                <div class="text-caption text-grey mb-2">Design initial wireframes for dashboard</div>
+                                            </v-card-text>
+                                        </v-card>
+                                    </div>
+                                </div>
+                                
+                                <!-- In Progress Column -->
+                                <div class="kanban-column-preview" style="min-width: 220px;">
+                                    <div class="column-header-preview d-flex align-center pa-2 bg-blue-lighten-5 rounded-t">
+                                        <span class="text-body-2 font-weight-medium">In Progress</span>
+                                        <v-chip class="ms-2" size="x-small" color="blue">1</v-chip>
+                                        <v-spacer></v-spacer>
+                                        <v-btn icon="mdi-dots-vertical" variant="text" density="compact" size="x-small"></v-btn>
+                                    </div>
+                                    <div class="task-container-preview pa-1" style="background-color: #f5f5f5; min-height: 200px; border-radius: 0 0 4px 4px;">
+                                        <v-card class="ma-1 task-card-preview" elevation="2">
+                                            <v-card-text class="pa-2">
+                                                <div class="d-flex justify-space-between align-center mb-1">
+                                                    <v-chip color="error" size="x-small">High</v-chip>
+                                                </div>
+                                                <div class="text-body-2 font-weight-medium">Implement authentication</div>
+                                                <div class="text-caption text-grey mb-2">Set up JWT authentication flow</div>
+                                            </v-card-text>
+                                        </v-card>
+                                    </div>
+                                </div>
+                                
+                                <!-- Review Column -->
+                                <div class="kanban-column-preview" style="min-width: 220px;">
+                                    <div class="column-header-preview d-flex align-center pa-2 bg-amber-lighten-5 rounded-t">
+                                        <span class="text-body-2 font-weight-medium">Review</span>
+                                        <v-chip class="ms-2" size="x-small" color="amber">1</v-chip>
+                                        <v-spacer></v-spacer>
+                                        <v-btn icon="mdi-dots-vertical" variant="text" density="compact" size="x-small"></v-btn>
+                                    </div>
+                                    <div class="task-container-preview pa-1" style="background-color: #f5f5f5; min-height: 200px; border-radius: 0 0 4px 4px;">
+                                        <v-card class="ma-1 task-card-preview" elevation="2">
+                                            <v-card-text class="pa-2">
+                                                <div class="d-flex justify-space-between align-center mb-1">
+                                                    <v-chip color="info" size="x-small">Low</v-chip>
+                                                </div>
+                                                <div class="text-body-2 font-weight-medium">Landing page design</div>
+                                                <div class="text-caption text-grey mb-2">Review new landing page mockups</div>
+                                            </v-card-text>
+                                        </v-card>
+                                    </div>
+                                </div>
+                                
+                                <!-- Done Column -->
+                                <div class="kanban-column-preview" style="min-width: 220px;">
+                                    <div class="column-header-preview d-flex align-center pa-2 bg-green-lighten-5 rounded-t">
+                                        <span class="text-body-2 font-weight-medium">Done</span>
+                                        <v-chip class="ms-2" size="x-small" color="green">1</v-chip>
+                                        <v-spacer></v-spacer>
+                                        <v-btn icon="mdi-dots-vertical" variant="text" density="compact" size="x-small"></v-btn>
+                                    </div>
+                                    <div class="task-container-preview pa-1" style="background-color: #f5f5f5; min-height: 200px; border-radius: 0 0 4px 4px;">
+                                        <v-card class="ma-1 task-card-preview" elevation="2">
+                                            <v-card-text class="pa-2">
+                                                <div class="d-flex justify-space-between align-center mb-1">
+                                                    <v-chip color="warning" size="x-small">Medium</v-chip>
+                                                </div>
+                                                <div class="text-body-2 font-weight-medium">Setup project</div>
+                                                <div class="text-caption text-grey mb-2">Initialize Vue project with Vuetify</div>
+                                            </v-card-text>
+                                        </v-card>
+                                    </div>
+                                </div>
+                            </div>
+                        </v-card-text>
+                    </v-card>
+                </div>
+            </template>
+        </CodeShowcase>
     </div>
 </template>
 
@@ -739,7 +1066,9 @@ import {
     CHAT_PAGE_CODE,
     DASHBOARD_CODE,
     FORM_GROUP_CODE,
+    KANBAN_BOARD_CODE,
     LOGIN_CARD_CODE,
+    MULTI_STEP_FORM_CODE,
     NOTIFICATION_LIST_CODE,
     ORDER_SUMMARY_CODE,
     PRODUCT_CARD_CODE,
@@ -1004,6 +1333,17 @@ const notificationListCode = NOTIFICATION_LIST_CODE
 const chatPageCode = CHAT_PAGE_CODE
 const formGroupCode = FORM_GROUP_CODE
 const aiChatCode = AI_CHAT_CODE
+const kanbanBoardCode = KANBAN_BOARD_CODE
+const multiStepFormCode = MULTI_STEP_FORM_CODE
+
+// Multi-step form preview
+const multiStepCurrentStep = ref(1)
+
+const nextMultiStepPreview = () => {
+    if (multiStepCurrentStep.value < 4) {
+        multiStepCurrentStep.value++
+    }
+}
 
 // AI Chat Component Data
 const aiMessages = ref<AiMessage[]>([
@@ -1135,5 +1475,54 @@ const scrollAiToBottom = () => {
 
 .border-t {
     border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+/* Kanban preview styles */
+.kanban-preview {
+    overflow: hidden;
+}
+
+.kanban-column-preview {
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+}
+
+.task-card-preview {
+    cursor: grab;
+    transition: transform 0.2s, box-shadow 0.2s;
+    user-select: none;
+}
+
+.task-card-preview:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+}
+
+.task-card-preview:active {
+    cursor: grabbing;
+}
+
+/* Multi-step form preview styles */
+.multi-step-form-preview {
+    overflow: hidden;
+}
+
+.review-preview-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+}
+
+@media (min-width: 600px) {
+    .review-preview-item {
+        flex-direction: row;
+    }
+    
+    .review-preview-item .text-caption {
+        width: 150px;
+        padding-right: 16px;
+    }
 }
 </style>

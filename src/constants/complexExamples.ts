@@ -1614,3 +1614,1094 @@ const scrollToBottom = () => {
   border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
 </style>`
+
+export const MULTI_STEP_FORM_CODE = `<template>
+  <v-card class="multi-step-form" elevation="3">
+    <v-card-title class="d-flex align-center pa-4">
+      <v-icon icon="mdi-form-select" class="me-2"></v-icon>
+      {{ formTitle }}
+      <v-spacer></v-spacer>
+      <v-btn icon="mdi-close" variant="text" @click="handleCancel"></v-btn>
+    </v-card-title>
+
+    <v-divider></v-divider>
+    
+    <!-- Progress Stepper -->
+    <v-stepper :items="steps" v-model="currentStep" alt-labels>
+      <template v-slot:item="{ props, item }">
+        <v-stepper-item 
+          v-bind="props" 
+          :value="item" 
+          :complete="completedSteps[item.value - 1]"
+          :disabled="!isStepAvailable(item.value)"
+          @click="handleStepClick(item.value)"
+        >
+          <template v-slot:default>
+            <span class="text-body-2">{{ item.title }}</span>
+          </template>
+        </v-stepper-item>
+      </template>
+    </v-stepper>
+
+    <!-- Form Content -->
+    <v-window v-model="currentStep" class="pa-4">
+      <!-- Step 1: Personal Information -->
+      <v-window-item :value="1">
+        <v-card-text>
+          <v-form ref="personalForm" v-model="forms.personalValid" @submit.prevent>
+            <p class="text-body-1 mb-4">Please enter your personal information.</p>
+            
+            <div class="d-flex gap-3">
+              <v-text-field
+                v-model="formData.firstName"
+                label="First Name"
+                variant="outlined"
+                density="comfortable"
+                :rules="[v => !!v || 'First name is required']"
+                class="flex-grow-1"
+              ></v-text-field>
+              
+              <v-text-field
+                v-model="formData.lastName"
+                label="Last Name"
+                variant="outlined"
+                density="comfortable"
+                :rules="[v => !!v || 'Last name is required']"
+                class="flex-grow-1"
+              ></v-text-field>
+            </div>
+            
+            <v-text-field
+              v-model="formData.email"
+              label="Email"
+              type="email"
+              variant="outlined"
+              density="comfortable"
+              :rules="emailRules"
+              prepend-inner-icon="mdi-email"
+              class="mb-2"
+            ></v-text-field>
+            
+            <v-text-field
+              v-model="formData.phone"
+              label="Phone Number"
+              variant="outlined"
+              density="comfortable"
+              :rules="phoneRules"
+              prepend-inner-icon="mdi-phone"
+              class="mb-2"
+            ></v-text-field>
+            
+            <v-select
+              v-model="formData.gender"
+              label="Gender"
+              :items="['Male', 'Female', 'Non-binary', 'Prefer not to say']"
+              variant="outlined"
+              density="comfortable"
+              class="mb-2"
+            ></v-select>
+            
+            <v-text-field
+              v-model="formData.dob"
+              label="Date of Birth"
+              type="date"
+              variant="outlined"
+              density="comfortable"
+              :rules="[v => !!v || 'Date of birth is required']"
+              class="mb-2"
+            ></v-text-field>
+          </v-form>
+        </v-card-text>
+      </v-window-item>
+
+      <!-- Step 2: Address Information -->
+      <v-window-item :value="2">
+        <v-card-text>
+          <v-form ref="addressForm" v-model="forms.addressValid" @submit.prevent>
+            <p class="text-body-1 mb-4">Please enter your address information.</p>
+            
+            <v-text-field
+              v-model="formData.street"
+              label="Street Address"
+              variant="outlined"
+              density="comfortable"
+              :rules="[v => !!v || 'Street address is required']"
+              class="mb-2"
+            ></v-text-field>
+            
+            <v-text-field
+              v-model="formData.apartment"
+              label="Apartment / Suite / Unit (optional)"
+              variant="outlined"
+              density="comfortable"
+              class="mb-2"
+            ></v-text-field>
+            
+            <div class="d-flex gap-3">
+              <v-text-field
+                v-model="formData.city"
+                label="City"
+                variant="outlined"
+                density="comfortable"
+                :rules="[v => !!v || 'City is required']"
+                class="flex-grow-1"
+              ></v-text-field>
+              
+              <v-text-field
+                v-model="formData.state"
+                label="State / Province"
+                variant="outlined"
+                density="comfortable"
+                :rules="[v => !!v || 'State is required']"
+                class="flex-grow-1"
+              ></v-text-field>
+            </div>
+            
+            <div class="d-flex gap-3">
+              <v-text-field
+                v-model="formData.zipCode"
+                label="ZIP / Postal Code"
+                variant="outlined"
+                density="comfortable"
+                :rules="[v => !!v || 'ZIP code is required']"
+                class="flex-grow-1"
+              ></v-text-field>
+              
+              <v-autocomplete
+                v-model="formData.country"
+                label="Country"
+                :items="countries"
+                variant="outlined"
+                density="comfortable"
+                :rules="[v => !!v || 'Country is required']"
+                class="flex-grow-1"
+              ></v-autocomplete>
+            </div>
+            
+            <v-checkbox 
+              v-model="formData.billingIsSame" 
+              label="Billing address is same as shipping address"
+            ></v-checkbox>
+          </v-form>
+        </v-card-text>
+      </v-window-item>
+
+      <!-- Step 3: Payment Information -->
+      <v-window-item :value="3">
+        <v-card-text>
+          <v-form ref="paymentForm" v-model="forms.paymentValid" @submit.prevent>
+            <p class="text-body-1 mb-4">Please enter your payment information.</p>
+            
+            <div class="payment-card-container mb-3">
+              <v-radio-group v-model="formData.paymentMethod" inline>
+                <v-radio value="credit" label="Credit Card"></v-radio>
+                <v-radio value="debit" label="Debit Card"></v-radio>
+                <v-radio value="paypal" label="PayPal"></v-radio>
+              </v-radio-group>
+              
+              <div class="payment-icons">
+                <v-icon icon="mdi-credit-card" color="primary" class="me-2"></v-icon>
+                <v-icon icon="mdi-credit-card-outline" class="me-2"></v-icon>
+                <v-icon icon="mdi-paypal" color="info"></v-icon>
+              </div>
+            </div>
+            
+            <div v-if="formData.paymentMethod !== 'paypal'">
+              <v-text-field
+                v-model="formData.cardName"
+                label="Name on Card"
+                variant="outlined"
+                density="comfortable"
+                :rules="[v => !!v || 'Name on card is required']"
+                class="mb-2"
+              ></v-text-field>
+              
+              <v-text-field
+                v-model="formData.cardNumber"
+                label="Card Number"
+                variant="outlined"
+                density="comfortable"
+                :rules="cardRules"
+                maxlength="19"
+                @input="formatCardNumber"
+                prepend-inner-icon="mdi-credit-card"
+                class="mb-2"
+              ></v-text-field>
+              
+              <div class="d-flex gap-3">
+                <v-text-field
+                  v-model="formData.expiryDate"
+                  label="Expiry Date (MM/YY)"
+                  variant="outlined"
+                  density="comfortable"
+                  :rules="expiryRules"
+                  maxlength="5"
+                  @input="formatExpiryDate"
+                  class="flex-grow-1"
+                ></v-text-field>
+                
+                <v-text-field
+                  v-model="formData.cvv"
+                  label="CVV"
+                  variant="outlined"
+                  density="comfortable"
+                  :rules="[v => !!v && /^\\d{3,4}$/.test(v) || 'Valid CVV required']"
+                  maxlength="4"
+                  type="password"
+                  class="flex-grow-1"
+                ></v-text-field>
+              </div>
+            </div>
+            
+            <div v-else>
+              <v-alert type="info" variant="tonal" class="mb-3">
+                You will be redirected to PayPal to complete your payment after form submission.
+              </v-alert>
+            </div>
+          </v-form>
+        </v-card-text>
+      </v-window-item>
+
+      <!-- Step 4: Review & Submit -->
+      <v-window-item :value="4">
+        <v-card-text>
+          <p class="text-body-1 mb-4">Please review your information before submitting.</p>
+          
+          <v-card variant="outlined" class="mb-4">
+            <v-card-title class="bg-grey-lighten-4 pa-3 text-subtitle-1">
+              <v-icon icon="mdi-account" class="me-2"></v-icon>
+              Personal Information
+              <v-spacer></v-spacer>
+              <v-btn size="small" variant="text" icon="mdi-pencil" @click="currentStep = 1"></v-btn>
+            </v-card-title>
+            <v-card-text class="pa-3">
+              <div class="review-item">
+                <span class="text-caption text-grey">Full Name:</span>
+                <span class="text-body-2">{{ formData.firstName }} {{ formData.lastName }}</span>
+              </div>
+              <div class="review-item">
+                <span class="text-caption text-grey">Email:</span>
+                <span class="text-body-2">{{ formData.email }}</span>
+              </div>
+              <div class="review-item">
+                <span class="text-caption text-grey">Phone:</span>
+                <span class="text-body-2">{{ formData.phone }}</span>
+              </div>
+              <div class="review-item">
+                <span class="text-caption text-grey">Date of Birth:</span>
+                <span class="text-body-2">{{ formatDate(formData.dob) }}</span>
+              </div>
+            </v-card-text>
+          </v-card>
+          
+          <v-card variant="outlined" class="mb-4">
+            <v-card-title class="bg-grey-lighten-4 pa-3 text-subtitle-1">
+              <v-icon icon="mdi-map-marker" class="me-2"></v-icon>
+              Address Information
+              <v-spacer></v-spacer>
+              <v-btn size="small" variant="text" icon="mdi-pencil" @click="currentStep = 2"></v-btn>
+            </v-card-title>
+            <v-card-text class="pa-3">
+              <div class="review-item">
+                <span class="text-caption text-grey">Street:</span>
+                <span class="text-body-2">{{ formData.street }}</span>
+              </div>
+              <div v-if="formData.apartment" class="review-item">
+                <span class="text-caption text-grey">Apartment/Suite:</span>
+                <span class="text-body-2">{{ formData.apartment }}</span>
+              </div>
+              <div class="review-item">
+                <span class="text-caption text-grey">City, State ZIP:</span>
+                <span class="text-body-2">{{ formData.city }}, {{ formData.state }} {{ formData.zipCode }}</span>
+              </div>
+              <div class="review-item">
+                <span class="text-caption text-grey">Country:</span>
+                <span class="text-body-2">{{ formData.country }}</span>
+              </div>
+            </v-card-text>
+          </v-card>
+          
+          <v-card variant="outlined">
+            <v-card-title class="bg-grey-lighten-4 pa-3 text-subtitle-1">
+              <v-icon icon="mdi-credit-card" class="me-2"></v-icon>
+              Payment Method
+              <v-spacer></v-spacer>
+              <v-btn size="small" variant="text" icon="mdi-pencil" @click="currentStep = 3"></v-btn>
+            </v-card-title>
+            <v-card-text class="pa-3">
+              <div class="review-item">
+                <span class="text-caption text-grey">Payment Method:</span>
+                <span class="text-body-2">
+                  {{ formData.paymentMethod === 'credit' ? 'Credit Card' : 
+                     formData.paymentMethod === 'debit' ? 'Debit Card' : 'PayPal' }}
+                </span>
+              </div>
+              <div v-if="formData.paymentMethod !== 'paypal'">
+                <div class="review-item">
+                  <span class="text-caption text-grey">Card Number:</span>
+                  <span class="text-body-2">**** **** **** {{ formData.cardNumber.slice(-4) }}</span>
+                </div>
+                <div class="review-item">
+                  <span class="text-caption text-grey">Card Holder:</span>
+                  <span class="text-body-2">{{ formData.cardName }}</span>
+                </div>
+                <div class="review-item">
+                  <span class="text-caption text-grey">Expiry Date:</span>
+                  <span class="text-body-2">{{ formData.expiryDate }}</span>
+                </div>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-card-text>
+      </v-window-item>
+    </v-window>
+
+    <!-- Form Buttons -->
+    <v-divider></v-divider>
+    <v-card-actions class="pa-4">
+      <v-btn variant="outlined" @click="prevStep" :disabled="currentStep === 1">
+        <v-icon icon="mdi-arrow-left" start></v-icon>
+        Back
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn v-if="currentStep < steps.length" color="primary" @click="nextStep">
+        Next
+        <v-icon icon="mdi-arrow-right" end></v-icon>
+      </v-btn>
+      <v-btn v-else color="success" @click="submitForm" :loading="isSubmitting">
+        Submit
+        <v-icon icon="mdi-check" end></v-icon>
+      </v-btn>
+    </v-card-actions>
+  </v-card>
+</template>
+
+<script setup>
+import { ref, reactive, computed, watch } from 'vue'
+
+const formTitle = "Multi-Step Registration"
+const currentStep = ref(1)
+const isSubmitting = ref(false)
+const personalForm = ref(null)
+const addressForm = ref(null)
+const paymentForm = ref(null)
+
+const steps = [
+  { title: 'Personal Info', value: 1 },
+  { title: 'Address', value: 2 },
+  { title: 'Payment', value: 3 },
+  { title: 'Review', value: 4 }
+]
+
+const completedSteps = reactive([false, false, false, false])
+
+const forms = reactive({
+  personalValid: false,
+  addressValid: false,
+  paymentValid: false
+})
+
+const formData = reactive({
+  // Step 1: Personal Information
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  gender: '',
+  dob: '',
+  
+  // Step 2: Address
+  street: '',
+  apartment: '',
+  city: '',
+  state: '',
+  zipCode: '',
+  country: 'United States',
+  billingIsSame: true,
+  
+  // Step 3: Payment
+  paymentMethod: 'credit',
+  cardName: '',
+  cardNumber: '',
+  expiryDate: '',
+  cvv: ''
+})
+
+// Validation rules
+const emailRules = [
+  v => !!v || 'Email is required',
+  v => /.+@.+\\..+/.test(v) || 'Email must be valid'
+]
+
+const phoneRules = [
+  v => !!v || 'Phone number is required',
+  v => /^[\\d\\s\\(\\)\\-\\+]+$/.test(v) || 'Phone number must be valid'
+]
+
+const cardRules = [
+  v => !!v || 'Card number is required',
+  v => /^\\d{4}(\\s\\d{4}){3}$|^\\d{16}$/.test(v.replace(/\\s/g, '')) || 'Card number must be valid'
+]
+
+const expiryRules = [
+  v => !!v || 'Expiry date is required',
+  v => /^(0[1-9]|1[0-2])\\/\\d{2}$/.test(v) || 'Format must be MM/YY'
+]
+
+// List of countries
+const countries = [
+  'United States', 'Canada', 'United Kingdom', 'Australia', 'Germany',
+  'France', 'Japan', 'Brazil', 'India', 'China', 'South Korea'
+]
+
+// Form navigation functions
+const nextStep = async () => {
+  if (currentStep.value === 1) {
+    const valid = await personalForm.value?.validate()
+    if (!valid.valid) return
+    completedSteps[0] = true
+  } else if (currentStep.value === 2) {
+    const valid = await addressForm.value?.validate()
+    if (!valid.valid) return
+    completedSteps[1] = true
+  } else if (currentStep.value === 3) {
+    const valid = await paymentForm.value?.validate()
+    if (!valid.valid) return
+    completedSteps[2] = true
+  }
+  
+  if (currentStep.value < steps.length) {
+    currentStep.value++
+  }
+}
+
+const prevStep = () => {
+  if (currentStep.value > 1) {
+    currentStep.value--
+  }
+}
+
+const isStepAvailable = (step) => {
+  if (step === 1) return true
+  if (step === 2) return completedSteps[0]
+  if (step === 3) return completedSteps[0] && completedSteps[1]
+  if (step === 4) return completedSteps[0] && completedSteps[1] && completedSteps[2]
+  return false
+}
+
+const handleStepClick = (step) => {
+  if (isStepAvailable(step)) {
+    currentStep.value = step
+  }
+}
+
+const handleCancel = () => {
+  // Here you would typically confirm before canceling
+  console.log('Form canceled')
+}
+
+const submitForm = async () => {
+  isSubmitting.value = true
+  
+  try {
+    // Simulating API submission
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    console.log('Form submitted:', formData)
+    // Here you would typically show a success message or redirect
+  } finally {
+    isSubmitting.value = false
+  }
+}
+
+// Format card number with spaces for better readability
+const formatCardNumber = () => {
+  let value = formData.cardNumber.replace(/\\s/g, '')
+  let formattedValue = ''
+  
+  for (let i = 0; i < value.length; i++) {
+    if (i > 0 && i % 4 === 0) {
+      formattedValue += ' '
+    }
+    formattedValue += value[i]
+  }
+  
+  formData.cardNumber = formattedValue
+}
+
+// Format expiry date to add slash between month and year
+const formatExpiryDate = () => {
+  let value = formData.expiryDate.replace(/\\D/g, '')
+  
+  if (value.length > 2) {
+    formData.expiryDate = \`\${value.substring(0, 2)}/\${value.substring(2, 4)}\`
+  } else {
+    formData.expiryDate = value
+  }
+}
+
+// Format date for display
+const formatDate = (dateString) => {
+  if (!dateString) return ''
+  
+  const options = { year: 'numeric', month: 'long', day: 'numeric' }
+  return new Date(dateString).toLocaleDateString(undefined, options)
+}
+</script>
+
+<style scoped>
+.multi-step-form {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.payment-card-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 600px) {
+  .review-item {
+    flex-direction: row;
+  }
+  
+  .review-item .text-caption {
+    width: 150px;
+    padding-right: 16px;
+  }
+}
+</style>`
+
+export const KANBAN_BOARD_CODE = `<template>
+  <v-card class="kanban-board" elevation="1">
+    <v-card-title class="d-flex align-center pa-4">
+      <v-icon icon="mdi-format-list-checks" class="me-2"></v-icon>
+      Project Tasks
+      <v-spacer></v-spacer>
+      <v-btn icon="mdi-plus" variant="text" @click="openNewTaskDialog"></v-btn>
+      <v-btn icon="mdi-filter-variant" variant="text"></v-btn>
+    </v-card-title>
+
+    <v-divider></v-divider>
+
+    <v-card-text class="pa-4">
+      <!-- Drag and drop container for task columns -->
+      <div class="d-flex gap-4 kanban-container">
+        <div 
+          v-for="(column, columnIndex) in columns" 
+          :key="column.id" 
+          class="kanban-column"
+        >
+          <!-- Column header -->
+          <div class="column-header d-flex align-center pa-3" :class="\`bg-\${column.color}-lighten-4\`">
+            <span class="text-subtitle-1 font-weight-medium">{{ column.title }}</span>
+            <v-chip class="ms-2" size="x-small" :color="column.color">{{ column.tasks.length }}</v-chip>
+            <v-spacer></v-spacer>
+            <v-menu>
+              <template v-slot:activator="{ props }">
+                <v-btn icon="mdi-dots-vertical" variant="text" size="small" v-bind="props"></v-btn>
+              </template>
+              <v-list density="compact">
+                <v-list-item @click="addTaskToColumn(columnIndex)">
+                  <template v-slot:prepend>
+                    <v-icon icon="mdi-plus"></v-icon>
+                  </template>
+                  <v-list-item-title>Add task</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="clearColumn(columnIndex)">
+                  <template v-slot:prepend>
+                    <v-icon icon="mdi-delete-sweep"></v-icon>
+                  </template>
+                  <v-list-item-title>Clear column</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
+
+          <!-- Task container -->
+          <div 
+            class="task-container pa-2" 
+            :data-column-id="column.id"
+            @dragover="onDragOver($event)"
+            @dragenter.prevent
+            @dragleave="onDragLeave($event)"
+            @drop="onDrop($event, column)"
+          >
+            <!-- Tasks in the column -->
+            <v-card 
+              v-for="task in column.tasks" 
+              :key="task.id" 
+              class="task-card ma-2" 
+              elevation="2"
+              draggable="true"
+              @dragstart="onDragStart($event, task, column)"
+            >
+              <v-card-text class="pa-3">
+                <div class="d-flex justify-space-between align-center mb-2">
+                  <v-chip :color="getPriorityColor(task.priority)" size="x-small">
+                    {{ task.priority }}
+                  </v-chip>
+                  <v-menu>
+                    <template v-slot:activator="{ props }">
+                      <v-btn icon="mdi-dots-vertical" variant="text" density="compact" size="x-small" v-bind="props"></v-btn>
+                    </template>
+                    <v-list density="compact">
+                      <v-list-item @click="editTask(task)">
+                        <template v-slot:prepend>
+                          <v-icon icon="mdi-pencil"></v-icon>
+                        </template>
+                        <v-list-item-title>Edit</v-list-item-title>
+                      </v-list-item>
+                      <v-list-item @click="deleteTask(column, task)">
+                        <template v-slot:prepend>
+                          <v-icon icon="mdi-delete"></v-icon>
+                        </template>
+                        <v-list-item-title>Delete</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </div>
+
+                <div class="text-subtitle-2 font-weight-medium mb-1">{{ task.title }}</div>
+                <div class="text-caption text-grey mb-3">{{ task.description }}</div>
+
+                <div class="d-flex align-center justify-space-between">
+                  <div class="d-flex align-center">
+                    <v-avatar size="24" class="me-1" v-if="task.assignee">
+                      <v-img :src="task.assignee.avatar"></v-img>
+                    </v-avatar>
+                    <span class="text-caption">{{ task.assignee ? task.assignee.name : 'Unassigned' }}</span>
+                  </div>
+                  
+                  <div class="text-caption d-flex align-center" v-if="task.dueDate">
+                    <v-icon icon="mdi-calendar" size="small" class="me-1"></v-icon>
+                    {{ formatDate(task.dueDate) }}
+                  </div>
+                </div>
+              </v-card-text>
+            </v-card>
+
+            <!-- Empty state -->
+            <div v-if="column.tasks.length === 0" class="empty-column pa-4 d-flex align-center justify-center">
+              <div class="text-center">
+                <v-icon icon="mdi-tray" size="24" class="text-grey mb-2"></v-icon>
+                <div class="text-caption text-grey">No tasks</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </v-card-text>
+    
+    <!-- New Task Dialog -->
+    <v-dialog v-model="newTaskDialog" max-width="500">
+      <v-card>
+        <v-card-title>{{ editingTask ? 'Edit Task' : 'New Task' }}</v-card-title>
+        <v-card-text>
+          <v-form ref="taskForm">
+            <v-text-field
+              v-model="taskForm.title"
+              label="Task Title"
+              variant="outlined"
+              density="comfortable"
+              class="mb-2"
+              :rules="[v => !!v || 'Title is required']"
+            ></v-text-field>
+            
+            <v-textarea
+              v-model="taskForm.description"
+              label="Description"
+              variant="outlined"
+              density="comfortable"
+              class="mb-2"
+              rows="2"
+            ></v-textarea>
+            
+            <v-select
+              v-model="taskForm.priority"
+              label="Priority"
+              :items="['Low', 'Medium', 'High', 'Urgent']"
+              variant="outlined"
+              density="comfortable"
+              class="mb-2"
+            ></v-select>
+            
+            <v-select
+              v-model="taskForm.columnId"
+              label="Status"
+              :items="columns.map(col => ({ title: col.title, value: col.id }))"
+              variant="outlined"
+              density="comfortable"
+              item-title="title"
+              item-value="value"
+              class="mb-2"
+            ></v-select>
+            
+            <v-select
+              v-model="taskForm.assigneeId"
+              label="Assignee"
+              :items="team"
+              variant="outlined"
+              density="comfortable"
+              item-title="name"
+              item-value="id"
+              class="mb-2"
+            >
+              <template v-slot:item="{ item, props }">
+                <v-list-item v-bind="props">
+                  <template v-slot:prepend>
+                    <v-avatar size="24">
+                      <v-img :src="item.raw.avatar"></v-img>
+                    </v-avatar>
+                  </template>
+                  <v-list-item-title>{{ item.raw.name }}</v-list-item-title>
+                </v-list-item>
+              </template>
+            </v-select>
+            
+            <v-text-field
+              v-model="taskForm.dueDate"
+              label="Due Date"
+              type="date"
+              variant="outlined"
+              density="comfortable"
+              class="mb-2"
+            ></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn variant="text" @click="newTaskDialog = false">Cancel</v-btn>
+          <v-btn color="primary" @click="saveTask">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-card>
+</template>
+
+<script setup>
+import { ref, reactive } from 'vue'
+
+// Task dialog
+const newTaskDialog = ref(false)
+const taskForm = reactive({
+  id: null,
+  title: '',
+  description: '',
+  priority: 'Medium',
+  columnId: '',
+  assigneeId: null,
+  dueDate: null
+})
+const editingTask = ref(false)
+const editingColumn = ref(null)
+
+// Columns data
+const columns = reactive([
+  {
+    id: 'todo',
+    title: 'To Do',
+    color: 'grey',
+    tasks: [
+      {
+        id: 't1',
+        title: 'Research competitors',
+        description: 'Analyze main competitors and their features',
+        priority: 'Medium',
+        assignee: { id: 1, name: 'Alex Smith', avatar: 'https://i.pravatar.cc/150?img=1' },
+        dueDate: '2025-10-10'
+      },
+      {
+        id: 't2',
+        title: 'Create wireframes',
+        description: 'Design initial wireframes for dashboard',
+        priority: 'High',
+        assignee: { id: 2, name: 'Emma Johnson', avatar: 'https://i.pravatar.cc/150?img=5' },
+        dueDate: '2025-10-12'
+      }
+    ]
+  },
+  {
+    id: 'in-progress',
+    title: 'In Progress',
+    color: 'blue',
+    tasks: [
+      {
+        id: 't3',
+        title: 'Implement authentication',
+        description: 'Set up JWT authentication flow',
+        priority: 'High',
+        assignee: { id: 3, name: 'Michael Brown', avatar: 'https://i.pravatar.cc/150?img=8' },
+        dueDate: '2025-10-08'
+      }
+    ]
+  },
+  {
+    id: 'review',
+    title: 'Review',
+    color: 'amber',
+    tasks: [
+      {
+        id: 't4',
+        title: 'Landing page design',
+        description: 'Review new landing page mockups',
+        priority: 'Low',
+        assignee: { id: 4, name: 'Sarah Wilson', avatar: 'https://i.pravatar.cc/150?img=9' },
+        dueDate: '2025-10-05'
+      }
+    ]
+  },
+  {
+    id: 'done',
+    title: 'Done',
+    color: 'green',
+    tasks: [
+      {
+        id: 't5',
+        title: 'Setup project',
+        description: 'Initialize Vue project with Vuetify',
+        priority: 'Medium',
+        assignee: { id: 1, name: 'Alex Smith', avatar: 'https://i.pravatar.cc/150?img=1' },
+        dueDate: '2025-10-01'
+      }
+    ]
+  }
+])
+
+// Team members
+const team = [
+  { id: 1, name: 'Alex Smith', avatar: 'https://i.pravatar.cc/150?img=1' },
+  { id: 2, name: 'Emma Johnson', avatar: 'https://i.pravatar.cc/150?img=5' },
+  { id: 3, name: 'Michael Brown', avatar: 'https://i.pravatar.cc/150?img=8' },
+  { id: 4, name: 'Sarah Wilson', avatar: 'https://i.pravatar.cc/150?img=9' },
+  { id: 5, name: 'David Lee', avatar: 'https://i.pravatar.cc/150?img=3' }
+]
+
+// Drag and drop functionality
+const draggedTask = ref(null)
+const draggedColumn = ref(null)
+
+function onDragStart(event, task, column) {
+  draggedTask.value = task
+  draggedColumn.value = column
+  event.dataTransfer.effectAllowed = 'move'
+  
+  // Add some data to the drag event
+  event.dataTransfer.setData('text/plain', task.id)
+  
+  // Add styling to indicate dragging
+  if (event.target.classList) {
+    setTimeout(() => {
+      event.target.classList.add('dragging')
+    }, 0)
+  }
+}
+
+function onDragOver(event) {
+  event.preventDefault()
+  // Add visual cue for drop target
+  event.currentTarget.classList.add('drag-over')
+}
+
+function onDragLeave(event) {
+  // Remove visual cue when drag leaves
+  event.currentTarget.classList.remove('drag-over')
+}
+
+function onDrop(event, targetColumn) {
+  event.preventDefault()
+  
+  // Remove drag-over class
+  event.currentTarget.classList.remove('drag-over')
+  
+  // Remove dragging class from all elements
+  const draggingElements = document.querySelectorAll('.dragging')
+  draggingElements.forEach(el => el.classList.remove('dragging'))
+  
+  if (draggedTask.value && draggedColumn.value) {
+    // Remove task from original column
+    const taskIndex = draggedColumn.value.tasks.findIndex(t => t.id === draggedTask.value.id)
+    if (taskIndex !== -1) {
+      draggedColumn.value.tasks.splice(taskIndex, 1)
+      
+      // Add task to target column
+      targetColumn.tasks.push(draggedTask.value)
+    }
+  }
+  draggedTask.value = null
+  draggedColumn.value = null
+}
+
+// Task CRUD operations
+function openNewTaskDialog() {
+  editingTask.value = false
+  taskForm.id = null
+  taskForm.title = ''
+  taskForm.description = ''
+  taskForm.priority = 'Medium'
+  taskForm.columnId = columns[0].id
+  taskForm.assigneeId = null
+  taskForm.dueDate = null
+  newTaskDialog.value = true
+}
+
+function addTaskToColumn(columnIndex) {
+  editingTask.value = false
+  taskForm.id = null
+  taskForm.title = ''
+  taskForm.description = ''
+  taskForm.priority = 'Medium'
+  taskForm.columnId = columns[columnIndex].id
+  taskForm.assigneeId = null
+  taskForm.dueDate = null
+  editingColumn.value = columns[columnIndex]
+  newTaskDialog.value = true
+}
+
+function editTask(task) {
+  editingTask.value = true
+  taskForm.id = task.id
+  taskForm.title = task.title
+  taskForm.description = task.description
+  taskForm.priority = task.priority
+  taskForm.columnId = columns.find(col => col.tasks.includes(task)).id
+  taskForm.assigneeId = task.assignee?.id
+  taskForm.dueDate = task.dueDate
+  newTaskDialog.value = true
+}
+
+function saveTask() {
+  if (!taskForm.title) return
+  
+  const assignee = team.find(t => t.id === taskForm.assigneeId)
+  const newTask = {
+    id: editingTask.value ? taskForm.id : \`t\${Date.now()}\`,
+    title: taskForm.title,
+    description: taskForm.description,
+    priority: taskForm.priority,
+    assignee: assignee,
+    dueDate: taskForm.dueDate
+  }
+  
+  if (editingTask.value) {
+    // Update existing task
+    columns.forEach(column => {
+      const existingTaskIndex = column.tasks.findIndex(t => t.id === newTask.id)
+      if (existingTaskIndex !== -1) {
+        column.tasks.splice(existingTaskIndex, 1)
+      }
+    })
+  }
+  
+  // Add task to selected column
+  const targetColumn = columns.find(col => col.id === taskForm.columnId)
+  if (targetColumn) {
+    targetColumn.tasks.push(newTask)
+  }
+  
+  newTaskDialog.value = false
+}
+
+function deleteTask(column, task) {
+  const index = column.tasks.findIndex(t => t.id === task.id)
+  if (index !== -1) {
+    column.tasks.splice(index, 1)
+  }
+}
+
+function clearColumn(columnIndex) {
+  columns[columnIndex].tasks = []
+}
+
+// Utility functions
+function getPriorityColor(priority) {
+  const colors = {
+    'Low': 'info',
+    'Medium': 'success',
+    'High': 'warning',
+    'Urgent': 'error'
+  }
+  return colors[priority] || 'grey'
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+}
+</script>
+
+<style scoped>
+.kanban-board {
+  min-height: 600px;
+}
+
+.kanban-container {
+  overflow-x: auto;
+  min-height: 480px;
+}
+
+.kanban-column {
+  min-width: 280px;
+  width: 280px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.column-header {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.task-container {
+  flex-grow: 1;
+  min-height: 100px;
+  overflow-y: auto;
+  max-height: 500px;
+}
+
+.task-card {
+  cursor: grab;
+  transition: transform 0.2s, box-shadow 0.2s;
+  user-select: none; /* Prevent text selection */
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.1) !important;
+}
+
+.task-card:active {
+  cursor: grabbing;
+}
+
+.empty-column {
+  height: 100px;
+  border: 2px dashed #e0e0e0;
+  border-radius: 8px;
+}
+
+/* Drag and drop styles */
+.dragging {
+  opacity: 0.7;
+  border: 2px dashed #2196F3 !important;
+}
+
+.drag-over {
+  background-color: rgba(33, 150, 243, 0.1) !important;
+  border: 2px dashed #2196F3 !important;
+  border-radius: 8px;
+}
+
+/* Prevent text selection across the entire kanban board */
+.kanban-container, .kanban-column, .column-header, .task-container {
+  user-select: none;
+}
+</style>`
