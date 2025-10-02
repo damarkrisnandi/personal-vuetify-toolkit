@@ -1394,6 +1394,109 @@
             </template>
         </CodeShowcase>
 
+        <!-- Hero Section -->
+        <CodeShowcase title="Hero Section"
+            description="Modern hero section with animated elements, stats, and call-to-action buttons"
+            icon="mdi-rocket-launch" difficulty="Hard" :code="heroSectionCode">
+            <template #preview>
+                <div class="hero-preview-container">
+                    <section class="hero-section-preview">
+                        <v-container fluid class="hero-container-preview">
+                            <v-row align="center" justify="center" class="fill-height">
+                                <v-col cols="12" md="6" lg="5" class="hero-content-preview">
+                                    <div class="hero-text-preview">
+                                        <h1 class="hero-title-preview">
+                                            Build Amazing
+                                            <span class="hero-highlight-preview">Vue.js Apps</span>
+                                        </h1>
+                                        <p class="hero-subtitle-preview">
+                                            Create stunning, responsive web applications with our comprehensive component library and modern design system.
+                                        </p>
+                                        <div class="hero-features-preview">
+                                            <v-chip
+                                                v-for="feature in heroFeatures"
+                                                :key="feature"
+                                                class="ma-1"
+                                                color="primary"
+                                                variant="outlined"
+                                                size="small"
+                                            >
+                                                <v-icon start>mdi-check</v-icon>
+                                                {{ feature }}
+                                            </v-chip>
+                                        </div>
+                                        <div class="hero-actions-preview">
+                                            <v-btn
+                                                size="large"
+                                                color="primary"
+                                                variant="elevated"
+                                                class="me-4 mb-2"
+                                                prepend-icon="mdi-rocket-launch"
+                                            >
+                                                Get Started
+                                            </v-btn>
+                                            <v-btn
+                                                size="large"
+                                                variant="outlined"
+                                                class="mb-2"
+                                                prepend-icon="mdi-play-circle"
+                                            >
+                                                Watch Demo
+                                            </v-btn>
+                                        </div>
+                                        <div class="hero-stats-preview">
+                                            <div class="stats-grid-preview">
+                                                <div v-for="stat in heroStats" :key="stat.label" class="stat-item-preview">
+                                                    <div class="stat-number-preview">{{ stat.value }}</div>
+                                                    <div class="stat-label-preview">{{ stat.label }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </v-col>
+                                <v-col cols="12" md="6" lg="7" class="hero-visual-preview">
+                                    <div class="hero-image-container-preview">
+                                        <v-card
+                                            class="hero-card-preview"
+                                            elevation="12"
+                                            rounded="lg"
+                                        >
+                                            <v-img
+                                                src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=300&fit=crop"
+                                                alt="Modern web development"
+                                                aspect-ratio="16/10"
+                                                cover
+                                                class="hero-main-image-preview"
+                                            >
+                                                <template #placeholder>
+                                                    <div class="d-flex align-center justify-center fill-height">
+                                                        <v-progress-circular
+                                                            color="primary"
+                                                            indeterminate
+                                                        ></v-progress-circular>
+                                                    </div>
+                                                </template>
+                                            </v-img>
+                                            <div class="hero-card-overlay-preview">
+                                                <v-chip
+                                                    color="success"
+                                                    variant="elevated"
+                                                    prepend-icon="mdi-trending-up"
+                                                    class="floating-chip-preview"
+                                                >
+                                                    New Features
+                                                </v-chip>
+                                            </div>
+                                        </v-card>
+                                    </div>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </section>
+                </div>
+            </template>
+        </CodeShowcase>
+
         <!-- Comment/Reply Thread -->
         <CodeShowcase title="Comment/Reply Thread"
             description="Interactive comment and reply system with voting, sorting, and threaded conversations"
@@ -1537,6 +1640,7 @@ import {
     DASHBOARD_CODE,
     FILE_UPLOAD_CODE,
     FORM_GROUP_CODE,
+    HERO_SECTION_CODE,
     KANBAN_BOARD_CODE,
     LOGIN_CARD_CODE,
     MULTI_STEP_FORM_CODE,
@@ -1813,6 +1917,7 @@ const videoPlayerCode = VIDEO_PLAYER_CODE
 const audioPlayerCode = AUDIO_PLAYER_CODE
 const fileUploadCode = FILE_UPLOAD_CODE
 const qrCodeComponentCode = QR_CODE_COMPONENT_CODE
+const heroSectionCode = HERO_SECTION_CODE
 
 // Multi-step form preview
 const multiStepCurrentStep = ref(1)
@@ -2210,6 +2315,20 @@ const isUrl = (str: string): boolean => {
         return false
     }
 }
+
+// Hero Section variables
+const heroFeatures = ref([
+    'Modern Design',
+    'Responsive',
+    'Customizable',
+    'TypeScript Ready'
+])
+
+const heroStats = ref([
+    { value: '50+', label: 'Components' },
+    { value: '99%', label: 'Satisfaction' },
+    { value: '24/7', label: 'Support' }
+])
 
 const aiQuickActions = [
     'Explain Vue.js',
@@ -2868,5 +2987,178 @@ const voteReply = (commentId: number, reply: any, voteType: 'up' | 'down') => {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+}
+
+/* Hero Section Preview Styles */
+.hero-preview-container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.hero-section-preview {
+    min-height: 500px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-container-preview {
+    height: 500px;
+    padding: 2rem 1rem;
+}
+
+.hero-content-preview {
+    z-index: 2;
+}
+
+.hero-title-preview {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.hero-highlight-preview {
+    background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle-preview {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.hero-features-preview {
+    margin-bottom: 1.5rem;
+}
+
+.hero-actions-preview {
+    margin-bottom: 2rem;
+}
+
+.hero-stats-preview {
+    margin-top: 1rem;
+}
+
+.stats-grid-preview {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.stat-item-preview {
+    text-align: center;
+}
+
+.stat-number-preview {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+}
+
+.stat-label-preview {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hero-visual-preview {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-image-container-preview {
+    position: relative;
+}
+
+.hero-card-preview {
+    position: relative;
+    max-width: 400px;
+    margin: 0 auto;
+    animation: cardFloat 4s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.hero-main-image-preview {
+    border-radius: 8px;
+}
+
+.hero-card-overlay-preview {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.floating-chip-preview {
+    animation: chipFloat 3s ease-in-out infinite;
+}
+
+@keyframes chipFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Responsive adjustments for hero preview */
+@media (max-width: 960px) {
+    .hero-container-preview {
+        height: auto;
+        min-height: 500px;
+        padding: 1rem;
+    }
+    
+    .hero-content-preview {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .stats-grid-preview {
+        justify-content: center;
+    }
+    
+    .hero-actions-preview .v-btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero-title-preview {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle-preview {
+        font-size: 1rem;
+    }
+    
+    .stats-grid-preview {
+        gap: 1rem;
+    }
+    
+    .stat-number-preview {
+        font-size: 1.25rem;
+    }
 }
 </style>

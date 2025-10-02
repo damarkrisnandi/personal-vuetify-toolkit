@@ -6111,3 +6111,475 @@ watch(activeTab, (newValue) => {
   word-break: break-all;
 }
 </style>`
+
+export const HERO_SECTION_CODE = `<template>
+  <section class="hero-section">
+    <v-container fluid class="hero-container">
+      <v-row align="center" justify="center" class="fill-height">
+        <v-col cols="12" md="6" lg="5" class="hero-content">
+          <div class="hero-text">
+            <h1 class="hero-title" :class="{ 'fade-in': titleVisible }">
+              {{ heroData.title }}
+              <span class="hero-highlight">{{ heroData.highlight }}</span>
+            </h1>
+            <p class="hero-subtitle" :class="{ 'fade-in-delay': subtitleVisible }">
+              {{ heroData.subtitle }}
+            </p>
+            <div class="hero-features" :class="{ 'fade-in-delay-2': featuresVisible }">
+              <v-chip
+                v-for="feature in heroData.features"
+                :key="feature"
+                class="ma-1"
+                color="primary"
+                variant="outlined"
+                size="small"
+              >
+                <v-icon start>mdi-check</v-icon>
+                {{ feature }}
+              </v-chip>
+            </div>
+            <div class="hero-actions" :class="{ 'fade-in-delay-3': actionsVisible }">
+              <v-btn
+                size="large"
+                color="primary"
+                variant="elevated"
+                class="me-4 mb-2"
+                prepend-icon="mdi-rocket-launch"
+                @click="handlePrimaryAction"
+              >
+                {{ heroData.primaryButton }}
+              </v-btn>
+              <v-btn
+                size="large"
+                variant="outlined"
+                class="mb-2"
+                prepend-icon="mdi-play-circle"
+                @click="handleSecondaryAction"
+              >
+                {{ heroData.secondaryButton }}
+              </v-btn>
+            </div>
+            <div class="hero-stats" :class="{ 'fade-in-delay-4': statsVisible }">
+              <div class="stats-grid">
+                <div v-for="stat in heroData.stats" :key="stat.label" class="stat-item">
+                  <div class="stat-number">{{ stat.value }}</div>
+                  <div class="stat-label">{{ stat.label }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </v-col>
+        <v-col cols="12" md="6" lg="7" class="hero-visual">
+          <div class="hero-image-container" :class="{ 'slide-in': imageVisible }">
+            <div class="hero-background-shapes">
+              <div class="shape shape-1"></div>
+              <div class="shape shape-2"></div>
+              <div class="shape shape-3"></div>
+            </div>
+            <v-card
+              class="hero-card floating"
+              elevation="24"
+              rounded="lg"
+            >
+              <v-img
+                :src="heroData.image"
+                :alt="heroData.imageAlt"
+                aspect-ratio="16/10"
+                cover
+                class="hero-main-image"
+              >
+                <template #placeholder>
+                  <div class="d-flex align-center justify-center fill-height">
+                    <v-progress-circular
+                      color="primary"
+                      indeterminate
+                    ></v-progress-circular>
+                  </div>
+                </template>
+              </v-img>
+              <div class="hero-card-overlay">
+                <v-chip
+                  color="success"
+                  variant="elevated"
+                  prepend-icon="mdi-trending-up"
+                  class="floating-chip"
+                >
+                  {{ heroData.badge }}
+                </v-chip>
+              </div>
+            </v-card>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
+    
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator" :class="{ 'bounce': scrollIndicatorVisible }">
+      <v-btn
+        icon="mdi-chevron-down"
+        variant="text"
+        color="primary"
+        size="large"
+        @click="scrollToNext"
+      ></v-btn>
+    </div>
+  </section>
+</template>
+
+<script setup>
+import { ref, onMounted, nextTick } from 'vue'
+
+// Animation states
+const titleVisible = ref(false)
+const subtitleVisible = ref(false)
+const featuresVisible = ref(false)
+const actionsVisible = ref(false)
+const statsVisible = ref(false)
+const imageVisible = ref(false)
+const scrollIndicatorVisible = ref(false)
+
+// Hero content data
+const heroData = ref({
+  title: "Build Amazing",
+  highlight: "Vue.js Apps",
+  subtitle: "Create stunning, responsive web applications with our comprehensive component library and modern design system.",
+  features: ["Modern Design", "Responsive", "Customizable", "TypeScript Ready"],
+  primaryButton: "Get Started",
+  secondaryButton: "Watch Demo",
+  image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=500&fit=crop",
+  imageAlt: "Modern web development",
+  badge: "New Features",
+  stats: [
+    { value: "50+", label: "Components" },
+    { value: "99%", label: "Satisfaction" },
+    { value: "24/7", label: "Support" }
+  ]
+})
+
+// Trigger animations on mount
+onMounted(async () => {
+  await nextTick()
+  
+  // Staggered animations
+  setTimeout(() => titleVisible.value = true, 100)
+  setTimeout(() => subtitleVisible.value = true, 300)
+  setTimeout(() => featuresVisible.value = true, 500)
+  setTimeout(() => actionsVisible.value = true, 700)
+  setTimeout(() => statsVisible.value = true, 900)
+  setTimeout(() => imageVisible.value = true, 400)
+  setTimeout(() => scrollIndicatorVisible.value = true, 1200)
+})
+
+// Action handlers
+const handlePrimaryAction = () => {
+  console.log('Primary action clicked')
+  // Add your primary action logic here
+}
+
+const handleSecondaryAction = () => {
+  console.log('Secondary action clicked')
+  // Add your secondary action logic here
+}
+
+const scrollToNext = () => {
+  // Scroll to next section
+  const nextSection = document.querySelector('.next-section')
+  if (nextSection) {
+    nextSection.scrollIntoView({ behavior: 'smooth' })
+  }
+}
+</script>
+
+<style scoped>
+.hero-section {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-container {
+  height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.hero-content {
+  z-index: 2;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hero-title.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-highlight {
+  background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hero-subtitle.fade-in-delay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-features {
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hero-features.fade-in-delay-2 {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-actions {
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hero-actions.fade-in-delay-3 {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-stats {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hero-stats.fade-in-delay-4 {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stats-grid {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hero-visual {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-image-container {
+  position: relative;
+  opacity: 0;
+  transform: translateX(50px);
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hero-image-container.slide-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.hero-background-shapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  animation: float 6s ease-in-out infinite;
+}
+
+.shape-1 {
+  width: 100px;
+  height: 100px;
+  top: 10%;
+  right: 10%;
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 150px;
+  height: 150px;
+  bottom: 20%;
+  left: 10%;
+  animation-delay: 2s;
+}
+
+.shape-3 {
+  width: 80px;
+  height: 80px;
+  top: 50%;
+  right: 30%;
+  animation-delay: 4s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.hero-card {
+  position: relative;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.hero-card.floating {
+  animation: cardFloat 4s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+  0%, 100% {
+    transform: translateY(0px) rotateY(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotateY(-2deg);
+  }
+  75% {
+    transform: translateY(-5px) rotateY(2deg);
+  }
+}
+
+.hero-main-image {
+  border-radius: 12px;
+}
+
+.hero-card-overlay {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.floating-chip {
+  animation: chipFloat 3s ease-in-out infinite;
+}
+
+@keyframes chipFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.scroll-indicator.bounce {
+  opacity: 1;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  40% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+  60% {
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 960px) {
+  .hero-container {
+    height: auto;
+    min-height: 100vh;
+    padding: 1rem;
+  }
+  
+  .hero-content {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .stats-grid {
+    justify-content: center;
+  }
+  
+  .hero-actions .v-btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .stats-grid {
+    gap: 1rem;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+}
+</style>`
